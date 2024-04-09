@@ -1,0 +1,186 @@
+{
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Stage 3",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Logger1",
+                            "actorType": {
+                                "parentType": "Logger",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 1",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Error Object",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ErrorFields1",
+                            "isDisabled": true,
+                            "actorType": {
+                                "parentType": "ErrorFields",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 2",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ErrorHandler2",
+                            "onError": "result",
+                            "actorType": {
+                                "parentType": "ErrorHandler",
+                                "inputs": [
+                                    {
+                                        "name": "config",
+                                        "const": [
+                                            {
+                                                "exceptionKey": "java.lang.Exception",
+                                                "conditions": {
+                                                    "message": ""
+                                                },
+                                                "actions": {
+                                                    "suppress": true,
+                                                    "log": true,
+                                                    "flowName": "errorHandler"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "JsonStringify1",
+                            "actorType": {
+                                "parentType": "JsonStringify",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Const1",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "boolean"
+                                        },
+                                        "const": true
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "Error Object",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JsonStringify1",
+                "name": "object"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "error"
+            },
+            "rightPort": {
+                "actor": "Error Object",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "error"
+            },
+            "rightPort": {
+                "actor": "ErrorFields1",
+                "name": "error"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JsonStringify1",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "errorDetails"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Const1",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "result"
+            }
+        }
+    ]
+}

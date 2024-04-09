@@ -1,0 +1,1170 @@
+{
+    "tags": [
+        "GG"
+    ],
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Single select stmt result",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "SelectStmtResult",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "customer_id": {
+                                                    "type": "integer"
+                                                },
+                                                "address_id": {
+                                                    "type": "integer"
+                                                },
+                                                "street_address_1": {
+                                                    "type": "string"
+                                                },
+                                                "street_address_2": {},
+                                                "city": {
+                                                    "type": "string"
+                                                },
+                                                "zip": {
+                                                    "type": "string"
+                                                },
+                                                "state": {
+                                                    "type": "string"
+                                                },
+                                                "country": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "table_type",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stringify",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ToString",
+                            "actorType": {
+                                "parentType": "ToString",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Get primary keys from xml",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ExtractLUTableMetadata1",
+                            "actorType": {
+                                "parentType": "ExtractLUTableMetadata",
+                                "inputs": [],
+                                "outputs": [
+                                    {
+                                        "name": "primaryKeys",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "luTableName",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Select stmt result fields",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ResultFields",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "map.keySet();"
+                                    },
+                                    {
+                                        "name": "map",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "activity_date": {
+                                                    "type": "string"
+                                                },
+                                                "activity_id": {
+                                                    "type": "integer"
+                                                },
+                                                "activity_note": {
+                                                    "type": "string"
+                                                },
+                                                "customer_id": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Fields/Values",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "FieldsToUpperCase",
+                            "actorType": {
+                                "parentType": "Mapper",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "value.toUpperCase();"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "values",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ResultValues",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "map.values();"
+                                    },
+                                    {
+                                        "name": "map",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "activity_date": {
+                                                    "type": "string"
+                                                },
+                                                "activity_id": {
+                                                    "type": "integer"
+                                                },
+                                                "activity_note": {
+                                                    "type": "string"
+                                                },
+                                                "customer_id": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "For each field/value",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Field",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Value",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "If value wrapped in \"\"",
+                    "dependsOnList": [
+                        "For each field/value"
+                    ],
+                    "isLast": 0,
+                    "remark": "this check is done by checking if the value is wrapped in quotes in the result.\nthis is done to check if to put '' around the value in the update stmt",
+                    "actors": [
+                        {
+                            "name": "isString",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "values.indexOf(':\"'.concat(val).concat('\"'))!=-1"
+                                    },
+                                    {
+                                        "name": "values",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "val",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ReplaceQuotesInValue",
+                            "actorType": {
+                                "parentType": "Replace",
+                                "inputs": [
+                                    {
+                                        "name": "search",
+                                        "const": "'"
+                                    },
+                                    {
+                                        "name": "replace",
+                                        "const": "''"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "If Null",
+                    "dependsOnList": [
+                        "For each field/value"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "remark": "if value is null, replace with nullFromBW, this field will be skipped when creating the GG message",
+                    "actors": [
+                        {
+                            "name": "IsNull",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "IsNull",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "nullFromBW",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "${pk} = nullFromBW"
+                                    },
+                                    {
+                                        "name": "pk",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "else",
+                    "dependsOnList": [
+                        "For each field/value"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": [
+                        {
+                            "name": "value",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "${pk} = ${value}"
+                                    },
+                                    {
+                                        "name": "pk",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Wrap in quotes",
+                    "dependsOnList": [
+                        "If value wrapped in \"\""
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "'Value'",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "${pk} = '${value}'"
+                                    },
+                                    {
+                                        "name": "pk",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Stage 2",
+                    "dependsOnList": [
+                        "If Null"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                },
+                {
+                    "name": "Stage 3",
+                    "dependsOnList": [
+                        "else"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "PK lower case",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "XmlPKToLowerCase",
+                            "actorType": {
+                                "parentType": "Mapper",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "value.toUpperCase();"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "values",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "If field is PK",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "actors": [
+                        {
+                            "name": "isPK",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "Equals",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "PksArray",
+                            "actorType": {
+                                "parentType": "ArrayBuilder",
+                                "inputs": [],
+                                "outputs": [
+                                    {
+                                        "name": "array",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "LoopStop1",
+                            "actorType": {
+                                "parentType": "LoopStop",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Combine fields into array",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "actors": [
+                        {
+                            "name": "FieldsArray",
+                            "actorType": {
+                                "parentType": "ArrayBuilder",
+                                "inputs": [],
+                                "outputs": [
+                                    {
+                                        "name": "array",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "All Pks from xml are found",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "remark": "validate that all the primary keys from iidfinder xml are returned from the select statement",
+                    "actors": [
+                        {
+                            "name": "AllPksMatch",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "!(pksFromXML == null || pksFromSelect == null || pksFromXML.length != pksFromSelect.length)"
+                                    },
+                                    {
+                                        "name": "pksFromXML",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "pksFromSelect",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Assert true",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "assertTrue",
+                            "actorType": {
+                                "parentType": "assertTrue",
+                                "inputs": [
+                                    {
+                                        "name": "message",
+                                        "const": "Cannot Perform Update! Primary Keys Are Missing."
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Concat fields and pks",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ConcatPks",
+                            "actorType": {
+                                "parentType": "Concat",
+                                "inputs": [
+                                    {
+                                        "name": "delimiter",
+                                        "const": " and "
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "ConcatFields",
+                            "actorType": {
+                                "parentType": "Concat",
+                                "inputs": [
+                                    {
+                                        "name": "delimiter",
+                                        "const": ", "
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Format update stmt",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "FormatUpdateStmt",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "update ${table_name} set ${fields} where ${where}"
+                                    },
+                                    {
+                                        "name": "table_name",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "fields",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "where",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "SelectStmtResult",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ResultFields",
+                "name": "map"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SelectStmtResult",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ResultValues",
+                "name": "map"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SelectStmtResult",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ToString",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "table_type",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ExtractLUTableMetadata1",
+                "name": "table_type"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ToString",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "isString",
+                "name": "values"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ExtractLUTableMetadata1",
+                "name": "primaryKeys"
+            },
+            "rightPort": {
+                "actor": "XmlPKToLowerCase",
+                "name": "values"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ExtractLUTableMetadata1",
+                "name": "primaryKeys"
+            },
+            "rightPort": {
+                "actor": "AllPksMatch",
+                "name": "pksFromXML"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ResultFields",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "FieldsToUpperCase",
+                "name": "values"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "FieldsToUpperCase",
+                "name": "values"
+            },
+            "rightPort": {
+                "actor": "Field",
+                "name": "value"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "ResultValues",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Value",
+                "name": "value"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "Field",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "isPK",
+                "name": "b"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Field",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "'Value'",
+                "name": "pk"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Field",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "value",
+                "name": "pk"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Field",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "nullFromBW",
+                "name": "pk"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Value",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "value",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Value",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "isString",
+                "name": "val"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Value",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "IsNull",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Value",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ReplaceQuotesInValue",
+                "name": "string"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ReplaceQuotesInValue",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "'Value'",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "nullFromBW",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "FieldsArray",
+                "name": "input"
+            },
+            "arrayPosition": 0
+        },
+        {
+            "leftPort": {
+                "actor": "value",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "PksArray",
+                "name": "input"
+            },
+            "arrayPosition": 0
+        },
+        {
+            "leftPort": {
+                "actor": "value",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "FieldsArray",
+                "name": "input"
+            },
+            "arrayPosition": 0
+        },
+        {
+            "leftPort": {
+                "actor": "'Value'",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "PksArray",
+                "name": "input"
+            },
+            "arrayPosition": 0
+        },
+        {
+            "leftPort": {
+                "actor": "'Value'",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "FieldsArray",
+                "name": "input"
+            },
+            "arrayPosition": 0
+        },
+        {
+            "leftPort": {
+                "actor": "XmlPKToLowerCase",
+                "name": "values"
+            },
+            "rightPort": {
+                "actor": "isPK",
+                "name": "a"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "PksArray",
+                "name": "array"
+            },
+            "rightPort": {
+                "actor": "ConcatPks",
+                "name": "elements"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "PksArray",
+                "name": "array"
+            },
+            "rightPort": {
+                "actor": "AllPksMatch",
+                "name": "pksFromSelect"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "FieldsArray",
+                "name": "array"
+            },
+            "rightPort": {
+                "actor": "ConcatFields",
+                "name": "elements"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "AllPksMatch",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "assertTrue",
+                "name": "condition"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ConcatPks",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "FormatUpdateStmt",
+                "name": "where"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ConcatFields",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "FormatUpdateStmt",
+                "name": "fields"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "values"
+            },
+            "rightPort": {
+                "actor": "SelectStmtResult",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "table_type"
+            },
+            "rightPort": {
+                "actor": "table_type",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "lu_name"
+            },
+            "rightPort": {
+                "actor": "ExtractLUTableMetadata1",
+                "name": "lu_name"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "table_name"
+            },
+            "rightPort": {
+                "actor": "ExtractLUTableMetadata1",
+                "name": "source_table"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "FormatUpdateStmt",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "sqlStmt"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "table_name"
+            },
+            "rightPort": {
+                "actor": "FormatUpdateStmt",
+                "name": "table_name"
+            }
+        }
+    ]
+}

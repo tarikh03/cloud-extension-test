@@ -1,0 +1,515 @@
+{
+    "tags": [
+        "GG"
+    ],
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Sql statement",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "sql_stmt",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Trim",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "TrimStmt",
+                            "actorType": {
+                                "parentType": "Trim",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stmt to lower case",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "StmtLowercase",
+                            "actorType": {
+                                "parentType": "Lowercase",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "insert",
+                    "dependsOnList": [
+                        "Stmt to lower case"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ifInsert",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "sql.startsWith('insert');"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ExtractTableName1",
+                            "actorType": {
+                                "parentType": "Regex",
+                                "inputs": [
+                                    {
+                                        "name": "pattern",
+                                        "const": "insert\\s+into\\s+[a-zA-Z_][a-zA-Z0-9_]*\\.[a-zA-Z_][a-zA-Z0-9_]*"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "update",
+                    "dependsOnList": [
+                        "Stmt to lower case"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "ifUpdate",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "sql.startsWith('update');"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ExtractTableName2",
+                            "actorType": {
+                                "parentType": "Regex",
+                                "inputs": [
+                                    {
+                                        "name": "pattern",
+                                        "const": "update\\s+[a-zA-Z_][a-zA-Z0-9_]*\\.[a-zA-Z_][a-zA-Z0-9_]*"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "delete",
+                    "dependsOnList": [
+                        "Stmt to lower case"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "ifDelete",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "sql.startsWith('delete');"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ExtractTableName3",
+                            "actorType": {
+                                "parentType": "Regex",
+                                "inputs": [
+                                    {
+                                        "name": "pattern",
+                                        "const": "delete\\s+from\\s+[a-zA-Z_][a-zA-Z0-9_]*\\.[a-zA-Z_][a-zA-Z0-9_]*"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "select",
+                    "dependsOnList": [
+                        "Stmt to lower case"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "ifSelect",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "sql.startsWith('select');"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ExtractTableName4",
+                            "actorType": {
+                                "parentType": "Regex",
+                                "inputs": [
+                                    {
+                                        "name": "pattern",
+                                        "const": "from\\s+[a-zA-Z_][a-zA-Z0-9_]*\\.[a-zA-Z_][a-zA-Z0-9_]*"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Extract schema.table",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "SchemaAndTableName",
+                            "actorType": {
+                                "parentType": "Regex",
+                                "inputs": [
+                                    {
+                                        "name": "pattern",
+                                        "const": "[a-zA-Z_][a-zA-Z0-9_]*\\.[a-zA-Z_][a-zA-Z0-9_]*"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Return output",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Output",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "sql_stmt",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "TrimStmt",
+                "name": "string"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TrimStmt",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "StmtLowercase",
+                "name": "string"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "StmtLowercase",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "ifInsert",
+                "name": "sql"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "StmtLowercase",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "ExtractTableName1",
+                "name": "input"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "StmtLowercase",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "ifUpdate",
+                "name": "sql"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "StmtLowercase",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "ExtractTableName2",
+                "name": "input"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "StmtLowercase",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "ifDelete",
+                "name": "sql"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "StmtLowercase",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "ExtractTableName3",
+                "name": "input"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "StmtLowercase",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "ifSelect",
+                "name": "sql"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "StmtLowercase",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "ExtractTableName4",
+                "name": "input"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ExtractTableName1",
+                "name": "strings"
+            },
+            "rightPort": {
+                "actor": "SchemaAndTableName",
+                "name": "input"
+            },
+            "iterate": "First"
+        },
+        {
+            "leftPort": {
+                "actor": "ExtractTableName2",
+                "name": "strings"
+            },
+            "rightPort": {
+                "actor": "SchemaAndTableName",
+                "name": "input"
+            },
+            "iterate": "First"
+        },
+        {
+            "leftPort": {
+                "actor": "ExtractTableName3",
+                "name": "strings"
+            },
+            "rightPort": {
+                "actor": "SchemaAndTableName",
+                "name": "input"
+            },
+            "iterate": "First"
+        },
+        {
+            "leftPort": {
+                "actor": "ExtractTableName4",
+                "name": "strings"
+            },
+            "rightPort": {
+                "actor": "SchemaAndTableName",
+                "name": "input"
+            },
+            "iterate": "First"
+        },
+        {
+            "leftPort": {
+                "actor": "SchemaAndTableName",
+                "name": "strings"
+            },
+            "rightPort": {
+                "actor": "Output",
+                "name": "value"
+            },
+            "iterate": "First"
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "sql_stmt"
+            },
+            "rightPort": {
+                "actor": "sql_stmt",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Output",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "tableName"
+            }
+        }
+    ]
+}

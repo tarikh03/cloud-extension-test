@@ -1,0 +1,111 @@
+{
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Stage 1",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "SourceDbQuery1",
+                            "actorType": {
+                                "parentType": "SourceDbQuery",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "CRM_DB"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": "Select customer_id\r\nFrom public.customer\r\nLimit 6"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 2",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "actors": [
+                        {
+                            "name": "LuFunction1",
+                            "actorType": {
+                                "parentType": "LuFunction",
+                                "inputs": [
+                                    {
+                                        "name": "functionName",
+                                        "const": "fnPrintInput"
+                                    },
+                                    {
+                                        "name": "in",
+                                        "schema": {},
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "out",
+                                        "schema": {}
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 3",
+                    "dependsOnList": [
+                        "Stage 2"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                },
+                {
+                    "name": "Stage 4",
+                    "dependsOnList": [
+                        "Stage 2"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 5",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": []
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "SourceDbQuery1",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "LuFunction1",
+                "name": "in"
+            },
+            "iterate": "Iterate"
+        }
+    ]
+}

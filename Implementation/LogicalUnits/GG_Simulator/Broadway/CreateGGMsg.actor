@@ -1,0 +1,117 @@
+{
+    "type": "CreateGGMsg",
+    "badge": "GG",
+    "doc": [
+        "This actor gets DML statement as input, formats it into GoldenGate message and publishes it to Kafka."
+    ],
+    "inputs": [
+        {
+            "name": "sql_stmt",
+            "schema": {},
+            "mandatory": true,
+            "doc": [
+                "The DML statement to be parsed and published as GG message."
+            ]
+        },
+        {
+            "name": "lu_name",
+            "schema": {},
+            "mandatory": false,
+            "doc": [
+                "The LU name that contains the target table."
+            ]
+        },
+        {
+            "name": "custom_table_name",
+            "schema": {},
+            "mandatory": false,
+            "doc": [
+                "The target table name to be updated in the project.",
+                "This input is mandatory when the table type input is 'lookup', otherwise it's optional.",
+                "This input is useful in case multiple tables across the project have the same source schema and table."
+            ]
+        },
+        {
+            "name": "topic_name",
+            "schema": {},
+            "mandatory": false,
+            "doc": [
+                "The Kafka topic name.",
+                "This input is for customizing the Kafka topic name.",
+                "The default topic name structure is: IidFinder.schemaName.tableName."
+            ]
+        },
+        {
+            "name": "op_ts",
+            "schema": {},
+            "mandatory": false,
+            "doc": [
+                "This input is to override the default operation timestamp.",
+                "Default is current timestamp."
+            ]
+        },
+        {
+            "name": "pos",
+            "schema": {},
+            "mandatory": false,
+            "doc": [
+                "This input is to override the default message position in the Kafka topic",
+                "Default is 00000000020030806864."
+            ]
+        },
+        {
+            "name": "partition_key",
+            "schema": {},
+            "mandatory": false,
+            "doc": [
+                "This input is relevant in case the table to be updated is lookup table.",
+                "The partition key is used as part of the topic name structure: LKUP.schemaName.tableName_LKUP_partitionKey."
+            ]
+        },
+        {
+            "name": "table_type",
+            "schema": {},
+            "mandatory": false,
+            "doc": [
+                "The type of the target table, LU/Reference/Lookup table."
+            ]
+        },
+        {
+            "name": "source_table",
+            "schema": {},
+            "mandatory": false,
+            "doc": [
+                "The source table name, input structure: schemaName.tableName."
+            ]
+        },
+        {
+            "name": "before_values",
+            "const": false,
+            "schema": {
+                "type": "boolean"
+            },
+            "mandatory": false,
+            "isDefault": true
+        }
+    ],
+    "outputs": [
+        {
+            "name": "GGMessage",
+            "schema": {},
+            "doc": [
+                "The GoldenGate message."
+            ]
+        },
+        {
+            "name": "TopicName",
+            "schema": {},
+            "doc": [
+                "The Kafka topic name."
+            ]
+        }
+    ],
+    "actorClass": "com.k2view.cdbms.usercode.lu.GG_Simulator.CreateGGMsg",
+    "tags": [
+        "gg"
+    ]
+}

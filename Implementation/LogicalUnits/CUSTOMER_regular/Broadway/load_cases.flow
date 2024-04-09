@@ -1,0 +1,222 @@
+{
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Stage 4",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Logger1",
+                            "actorType": {
+                                "parentType": "Logger",
+                                "inputs": [
+                                    {
+                                        "name": "message",
+                                        "const": "~~~Load cases tar~~~"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Fabric get",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Fabric table data",
+                            "actorType": {
+                                "parentType": "DbCommand",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "fabric"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": "select * from cases"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "CUSTOMER_ID": {
+                                                        "type": "integer"
+                                                    },
+                                                    "ACTIVITY_ID": {
+                                                        "type": "integer"
+                                                    },
+                                                    "ACTIVITY_DATE": {
+                                                        "type": "string"
+                                                    },
+                                                    "ACTIVITY_NOTE": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 2",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Load data to table",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "actors": [
+                        {
+                            "name": "ErrorHandler1",
+                            "onError": "result",
+                            "actorType": {
+                                "parentType": "ErrorHandler",
+                                "inputs": [
+                                    {
+                                        "name": "config",
+                                        "const": [
+                                            {
+                                                "exceptionKey": "java.lang.Exception",
+                                                "conditions": {
+                                                    "message": ""
+                                                },
+                                                "actions": {
+                                                    "suppress": false,
+                                                    "log": false,
+                                                    "flowName": ""
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Load Tar cases",
+                            "actorType": {
+                                "parentType": "DbLoad",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "CRM_DB"
+                                    },
+                                    {
+                                        "name": "table",
+                                        "const": "cases"
+                                    },
+                                    {
+                                        "name": "fields",
+                                        "const": [
+                                            "activity_id",
+                                            "case_id",
+                                            "case_date",
+                                            "case_type",
+                                            "status"
+                                        ]
+                                    },
+                                    {
+                                        "name": "keys",
+                                        "const": [
+                                            "case_id"
+                                        ]
+                                    },
+                                    {
+                                        "name": "dialect",
+                                        "const": "postgres"
+                                    },
+                                    {
+                                        "name": "activity_id",
+                                        "schema": {},
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "case_id",
+                                        "schema": {},
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "case_date",
+                                        "schema": {},
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "case_type",
+                                        "schema": {},
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "status",
+                                        "schema": {},
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 5",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 6",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": []
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "Fabric table data",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Load Tar cases",
+                "name": "params"
+            },
+            "iterate": "Iterate"
+        }
+    ]
+}

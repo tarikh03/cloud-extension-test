@@ -1,0 +1,1425 @@
+{
+    "tags": [
+        "GG"
+    ],
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Flow inputs",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "SelectStmt",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Interface",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Operation",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Pos",
+                            "actorType": {
+                                "parentType": "MathAdd",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "const": -1
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Extract table name",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ErrorHandler",
+                            "onError": "result",
+                            "actorType": {
+                                "parentType": "ErrorHandler",
+                                "inputs": [
+                                    {
+                                        "name": "config",
+                                        "const": [
+                                            {
+                                                "exceptionKey": "java.lang.Exception",
+                                                "conditions": {
+                                                    "message": "Please insert a valid select statement"
+                                                },
+                                                "actions": {
+                                                    "suppress": false,
+                                                    "log": true,
+                                                    "flowName": ""
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "AnalyzeSql",
+                            "actorType": {
+                                "parentType": "AnalyzeSql",
+                                "inputs": [
+                                    {
+                                        "name": "sql_type",
+                                        "const": "SELECT"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "tableName",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Assert table name found",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "assertTableName",
+                            "actorType": {
+                                "parentType": "assertNotNull",
+                                "inputs": [
+                                    {
+                                        "name": "message",
+                                        "const": "Source schema name and table name must be provided !"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Execute select",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "remark": "Extract source table name from select statement based on regex to get the schema.table",
+                    "actors": [
+                        {
+                            "name": "RunSelect",
+                            "actorType": {
+                                "parentType": "DbCommand",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "customer_id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "activity_id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "activity_date": {
+                                                        "type": "date"
+                                                    },
+                                                    "activity_note": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "If operation is insert",
+                    "dependsOnList": [
+                        "Execute select"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "isInsert",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "Equals",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "Insert"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "CreateInsertStmt",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwCreateInsertStmt"
+                                    },
+                                    {
+                                        "name": "table_name",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "values",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "customer_id": {
+                                                    "type": "integer"
+                                                },
+                                                "activity_id": {
+                                                    "type": "integer"
+                                                },
+                                                "activity_date": {
+                                                    "type": "date"
+                                                },
+                                                "activity_note": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "sqlStmt",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "If operation is update",
+                    "dependsOnList": [
+                        "Execute select"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "isUpdate",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "Equals",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "Update"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "CreateUpdateStmt",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwCreateUpdateStmt"
+                                    },
+                                    {
+                                        "name": "lu_name",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "table_name",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "values",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "customer_id": {
+                                                    "type": "integer"
+                                                },
+                                                "activity_id": {
+                                                    "type": "integer"
+                                                },
+                                                "activity_date": {
+                                                    "type": "date"
+                                                },
+                                                "activity_note": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "table_type",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "sqlStmt",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "If operation is delete",
+                    "dependsOnList": [
+                        "Execute select"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "isDelete",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "Equals",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "Delete"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "CreateDeleteStmt",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwCreateDeleteStmt"
+                                    },
+                                    {
+                                        "name": "table_name",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "values",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "customer_id": {
+                                                    "type": "integer"
+                                                },
+                                                "address_id": {
+                                                    "type": "integer"
+                                                },
+                                                "street_address_1": {
+                                                    "type": "string"
+                                                },
+                                                "street_address_2": {},
+                                                "city": {
+                                                    "type": "string"
+                                                },
+                                                "zip": {
+                                                    "type": "string"
+                                                },
+                                                "state": {
+                                                    "type": "string"
+                                                },
+                                                "country": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "lu_name",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "table_type",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "sqlStmt",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Msg cout",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Count",
+                            "actorType": {
+                                "parentType": "Count",
+                                "inputs": [],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Position increment + format",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "FormatPos",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": {
+                                            "userCode": "let length = 20;\r\nlet pos = number+count;\r\nlet stringWithLeadingZeros = '';\r\nfor (let i = 0; i < length - pos.toString().length; i++) {\r\n    stringWithLeadingZeros += '0';\r\n}\r\nstringWithLeadingZeros += pos;\r\nstringWithLeadingZeros;",
+                                            "script": "var length = 20;\nvar pos = number + count;\nvar stringWithLeadingZeros = '';\n\nfor (var i = 0; i < length - pos.toString().length; i++) {\n  stringWithLeadingZeros += '0';\n}\n\nstringWithLeadingZeros += pos;\nstringWithLeadingZeros;"
+                                        }
+                                    },
+                                    {
+                                        "name": "number",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "count",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Generate and send msg",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "SendGGMsg",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwGGSimulator"
+                                    },
+                                    {
+                                        "name": "sql_stmt",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "lu_name",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "topic_name",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "op_ts",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "pos",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "partition_key",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "table_type",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "before_values",
+                                        "schema": {
+                                            "type": "boolean"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "SKIPPED": {
+                                                    "type": "integer"
+                                                },
+                                                "TOPIC": {
+                                                    "type": "string"
+                                                },
+                                                "PUBLISHED": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Message published",
+                    "dependsOnList": [
+                        "Generate and send msg"
+                    ],
+                    "isLast": 1,
+                    "actors": [
+                        {
+                            "name": "ifSuccess",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "Equals",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "const": 1
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "CountPublished",
+                            "actorType": {
+                                "parentType": "Count",
+                                "inputs": [],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Message skipped",
+                    "dependsOnList": [
+                        "Generate and send msg"
+                    ],
+                    "isLast": 1,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": [
+                        {
+                            "name": "CountSkipped",
+                            "actorType": {
+                                "parentType": "Count",
+                                "inputs": [],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Merge stages",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "0 messages published",
+                    "dependsOnList": [
+                        "Merge stages"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "remark": "In case no messages were published, the published counter will be null --> put 0 PUBLISHED in the map",
+                    "actors": [
+                        {
+                            "name": "0 Published",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "IsNull",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "OutputMap1",
+                            "actorType": {
+                                "parentType": "MapCreate",
+                                "inputs": [
+                                    {
+                                        "const": 0,
+                                        "name": "PUBLISHED",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "SKIPPED",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "TOPIC",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "map",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "PUBLISHED": {
+                                                    "type": "integer"
+                                                },
+                                                "TOPIC": {
+                                                    "type": "string"
+                                                },
+                                                "SKIPPED": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "0 messages skipped",
+                    "dependsOnList": [
+                        "Merge stages"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": false,
+                    "remark": "In case no messages were skipped, the skipped counter will be null --> put 0 SKIPPED in the map",
+                    "actors": [
+                        {
+                            "name": "0 Skipped",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "IsNull",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "OutputMap2",
+                            "actorType": {
+                                "parentType": "MapCreate",
+                                "inputs": [
+                                    {
+                                        "name": "PUBLISHED",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": 0,
+                                        "name": "SKIPPED",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "TOPIC",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "map",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "SKIPPED": {
+                                                    "type": "integer"
+                                                },
+                                                "TOPIC": {
+                                                    "type": "string"
+                                                },
+                                                "PUBLISHED": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "> 0 messages published and skipped",
+                    "dependsOnList": [
+                        "Merge stages"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "remark": "number of published messages > 0 && number of skipped messages > 0",
+                    "actors": [
+                        {
+                            "name": "OutputMap3",
+                            "actorType": {
+                                "parentType": "MapCreate",
+                                "inputs": [
+                                    {
+                                        "name": "PUBLISHED",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "SKIPPED",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "TOPIC",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "map",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "TOPIC": {
+                                                    "type": "string"
+                                                },
+                                                "PUBLISHED": {
+                                                    "type": "integer"
+                                                },
+                                                "SKIPPED": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "SelectStmt",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "RunSelect",
+                "name": "sql"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SelectStmt",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "AnalyzeSql",
+                "name": "sql"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Interface",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "RunSelect",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Operation",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "isInsert",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Operation",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "isUpdate",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Operation",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "isDelete",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Pos",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "FormatPos",
+                "name": "number"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "AnalyzeSql",
+                "name": "tableName"
+            },
+            "rightPort": {
+                "actor": "assertTableName",
+                "name": "object"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "AnalyzeSql",
+                "name": "tableName"
+            },
+            "rightPort": {
+                "actor": "CreateInsertStmt",
+                "name": "table_name"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "AnalyzeSql",
+                "name": "tableName"
+            },
+            "rightPort": {
+                "actor": "CreateUpdateStmt",
+                "name": "table_name"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "AnalyzeSql",
+                "name": "tableName"
+            },
+            "rightPort": {
+                "actor": "CreateDeleteStmt",
+                "name": "table_name"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "RunSelect",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "CreateInsertStmt",
+                "name": "values"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "RunSelect",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "CreateUpdateStmt",
+                "name": "values"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "RunSelect",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "CreateDeleteStmt",
+                "name": "values"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "CreateInsertStmt",
+                "name": "sqlStmt"
+            },
+            "rightPort": {
+                "actor": "SendGGMsg",
+                "name": "sql_stmt"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "CreateUpdateStmt",
+                "name": "sqlStmt"
+            },
+            "rightPort": {
+                "actor": "SendGGMsg",
+                "name": "sql_stmt"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "CreateDeleteStmt",
+                "name": "sqlStmt"
+            },
+            "rightPort": {
+                "actor": "SendGGMsg",
+                "name": "sql_stmt"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Count",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "FormatPos",
+                "name": "count"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "FormatPos",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "SendGGMsg",
+                "name": "pos"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SendGGMsg",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "ifSuccess",
+                "name": "a"
+            },
+            "path": [
+                "PUBLISHED"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "SendGGMsg",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "OutputMap1",
+                "name": "TOPIC"
+            },
+            "path": [
+                "TOPIC"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "SendGGMsg",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "OutputMap2",
+                "name": "TOPIC"
+            },
+            "path": [
+                "TOPIC"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "SendGGMsg",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "OutputMap3",
+                "name": "TOPIC"
+            },
+            "path": [
+                "TOPIC"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "CountPublished",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "0 Published",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "CountPublished",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "OutputMap2",
+                "name": "PUBLISHED"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "CountPublished",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "OutputMap3",
+                "name": "PUBLISHED"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "CountSkipped",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "OutputMap1",
+                "name": "SKIPPED"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "CountSkipped",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "0 Skipped",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "CountSkipped",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "OutputMap3",
+                "name": "SKIPPED"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "select_stmt"
+            },
+            "rightPort": {
+                "actor": "SelectStmt",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "interface"
+            },
+            "rightPort": {
+                "actor": "Interface",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "operation"
+            },
+            "rightPort": {
+                "actor": "Operation",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "pos"
+            },
+            "rightPort": {
+                "actor": "Pos",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "lu_name"
+            },
+            "rightPort": {
+                "actor": "CreateUpdateStmt",
+                "name": "lu_name"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "table_type"
+            },
+            "rightPort": {
+                "actor": "CreateUpdateStmt",
+                "name": "table_type"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "lu_name"
+            },
+            "rightPort": {
+                "actor": "CreateDeleteStmt",
+                "name": "lu_name"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "table_type"
+            },
+            "rightPort": {
+                "actor": "CreateDeleteStmt",
+                "name": "table_type"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "lu_name"
+            },
+            "rightPort": {
+                "actor": "SendGGMsg",
+                "name": "lu_name"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "topic_name"
+            },
+            "rightPort": {
+                "actor": "SendGGMsg",
+                "name": "topic_name"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "op_ts"
+            },
+            "rightPort": {
+                "actor": "SendGGMsg",
+                "name": "op_ts"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "partition_key"
+            },
+            "rightPort": {
+                "actor": "SendGGMsg",
+                "name": "partition_key"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "table_type"
+            },
+            "rightPort": {
+                "actor": "SendGGMsg",
+                "name": "table_type"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "before_values"
+            },
+            "rightPort": {
+                "actor": "SendGGMsg",
+                "name": "before_values"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "OutputMap1",
+                "name": "map"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "result"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "OutputMap2",
+                "name": "map"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "result"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "OutputMap3",
+                "name": "map"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "result"
+            }
+        }
+    ]
+}

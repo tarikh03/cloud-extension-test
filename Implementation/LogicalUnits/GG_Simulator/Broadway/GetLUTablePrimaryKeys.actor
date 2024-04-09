@@ -1,0 +1,29 @@
+{
+    "type": "GetLUTablePrimaryKeys",
+    "badge": "GG",
+    "doc": [
+        "Extracts table primary keys from IID Finder.xml file based on the LU name input."
+    ],
+    "inputs": [
+        {
+            "name": "lu_name",
+            "schema": {},
+            "mandatory": false
+        },
+        {
+            "name": "table_name",
+            "schema": {},
+            "mandatory": false
+        }
+    ],
+    "outputs": [
+        {
+            "name": "primary_keys",
+            "schema": {}
+        }
+    ],
+    "actorClass": "com.k2view.cdbms.usercode.lu.GG_Simulator.GetLUTablePrimaryKeys",
+    "tags": [
+        "Metadata"
+    ]
+}

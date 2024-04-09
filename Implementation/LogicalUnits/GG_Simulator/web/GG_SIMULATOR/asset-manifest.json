@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/static/GG_SIMULATOR/static/css/main.12e1837b.css",
+    "main.js": "/static/GG_SIMULATOR/static/js/main.70618084.js",
+    "index.html": "/static/GG_SIMULATOR/index.html",
+    "main.12e1837b.css.map": "/static/GG_SIMULATOR/static/css/main.12e1837b.css.map",
+    "main.70618084.js.map": "/static/GG_SIMULATOR/static/js/main.70618084.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.12e1837b.css",
+    "static/js/main.70618084.js"
+  ]
+}

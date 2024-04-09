@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VirtualDB xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="6.5.9.9">
+  <Name>vdb</Name>
+  <RootView>public_customer</RootView>
+  <LuLazyDataUpdate syncMethod="TimeInterval" performEvery="00:00:00" />
+  <EventsList />
+  <IidFinderProp>
+    <NumberOfPartitions>100</NumberOfPartitions>
+    <NumberOfJobs>50</NumberOfJobs>
+  </IidFinderProp>
+  <Tables>
+    <Table>public_activity</Table>
+    <Table>public_address</Table>
+    <Table>public_case_note</Table>
+    <Table>public_cases</Table>
+    <Table>public_contract</Table>
+    <Table>public_customer</Table>
+  </Tables>
+  <TablesProperties>
+    <TableProperties name="public_activity">
+      <Populations>
+        <Population name="popDummy" order="2" disabled="false" populationType="Regular" />
+        <Population name="query_public_activity" order="2" disabled="true" populationType="Regular" />
+      </Populations>
+    </TableProperties>
+    <TableProperties name="public_address">
+      <Populations>
+        <Population name="query_public_address" order="2" disabled="false" populationType="Regular" />
+      </Populations>
+    </TableProperties>
+    <TableProperties name="public_cases">
+      <Populations>
+        <Population name="query_public_cases" order="3" disabled="false" populationType="Regular" />
+      </Populations>
+    </TableProperties>
+    <TableProperties name="public_case_note">
+      <Populations>
+        <Population name="query_public_case_note" order="4" disabled="false" populationType="Regular" />
+      </Populations>
+    </TableProperties>
+    <TableProperties name="public_contract">
+      <Populations>
+        <Population name="query_public_contract" order="2" disabled="false" populationType="Regular" />
+      </Populations>
+    </TableProperties>
+    <TableProperties name="public_customer">
+      <Populations>
+        <Population name="query_public_customer" order="1" disabled="false" populationType="Regular" />
+      </Populations>
+    </TableProperties>
+  </TablesProperties>
+  <EnrichmentsOrderList />
+  <ReferencesList />
+  <Relations />
+  <DatabaseRelations>
+    <Relation>
+      <From tableType="TableObject" table="public_customer" column="customer_id" columnId="customer_id" />
+      <To tableType="TableObject" table="public_activity" populationObjectName="query_public_activity" column="customer_id" columnId="queryCol_0" />
+    </Relation>
+    <Relation>
+      <From tableType="TableObject" table="public_customer" column="customer_id" columnId="customer_id" />
+      <To tableType="TableObject" table="public_address" populationObjectName="query_public_address" column="customer_id" columnId="queryCol_0" />
+    </Relation>
+    <Relation>
+      <From tableType="TableObject" table="public_customer" column="customer_id" columnId="customer_id" />
+      <To tableType="TableObject" table="public_contract" populationObjectName="query_public_contract" column="customer_id" columnId="queryCol_0" />
+    </Relation>
+    <Relation>
+      <From tableType="TableObject" table="public_activity" column="activity_id" columnId="activity_id" />
+      <To tableType="TableObject" table="public_cases" populationObjectName="query_public_cases" column="activity_id" columnId="queryCol_0" />
+    </Relation>
+    <Relation>
+      <From tableType="TableObject" table="public_cases" column="case_id" columnId="case_id" />
+      <To tableType="TableObject" table="public_case_note" populationObjectName="query_public_case_note" column="case_id" columnId="queryCol_0" />
+    </Relation>
+    <Relation>
+      <From tableType="TableObject" table="public_customer" column="customer_id" columnId="customer_id" />
+      <To tableType="TableObject" table="public_activity" populationObjectName="popDummy" column="customer_id" columnId="queryCol_0" />
+    </Relation>
+  </DatabaseRelations>
+  <PreVCsSqlScript />
+  <PostVCsSqlScript />
+  <Indexes />
+  <LudbProperties />
+  <DiagramGraph>
+    <Graph version="6.5.9.9" name="vdb.k2vdb.xml">
+      <Node name="public_customer" pos="11 239" size="257 136" listGroupSize="250 100" viewType="Table" />
+      <Node name="public_activity" pos="280 23" size="257 152" listGroupSize="250 100" viewType="Table" />
+      <Node name="public_cases" pos="615 14" size="257 136" listGroupSize="250 100" viewType="Table" />
+      <Node name="public_case_note" pos="852 185" size="257 136" listGroupSize="250 100" viewType="Table" />
+      <Node name="public_address" pos="313 239" size="257 136" listGroupSize="250 100" viewType="Table" />
+      <Node name="public_contract" pos="313 439" size="257 136" listGroupSize="250 100" viewType="Table" />
+    </Graph>
+  </DiagramGraph>
+</VirtualDB>

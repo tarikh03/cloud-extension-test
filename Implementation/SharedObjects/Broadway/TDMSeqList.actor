@@ -1,0 +1,35 @@
+{
+    "type": "TDMSeqList",
+    "badge": "TD",
+    "tags": [
+        "basic"
+    ],
+    "inputs": [
+        {
+            "name": "table",
+            "const": [],
+            "schema": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "SEQUENCE_NAME": {
+                            "type": "string"
+                        },
+                        "CACHE_DB_NAME": {
+                            "type": "string"
+                        },
+                        "SEQUENCE_REDIS_OR_DB": {
+                            "type": "string"
+                        },
+                        "INITIATE_VALUE_OR_FLOW": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": [],
+    "parentType": "ConstTable"
+}

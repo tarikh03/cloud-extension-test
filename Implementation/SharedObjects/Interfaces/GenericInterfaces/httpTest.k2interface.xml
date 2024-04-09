@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<GenericInterface xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="HTTP" displayName="HTTP" enabled="false" version="1.10">
+  <Name>httpTest</Name>
+  <Properties>
+    <Property name="ProtocolType">
+      <Value>HTTP</Value>
+    </Property>
+    <Property name="HOST">
+      <Value>localhost</Value>
+    </Property>
+    <Property name="PORT">
+      <Value>80</Value>
+    </Property>
+    <Property name="Path">
+      <Value>http://localhost:3213/api</Value>
+    </Property>
+    <Property name="AuthenticationType">
+      <Value>Basic</Value>
+    </Property>
+    <Property name="User">
+      <Value>admin</Value>
+    </Property>
+    <Property name="Password">
+      <Value>~encs2~ytEvz8m8uL3HwhcxUg8oWU80yHMyQ1b0CdbCQ0zIp4yvoya8qQ==</Value>
+    </Property>
+    <Property name="Token">
+      <Value />
+    </Property>
+    <Property name="AccessTokenUrl">
+      <Value />
+    </Property>
+    <Property name="AccessTokenBodyParams">
+      <Value />
+    </Property>
+    <Property name="ClientId">
+      <Value />
+    </Property>
+    <Property name="ClientSecret">
+      <Value />
+    </Property>
+    <Property name="Scope">
+      <Value />
+    </Property>
+    <Property name="TokenTimeout">
+      <Value>0</Value>
+    </Property>
+    <Property name="TestConnectionValidStatus">
+      <Value />
+    </Property>
+  </Properties>
+</GenericInterface>

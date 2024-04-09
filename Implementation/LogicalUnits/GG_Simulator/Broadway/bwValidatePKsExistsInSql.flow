@@ -1,0 +1,330 @@
+{
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Flow inputs",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "SqlPKs",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "TablePKs",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Validate Pk arrays size",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ValidateSize",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": {
+                                            "userCode": "if(sqlPks !=null && tablePks!=null){\r\n    sqlPks.length == tablePks.length;\r\n}else if(sqlPks!=null && tablePks == null || sqlPks==null && tablePks != null){\r\n    false;\r\n}else true;",
+                                            "script": "if (sqlPks != null && tablePks != null) {\n  sqlPks.length == tablePks.length;\n} else if (sqlPks != null && tablePks == null || sqlPks == null && tablePks != null) {\n  false;\n} else true;"
+                                        }
+                                    },
+                                    {
+                                        "name": "sqlPks",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "tablePks",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Assert sizes are equal",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "assertTrue1",
+                            "actorType": {
+                                "parentType": "assertTrue",
+                                "inputs": [
+                                    {
+                                        "name": "message",
+                                        "const": "Command must contain all table primary keys !"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Const",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Validate arrays",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ValidateArraysContent",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": {
+                                            "userCode": "let flag = false;\r\nfor (let i = 0; i < tablePks.length; i++) {\r\n    if(tablePks[i].toUpperCase() == sqlPk.toUpperCase()){\r\n         flag = true;\r\n         break;\r\n    }\r\n}\r\n flag;",
+                                            "script": "var flag = false;\n\nfor (var i = 0; i < tablePks.length; i++) {\n  if (tablePks[i].toUpperCase() == sqlPk.toUpperCase()) {\n    flag = true;\n    break;\n  }\n}\n\nflag;"
+                                        }
+                                    },
+                                    {
+                                        "name": "sqlPk",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "tablePks",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Assert table pks contain sql pk",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "assertTrue2",
+                            "actorType": {
+                                "parentType": "assertTrue",
+                                "inputs": [
+                                    {
+                                        "name": "message",
+                                        "const": "Command must contain all table primary keys !"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "SqlPKs",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ValidateSize",
+                "name": "sqlPks"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SqlPKs",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Const",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TablePKs",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ValidateSize",
+                "name": "tablePks"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TablePKs",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ValidateArraysContent",
+                "name": "tablePks"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ValidateSize",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "assertTrue1",
+                "name": "condition"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Const",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ValidateArraysContent",
+                "name": "sqlPk"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "ValidateArraysContent",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "assertTrue2",
+                "name": "condition"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "sql_primary_keys"
+            },
+            "rightPort": {
+                "actor": "SqlPKs",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "table_primary_keys"
+            },
+            "rightPort": {
+                "actor": "TablePKs",
+                "name": "value"
+            }
+        }
+    ]
+}

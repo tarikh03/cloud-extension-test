@@ -1,0 +1,462 @@
+{
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Flow inputs",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "TopicName",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "TableName",
+                            "actorType": {
+                                "parentType": "Uppercase",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "TableType",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "PartitionKey",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Input topic is null",
+                    "dependsOnList": [
+                        "Flow inputs"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "TopicIsNull",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "topic_name == null || topic_name == \"\" || topic_name ==\"null\" || topic_name ==\"undefined\""
+                                    },
+                                    {
+                                        "name": "topic_name",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "else",
+                    "dependsOnList": [
+                        "Flow inputs"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": [
+                        {
+                            "name": "OutputTopicName",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "If Reference",
+                    "dependsOnList": [
+                        "Input topic is null"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "IsRefTable",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "EqualsIgnoreCase",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "Reference"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "RefTopicName",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "REF.${table_name}"
+                                    },
+                                    {
+                                        "name": "table_name",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "If Lookup",
+                    "dependsOnList": [
+                        "Input topic is null"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "IsLookupTable",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "EqualsIgnoreCase",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "Lookup"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "LkupTopicName",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "LKUP.${table_name}_LKUP_${parti_key}"
+                                    },
+                                    {
+                                        "name": "table_name",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "parti_key",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "If Lu table",
+                    "dependsOnList": [
+                        "Input topic is null"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": [
+                        {
+                            "name": "IidFinderTopicName",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "IidFinder.${table_name}"
+                                    },
+                                    {
+                                        "name": "table_name",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Stage 5",
+                    "dependsOnList": [
+                        "else"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "TopicName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "TopicIsNull",
+                "name": "topic_name"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TopicName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "OutputTopicName",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TableName",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "RefTopicName",
+                "name": "table_name"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TableName",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "LkupTopicName",
+                "name": "table_name"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TableName",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "IidFinderTopicName",
+                "name": "table_name"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TableType",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "IsRefTable",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TableType",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "IsLookupTable",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "PartitionKey",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "LkupTopicName",
+                "name": "parti_key"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "topic_name"
+            },
+            "rightPort": {
+                "actor": "TopicName",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "table_name"
+            },
+            "rightPort": {
+                "actor": "TableName",
+                "name": "string"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "table_type"
+            },
+            "rightPort": {
+                "actor": "TableType",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "lookup_partition_key"
+            },
+            "rightPort": {
+                "actor": "PartitionKey",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "OutputTopicName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "topic_name"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "RefTopicName",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "topic_name"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "LkupTopicName",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "topic_name"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "IidFinderTopicName",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "topic_name"
+            }
+        }
+    ]
+}

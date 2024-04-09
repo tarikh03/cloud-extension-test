@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<GenericInterface xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="LDAP" displayName="LDAP" enabled="true" version="1.0">
+  <Name>ldapInterface</Name>
+  <Properties>
+    <Property name="URL">
+      <Value>ldaps://ur-test.internal.vodafone.nl:3636</Value>
+    </Property>
+    <Property name="USER">
+      <Value>uid=mcc2vtc01,ou=admin,ou=vodafonenl,c=nl,o=vodafone</Value>
+    </Property>
+    <Property name="PASSWORD">
+      <Value>~encs2~cil+jYl2ftmk5biem97G+nieiuW9747FLFxy/MJA0Hk4i1qKqypKBw==</Value>
+    </Property>
+    <Property name="SecurityLevel">
+      <Value>simple</Value>
+    </Property>
+  </Properties>
+</GenericInterface>

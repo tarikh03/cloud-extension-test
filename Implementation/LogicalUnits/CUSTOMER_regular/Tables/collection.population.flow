@@ -1,0 +1,225 @@
+{
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Input",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "PopulationArgs",
+                            "actorType": {
+                                "parentType": "PopulationArgs",
+                                "readOnly": true,
+                                "inputs": [
+                                    {
+                                        "name": "customer_id",
+                                        "schema": {},
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "SyncDeleteMode",
+                            "actorType": {
+                                "parentType": "SyncDeleteMode",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "table",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Source",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Query",
+                            "actorType": {
+                                "parentType": "SourceDbQuery",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "COLLECTION_DB"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": "select * from public.collection"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 1",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "LU Table",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "actors": [
+                        {
+                            "name": "collection",
+                            "actorType": {
+                                "parentType": "DbLoad",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "fabric"
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "table",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "fields",
+                                        "const": [
+                                            "customer_id",
+                                            "collection_id",
+                                            "last_update",
+                                            "collection_status"
+                                        ]
+                                    },
+                                    {
+                                        "name": "keys",
+                                        "const": [
+                                            "collection_id"
+                                        ]
+                                    },
+                                    {
+                                        "name": "dialect",
+                                        "const": "sqlite"
+                                    },
+                                    {
+                                        "name": "customer_id",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "collection_id",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "last_update",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "collection_status",
+                                        "schema": {}
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Post Load",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": []
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "PopulationArgs",
+                "name": "parent_rows"
+            },
+            "rightPort": {
+                "actor": "Query",
+                "name": "parent_rows"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Query",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "collection",
+                "name": "params"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "customer_id"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "customer_id"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "table"
+            },
+            "rightPort": {
+                "actor": "SyncDeleteMode",
+                "name": "table"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "collection",
+                "name": "schema"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "table"
+            },
+            "rightPort": {
+                "actor": "collection",
+                "name": "table"
+            }
+        }
+    ]
+}

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VirtualDB xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="7.1.0.32">
+  <Name>vdb</Name>
+  <RootView />
+  <RootViewRecordType />
+  <LuLazyDataUpdate syncMethod="None" performEvery="1.00:00:00" />
+  <EventsList />
+  <IidFinderProp>
+    <NumberOfPartitions>100</NumberOfPartitions>
+    <NumberOfJobs>50</NumberOfJobs>
+  </IidFinderProp>
+  <Tables />
+  <TablesProperties />
+  <EnrichmentsOrderList />
+  <ReferencesList />
+  <Relations />
+  <DatabaseRelations />
+  <PreVCsSqlScript />
+  <PostVCsSqlScript />
+  <Indexes />
+  <LudbProperties />
+</VirtualDB>

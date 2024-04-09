@@ -1,0 +1,32 @@
+{
+    "type": "ExtractLUTableMetadata",
+    "badge": "Ex",
+    "inputs": [
+        {
+            "name": "lu_name",
+            "schema": {},
+            "mandatory": false
+        },
+        {
+            "name": "table_type",
+            "schema": {},
+            "mandatory": false
+        },
+        {
+            "name": "source_table",
+            "schema": {},
+            "mandatory": false
+        }
+    ],
+    "outputs": [
+        {
+            "name": "primaryKeys",
+            "schema": {}
+        },
+        {
+            "name": "luTableName",
+            "schema": {}
+        }
+    ],
+    "actorClass": "com.k2view.cdbms.usercode.lu.GG_Simulator.ExtractLUTableMetadata"
+}

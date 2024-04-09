@@ -1,0 +1,44 @@
+{
+    "type": "AnalyzeSql",
+    "badge": "An",
+    "inputs": [
+        {
+            "name": "sql",
+            "schema": {},
+            "mandatory": false
+        },
+        {
+            "const": "DML",
+            "name": "sql_type",
+            "schema": {},
+            "editor": {
+                "id": "com.k2view.dropdown",
+                "options": [
+                    "DML",
+                    "SELECT"
+                ],
+                "syncOutput": true
+            },
+            "mandatory": false
+        }
+    ],
+    "outputs": [
+        {
+            "name": "tableName",
+            "schema": {}
+        },
+        {
+            "name": "statementValues",
+            "schema": {}
+        },
+        {
+            "name": "statementColumns",
+            "schema": {}
+        },
+        {
+            "name": "whereClause",
+            "schema": {}
+        }
+    ],
+    "actorClass": "com.k2view.cdbms.usercode.lu.GG_Simulator.AnalyzeSql"
+}

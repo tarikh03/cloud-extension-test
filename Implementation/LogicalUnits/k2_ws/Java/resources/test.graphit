@@ -1,0 +1,25 @@
+{
+  "name": "ROOT",
+  "type": "sqlNonPrepared",
+  "code": "get Test.200;",
+  "children": [
+    {
+      "name": "CUSTOMER",
+      "type": "sql",
+      "code": "select subscriber_id, balance_id from balance;",
+      "children": [
+        {
+          "name": "subscriber_id",
+          "type": "variable",
+          "code": "subscriber_id"
+        },
+        {
+          "name": "balance_id",
+          "type": "variable",
+          "code": "balance_id"
+        }
+      ]
+    }
+  ],
+  "params": []
+}

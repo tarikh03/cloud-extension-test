@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<lu xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" keyspace="CUSTOMER_regular" name="CUSTOMER_regular" xsi:noNamespaceSchemaLocation="https://cloud.k2view.com/static/xsd/iid_finder.xsd">
+  <table additionalParent="false" isCrossIID="false" key="CUSTOMER_ID" keyspace="public" luid="customer_id" name="customer" stored="true" targetTableName="CUSTOMER"/>
+</lu>

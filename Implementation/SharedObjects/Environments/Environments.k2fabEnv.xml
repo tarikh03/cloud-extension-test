@@ -1,5 +1,819 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <FabEnvironmentsManager xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Name>Environments</Name>
-  <EnvironmentsList />
+  <EnvironmentsList>
+    <Environment enabled="true" name="SRC">
+      <DbInterfacesList>
+        <DbInterface xsi:type="DBSourceGenericDb" k2StudioObjectName="BILLING_DB" dbType="genericdb" active="true">
+          <dbHost>localhost</dbHost>
+          <dbPort>5432</dbPort>
+          <dbScheme>BILLING_DB</dbScheme>
+          <dbUser>postgres</dbUser>
+          <dbPasswordEncrypted>~encs2~5xMenqjKEZW6TxId0yr/mj1vThkIN95c39A965I8/EBsRfEKKVTX</dbPasswordEncrypted>
+          <connString>jdbc:postgresql://localhost:5432/BILLING_DB?stringtype=unspecified</connString>
+          <minConnectionsNumber>0</minConnectionsNumber>
+          <maxConnectionsNumber>60</maxConnectionsNumber>
+          <JdbcDriverName>PostgreSQL</JdbcDriverName>
+        </DbInterface>
+        <DbInterface xsi:type="DBSourceGenericDb" k2StudioObjectName="COLLECTION_DB" dbType="genericdb" active="true">
+          <dbHost>localhost</dbHost>
+          <dbPort>5432</dbPort>
+          <dbScheme>COLLECTION_DB</dbScheme>
+          <dbUser>postgres</dbUser>
+          <dbPasswordEncrypted>~encs2~BzChnMKzd9cEp5i9X2KF3rt1w0BPzCBCTuNAkmDis9I2h6PlLlZx</dbPasswordEncrypted>
+          <connString>jdbc:postgresql://localhost:5432/COLLECTION_DB?stringtype=unspecified</connString>
+          <minConnectionsNumber>0</minConnectionsNumber>
+          <maxConnectionsNumber>60</maxConnectionsNumber>
+          <JdbcDriverName>PostgreSQL</JdbcDriverName>
+        </DbInterface>
+        <DbInterface xsi:type="DBSourceGenericDb" k2StudioObjectName="CRM_DB" dbType="genericdb" active="true">
+          <dbHost>localhost</dbHost>
+          <dbPort>5432</dbPort>
+          <dbScheme>CRM_DB</dbScheme>
+          <dbUser>postgres</dbUser>
+          <dbPasswordEncrypted>~encs2~DbfiuCezJGqKV2JbJ3f59OYTzbLugH0SeD1migUMSdVoYa0JxhOP</dbPasswordEncrypted>
+          <connString>jdbc:postgresql://localhost:5432/CRM_DB?stringtype=unspecified</connString>
+          <minConnectionsNumber>0</minConnectionsNumber>
+          <maxConnectionsNumber>60</maxConnectionsNumber>
+          <JdbcDriverName>PostgreSQL</JdbcDriverName>
+        </DbInterface>
+        <DbInterface xsi:type="DBSourceGenericDb" k2StudioObjectName="DB_CASSANDRA" dbType="genericdb" active="true">
+          <dbHost>localhost</dbHost>
+          <dbPort>9042</dbPort>
+          <dbUser>cassandra</dbUser>
+          <dbPasswordEncrypted>~encs2~OAlBt4HcMhRLVAR64EiyDL87fg3pB7m0kh2EJfTKN9uTCWHHlVmczvM=</dbPasswordEncrypted>
+          <connString>jdbc:cassandra://localhost:9042/?consistency=QUORUM&amp;internodesssl=false</connString>
+          <minConnectionsNumber>0</minConnectionsNumber>
+          <maxConnectionsNumber>60</maxConnectionsNumber>
+          <JdbcDriverName>Cassandra</JdbcDriverName>
+        </DbInterface>
+        <DbInterface xsi:type="DBSourceGenericDb" k2StudioObjectName="ORDERS_DB" dbType="genericdb" active="true">
+          <dbHost>localhost</dbHost>
+          <dbPort>5432</dbPort>
+          <dbScheme>ORDERING_DB</dbScheme>
+          <dbUser>postgres</dbUser>
+          <dbPasswordEncrypted>~encs2~/BbJ+hs/9iMvDexNTa/YvFzc2vjpEahf89FLDJBcvebAQ3IrCada</dbPasswordEncrypted>
+          <connString>jdbc:postgresql://localhost:5432/ORDERING_DB?stringtype=unspecified</connString>
+          <minConnectionsNumber>0</minConnectionsNumber>
+          <maxConnectionsNumber>60</maxConnectionsNumber>
+          <JdbcDriverName>PostgreSQL</JdbcDriverName>
+        </DbInterface>
+        <DbInterface xsi:type="DBSourceGenericDb" k2StudioObjectName="TDM" dbType="genericdb" active="true">
+          <dbHost>localhost</dbHost>
+          <dbPort>5432</dbPort>
+          <dbScheme>TDMDB</dbScheme>
+          <dbUser>postgres</dbUser>
+          <dbPasswordEncrypted>~encs2~lfuuGjvnHphkz+s+AERPnXKUPly8tCKt7jjYrmPTxhKnt/MCwGbB</dbPasswordEncrypted>
+          <connString>jdbc:postgresql://localhost:5432/TDMDB?stringtype=unspecified</connString>
+          <minConnectionsNumber>0</minConnectionsNumber>
+          <maxConnectionsNumber>60</maxConnectionsNumber>
+          <JdbcDriverName>PostgreSQL</JdbcDriverName>
+        </DbInterface>
+      </DbInterfacesList>
+      <GlobalsList>
+        <Global name="COMBO_MAX_COUNT" luName="">
+          <Value>49</Value>
+          <Comment>Maximum values of combo box input object</Comment>
+        </Global>
+        <Global name="TDM_DELETE_BEFORE_LOAD" luName="">
+          <Value>false</Value>
+          <Comment>Indicator to delete the instance to target DB</Comment>
+        </Global>
+        <Global name="TDM_INSERT_TO_TARGET" luName="">
+          <Value>true</Value>
+          <Comment>Indicator to insert the instance to target DB</Comment>
+        </Global>
+        <Global name="TDM_SYNC_SOURCE_DATA" luName="">
+          <Value>true</Value>
+        </Global>
+        <Global name="TDM_TARGET_PRODUCT_VERSION" luName="">
+          <Value>DEV</Value>
+          <Comment>Target product version to override by task execution process</Comment>
+        </Global>
+        <Global name="TDM_SOURCE_PRODUCT_VERSION" luName="">
+          <Value>PROD</Value>
+          <Comment>Source product version to override by task execution process</Comment>
+        </Global>
+        <Global name="TDM_REPLACE_SEQUENCES" luName="">
+          <Value>false</Value>
+        </Global>
+        <Global name="TDM_TASK_EXE_ID" luName="">
+          <Value>23</Value>
+        </Global>
+        <Global name="MASK_FLAG" luName="">
+          <Value>1</Value>
+        </Global>
+        <Global name="TDM_SOURCE_ENVIRONMENT_NAME" luName="">
+          <Value>SRC</Value>
+        </Global>
+        <Global name="TDM_SYNTHETIC_DATA" luName="">
+          <Value>false</Value>
+        </Global>
+        <Global name="TDM_TASK_ID" luName="">
+          <Value>0</Value>
+        </Global>
+        <Global name="TDM_VERSION_DATETIME" luName="">
+          <Value>19700101000000</Value>
+        </Global>
+        <Global name="TDM_VERSION_NAME" luName="">
+          <Value />
+        </Global>
+        <Global name="TDM_DATAFLUX_TASK" luName="">
+          <Value>false</Value>
+          <Comment>Indicator to mark the task as dataflux or not</Comment>
+        </Global>
+        <Global name="TDM_EXTERNAL_ENTITY_LIST_TTL" luName="">
+          <Value>2592000</Value>
+        </Global>
+        <Global name="MAX_NUMBER_OF_ENTITIES_IN_LIST" luName="">
+          <Value>100</Value>
+          <Comment>The maximum number of entities to be returned to be displayed in list of entities</Comment>
+        </Global>
+        <Global name="TDM_LU_RETENTION_PERIOD_TYPE" luName="">
+          <Value>Days</Value>
+          <Comment>Each Instance can have a TTL, this global holds the type of the TTL and it can have one of the following values:Minutes, Days, Weeks, Months</Comment>
+        </Global>
+        <Global name="TDM_LU_RETENTION_PERIOD_VALUE" luName="">
+          <Value>10</Value>
+          <Comment>The value of the TTL based on the type defined in TDM_LU_RETENTION_PERIOD_TYPE</Comment>
+        </Global>
+        <Global name="GET_RESERVED_ENTITIES_LIMIT" luName="">
+          <Value>0</Value>
+          <Comment>The max number of retrieved entities from TDM_RESERVED_ENTITIES, if set to zero then no limit</Comment>
+        </Global>
+        <Global name="USER_NAME" luName="">
+          <Value>admin</Value>
+        </Global>
+        <Global name="USER_FABRIC_ROLES" luName="">
+          <Value>admin</Value>
+        </Global>
+        <Global name="USER_PERMISSION_GROUP" luName="">
+          <Value>admin</Value>
+        </Global>
+        <Global name="TDM_RESERVE_IND" luName="">
+          <Value>false</Value>
+        </Global>
+        <Global name="RESERVE_RETENTION_PERIOD_TYPE" luName="">
+          <Value>Days</Value>
+        </Global>
+        <Global name="RESERVE_RETENTION_PERIOD_VALUE" luName="">
+          <Value>10</Value>
+        </Global>
+        <Global name="BE_ID" luName="">
+          <Value>0</Value>
+        </Global>
+        <Global name="TASK_TYPE" luName="">
+          <Value>EXTRACT</Value>
+        </Global>
+        <Global name="enable_masking" luName="">
+          <Value>true</Value>
+        </Global>
+        <Global name="enable_sequences" luName="">
+          <Value>false</Value>
+        </Global>
+        <Global name="TDM_REF_UPD_SIZE" luName="">
+          <Value>10000</Value>
+        </Global>
+        <Global name="TDM_TARGET_ENVIRONMENT_NAME" luName="">
+          <Value>TAR</Value>
+        </Global>
+        <Global name="REGION" luName="Test">
+          <Value>WEST</Value>
+        </Global>
+      </GlobalsList>
+      <GenericInterfacesList>
+        <GenericInterface type="REDIS" displayName="Redis" enabled="false" version="1.8">
+          <Name>FabricRedis</Name>
+          <Properties>
+            <Property name="Servers">
+              <Value>localhost:6379</Value>
+            </Property>
+            <Property name="Password">
+              <Value />
+            </Property>
+            <Property name="ConnectionTimeout">
+              <Value>10000</Value>
+            </Property>
+            <Property name="SoTimeout">
+              <Value>10000</Value>
+            </Property>
+            <Property name="MaxAttempts">
+              <Value>10</Value>
+            </Property>
+            <Property name="MaxTotal">
+              <Value>128</Value>
+            </Property>
+            <Property name="MaxIdle">
+              <Value>128</Value>
+            </Property>
+            <Property name="MinIdle">
+              <Value>16</Value>
+            </Property>
+            <Property name="TestOnBorrow">
+              <Value>True</Value>
+            </Property>
+            <Property name="TestOnReturn">
+              <Value>True</Value>
+            </Property>
+            <Property name="TestWhileIdle">
+              <Value>True</Value>
+            </Property>
+            <Property name="MinEvictableIdle">
+              <Value>60000</Value>
+            </Property>
+            <Property name="EvictionRunIntervals">
+              <Value>30000</Value>
+            </Property>
+            <Property name="TestPerEviction">
+              <Value>3</Value>
+            </Property>
+            <Property name="BlockWhenExhausted">
+              <Value>False</Value>
+            </Property>
+          </Properties>
+        </GenericInterface>
+        <GenericInterface type="LOCAL" displayName="Local File System" enabled="false" version="1.4">
+          <Name>TDM_APIDOC_JSON</Name>
+          <Properties>
+            <Property name="WorkingDir">
+              <Value>C:\k2view\TDM_APIDOC</Value>
+            </Property>
+            <Property name="FilesFilter">
+              <Value />
+            </Property>
+            <Property name="Affinity">
+              <Value />
+            </Property>
+          </Properties>
+        </GenericInterface>
+        <GenericInterface type="LDAP" displayName="LDAP" enabled="true" version="1.0">
+          <Name>ldapInterface</Name>
+          <Properties>
+            <Property name="URL">
+              <Value>ldaps://ur-test.internal.vodafone.nl:3636</Value>
+            </Property>
+            <Property name="USER">
+              <Value>uid=mcc2vtc01,ou=admin,ou=vodafonenl,c=nl,o=vodafone</Value>
+            </Property>
+            <Property name="PASSWORD">
+              <Value>yXf2zyEK1HJmxdUHVpntYtVzAr1jY5ADwOISnqXwQkU=:w2/j4Ns7dfRhohjixSmnJWv+rmArqAldMoHA09lWlIY=</Value>
+            </Property>
+            <Property name="SecurityLevel">
+              <Value>simple</Value>
+            </Property>
+          </Properties>
+        </GenericInterface>
+        <GenericInterface type="CassandraLoader" displayName="Cassandra Loader" enabled="true" version="1.0">
+          <Name>CASSANDRA_LD</Name>
+          <Properties>
+            <Property name="section">
+              <Value>default</Value>
+            </Property>
+          </Properties>
+        </GenericInterface>
+      </GenericInterfacesList>
+    </Environment>
+    <Environment enabled="true" name="TAR">
+      <DbInterfacesList>
+        <DbInterface xsi:type="DBSourceGenericDb" k2StudioObjectName="BILLING_DB" dbType="genericdb" active="true">
+          <dbHost>localhost</dbHost>
+          <dbPort>5432</dbPort>
+          <dbScheme>TAR_BILLING_DB</dbScheme>
+          <dbUser>postgres</dbUser>
+          <dbPasswordEncrypted>~encs2~VSjf/6QykHvQbb4v5Y/+H1J8DBmr1S1obrOr7j+CYT20VzbVnoXx</dbPasswordEncrypted>
+          <connString>jdbc:postgresql://localhost:5432/TAR_BILLING_DB?stringtype=unspecified</connString>
+          <minConnectionsNumber>0</minConnectionsNumber>
+          <maxConnectionsNumber>60</maxConnectionsNumber>
+          <JdbcDriverName>PostgreSQL</JdbcDriverName>
+        </DbInterface>
+        <DbInterface xsi:type="DBSourceGenericDb" k2StudioObjectName="COLLECTION_DB" dbType="genericdb" active="true">
+          <dbHost>localhost</dbHost>
+          <dbPort>5432</dbPort>
+          <dbScheme>TAR_COLLECTION</dbScheme>
+          <dbUser>postgres</dbUser>
+          <dbPasswordEncrypted>~encs2~D3n/3qqqXGJ8QaHuAUakT8GTvLK8p30qyjp0XKqyj0wd+3Wun2qC</dbPasswordEncrypted>
+          <connString>jdbc:postgresql://localhost:5432/TAR_COLLECTION?stringtype=unspecified</connString>
+          <minConnectionsNumber>0</minConnectionsNumber>
+          <maxConnectionsNumber>60</maxConnectionsNumber>
+          <JdbcDriverName>PostgreSQL</JdbcDriverName>
+        </DbInterface>
+        <DbInterface xsi:type="DBSourceGenericDb" k2StudioObjectName="CRM_DB" dbType="genericdb" active="true">
+          <dbHost>localhost</dbHost>
+          <dbPort>5432</dbPort>
+          <dbScheme>TAR_CRM_DB</dbScheme>
+          <dbUser>postgres</dbUser>
+          <dbPasswordEncrypted>~encs2~qwh1NChOZLLMH7LtJU5aDZCkd1lDWjTzWHxjedOCeBrIyXR1V8fY</dbPasswordEncrypted>
+          <connString>jdbc:postgresql://localhost:5432/TAR_CRM_DB?stringtype=unspecified</connString>
+          <minConnectionsNumber>0</minConnectionsNumber>
+          <maxConnectionsNumber>60</maxConnectionsNumber>
+          <JdbcDriverName>PostgreSQL</JdbcDriverName>
+        </DbInterface>
+        <DbInterface xsi:type="DBSourceGenericDb" k2StudioObjectName="DB_CASSANDRA" dbType="genericdb" active="true">
+          <dbHost>localhost</dbHost>
+          <dbPort>9042</dbPort>
+          <dbUser>cassandra</dbUser>
+          <dbPasswordEncrypted>~encs2~dquCXh0aOuMmSgNl7U8+fMNRn9a13lKEU+ZWYdLn5dYMdsEuF64PEXU=</dbPasswordEncrypted>
+          <connString>jdbc:cassandra://localhost:9042/?consistency=QUORUM&amp;internodesssl=false</connString>
+          <minConnectionsNumber>0</minConnectionsNumber>
+          <maxConnectionsNumber>60</maxConnectionsNumber>
+          <JdbcDriverName>Cassandra</JdbcDriverName>
+        </DbInterface>
+        <DbInterface xsi:type="DBSourceGenericDb" k2StudioObjectName="ORDERS_DB" dbType="genericdb" active="true">
+          <dbHost>localhost</dbHost>
+          <dbPort>5432</dbPort>
+          <dbScheme>TAR_ORDERING</dbScheme>
+          <dbUser>postgres</dbUser>
+          <dbPasswordEncrypted>~encs2~XKTKmp5eN3R5RS5iqT9ZhJdUK2++NCYFIPgL1vD9K0t8S4b2NpXy</dbPasswordEncrypted>
+          <connString>jdbc:postgresql://localhost:5432/TAR_ORDERING?stringtype=unspecified</connString>
+          <minConnectionsNumber>0</minConnectionsNumber>
+          <maxConnectionsNumber>60</maxConnectionsNumber>
+          <JdbcDriverName>PostgreSQL</JdbcDriverName>
+        </DbInterface>
+        <DbInterface xsi:type="DBSourceGenericDb" k2StudioObjectName="TDM" dbType="genericdb" active="true">
+          <dbHost>localhost</dbHost>
+          <dbPort>5432</dbPort>
+          <dbScheme>TDMDB</dbScheme>
+          <dbUser>postgres</dbUser>
+          <dbPasswordEncrypted>~encs2~p/qgDGLIyxS8dZHsYy6zK8l3nPFGqI1o+UNNXokmjhpv9vDfBJ1i</dbPasswordEncrypted>
+          <connString>jdbc:postgresql://localhost:5432/TDMDB?stringtype=unspecified</connString>
+          <minConnectionsNumber>0</minConnectionsNumber>
+          <maxConnectionsNumber>60</maxConnectionsNumber>
+          <JdbcDriverName>PostgreSQL</JdbcDriverName>
+        </DbInterface>
+      </DbInterfacesList>
+      <GlobalsList>
+        <Global name="COMBO_MAX_COUNT" luName="">
+          <Value>49</Value>
+          <Comment>Maximum values of combo box input object</Comment>
+        </Global>
+        <Global name="TDM_DELETE_BEFORE_LOAD" luName="">
+          <Value>false</Value>
+          <Comment>Indicator to delete the instance to target DB</Comment>
+        </Global>
+        <Global name="TDM_INSERT_TO_TARGET" luName="">
+          <Value>true</Value>
+          <Comment>Indicator to insert the instance to target DB</Comment>
+        </Global>
+        <Global name="TDM_SYNC_SOURCE_DATA" luName="">
+          <Value>true</Value>
+        </Global>
+        <Global name="TDM_TARGET_PRODUCT_VERSION" luName="">
+          <Value>DEV</Value>
+          <Comment>Target product version to override by task execution process</Comment>
+        </Global>
+        <Global name="TDM_SOURCE_PRODUCT_VERSION" luName="">
+          <Value>PROD</Value>
+          <Comment>Source product version to override by task execution process</Comment>
+        </Global>
+        <Global name="TDM_REPLACE_SEQUENCES" luName="">
+          <Value>false</Value>
+        </Global>
+        <Global name="TDM_TASK_EXE_ID" luName="">
+          <Value>0</Value>
+        </Global>
+        <Global name="MASK_FLAG" luName="">
+          <Value>0</Value>
+        </Global>
+        <Global name="TDM_SOURCE_ENVIRONMENT_NAME" luName="">
+          <Value>SRC</Value>
+        </Global>
+        <Global name="TDM_SYNTHETIC_DATA" luName="">
+          <Value>false</Value>
+        </Global>
+        <Global name="TDM_TASK_ID" luName="">
+          <Value>0</Value>
+        </Global>
+        <Global name="TDM_VERSION_DATETIME" luName="">
+          <Value>19700101000000</Value>
+        </Global>
+        <Global name="TDM_VERSION_NAME" luName="">
+          <Value />
+        </Global>
+        <Global name="TDM_DATAFLUX_TASK" luName="">
+          <Value>false</Value>
+          <Comment>Indicator to mark the task as dataflux or not</Comment>
+        </Global>
+        <Global name="TDM_EXTERNAL_ENTITY_LIST_TTL" luName="">
+          <Value>2592000</Value>
+        </Global>
+        <Global name="MAX_NUMBER_OF_ENTITIES_IN_LIST" luName="">
+          <Value>100</Value>
+          <Comment>The maximum number of entities to be returned to be displayed in list of entities</Comment>
+        </Global>
+        <Global name="TDM_LU_RETENTION_PERIOD_TYPE" luName="">
+          <Value>Days</Value>
+          <Comment>Each Instance can have a TTL, this global holds the type of the TTL and it can have one of the following values:Minutes, Days, Weeks, Months</Comment>
+        </Global>
+        <Global name="TDM_LU_RETENTION_PERIOD_VALUE" luName="">
+          <Value>10</Value>
+          <Comment>The value of the TTL based on the type defined in TDM_LU_RETENTION_PERIOD_TYPE</Comment>
+        </Global>
+        <Global name="GET_RESERVED_ENTITIES_LIMIT" luName="">
+          <Value>0</Value>
+          <Comment>The max number of retrieved entities from TDM_RESERVED_ENTITIES, if set to zero then no limit</Comment>
+        </Global>
+        <Global name="USER_NAME" luName="">
+          <Value>admin</Value>
+        </Global>
+        <Global name="USER_FABRIC_ROLES" luName="">
+          <Value>admin</Value>
+        </Global>
+        <Global name="USER_PERMISSION_GROUP" luName="">
+          <Value>admin</Value>
+        </Global>
+        <Global name="TDM_RESERVE_IND" luName="">
+          <Value>false</Value>
+        </Global>
+        <Global name="RESERVE_RETENTION_PERIOD_TYPE" luName="">
+          <Value>Days</Value>
+        </Global>
+        <Global name="RESERVE_RETENTION_PERIOD_VALUE" luName="">
+          <Value>10</Value>
+        </Global>
+        <Global name="BE_ID" luName="">
+          <Value>0</Value>
+        </Global>
+        <Global name="TASK_TYPE" luName="">
+          <Value>EXTRACT</Value>
+        </Global>
+        <Global name="enable_masking" luName="">
+          <Value>true</Value>
+        </Global>
+        <Global name="enable_sequences" luName="">
+          <Value>false</Value>
+        </Global>
+        <Global name="TDM_REF_UPD_SIZE" luName="">
+          <Value>10000</Value>
+        </Global>
+        <Global name="TDM_TARGET_ENVIRONMENT_NAME" luName="">
+          <Value>TAR</Value>
+        </Global>
+        <Global name="REGION" luName="Test">
+          <Value>WEST</Value>
+        </Global>
+      </GlobalsList>
+      <GenericInterfacesList>
+        <GenericInterface type="REDIS" displayName="Redis" enabled="true" version="1.8">
+          <Name>FabricRedis</Name>
+          <Properties>
+            <Property name="Servers">
+              <Value>localhost:6379</Value>
+            </Property>
+            <Property name="Password">
+              <Value />
+            </Property>
+            <Property name="ConnectionTimeout">
+              <Value>10000</Value>
+            </Property>
+            <Property name="SoTimeout">
+              <Value>10000</Value>
+            </Property>
+            <Property name="MaxAttempts">
+              <Value>10</Value>
+            </Property>
+            <Property name="MaxTotal">
+              <Value>128</Value>
+            </Property>
+            <Property name="MaxIdle">
+              <Value>128</Value>
+            </Property>
+            <Property name="MinIdle">
+              <Value>16</Value>
+            </Property>
+            <Property name="TestOnBorrow">
+              <Value>True</Value>
+            </Property>
+            <Property name="TestOnReturn">
+              <Value>True</Value>
+            </Property>
+            <Property name="TestWhileIdle">
+              <Value>True</Value>
+            </Property>
+            <Property name="MinEvictableIdle">
+              <Value>60000</Value>
+            </Property>
+            <Property name="EvictionRunIntervals">
+              <Value>30000</Value>
+            </Property>
+            <Property name="TestPerEviction">
+              <Value>3</Value>
+            </Property>
+            <Property name="BlockWhenExhausted">
+              <Value>False</Value>
+            </Property>
+          </Properties>
+        </GenericInterface>
+        <GenericInterface type="LOCAL" displayName="Local File System" enabled="false" version="1.4">
+          <Name>TDM_APIDOC_JSON</Name>
+          <Properties>
+            <Property name="WorkingDir">
+              <Value>C:\k2view\TDM_APIDOC</Value>
+            </Property>
+            <Property name="FilesFilter">
+              <Value />
+            </Property>
+            <Property name="Affinity">
+              <Value />
+            </Property>
+          </Properties>
+        </GenericInterface>
+        <GenericInterface type="LDAP" displayName="LDAP" enabled="false" version="1.0">
+          <Name>ldapInterface</Name>
+          <Properties>
+            <Property name="URL">
+              <Value />
+            </Property>
+            <Property name="USER">
+              <Value />
+            </Property>
+            <Property name="PASSWORD">
+              <Value />
+            </Property>
+            <Property name="SecurityLevel">
+              <Value>simple</Value>
+            </Property>
+          </Properties>
+        </GenericInterface>
+        <GenericInterface type="CassandraLoader" displayName="Cassandra Loader" enabled="true" version="1.0">
+          <Name>CASSANDRA_LD</Name>
+          <Properties>
+            <Property name="section">
+              <Value>default</Value>
+            </Property>
+          </Properties>
+        </GenericInterface>
+      </GenericInterfacesList>
+    </Environment>
+    <Environment enabled="true" name="TarCRM">
+      <DbInterfacesList>
+        <DbInterface xsi:type="DBSourceGenericDb" k2StudioObjectName="BILLING_DB" dbType="genericdb" active="false">
+          <dbHost>10.21.2.64</dbHost>
+          <dbPort>5433</dbPort>
+          <dbScheme>TAR_BILLING_DB</dbScheme>
+          <dbUser>TAR_BILLING_USER</dbUser>
+          <dbPasswordEncrypted>~encs2~5rIENKGPq8cdTZPbkj0SGYBsCSyv6CUhz7lWk+ynOp3AmYj4S9MZWgtrd8M2YMOK</dbPasswordEncrypted>
+          <connString>jdbc:postgresql://10.21.2.64:5433/TAR_BILLING_DB?stringtype=unspecified</connString>
+          <minConnectionsNumber>0</minConnectionsNumber>
+          <maxConnectionsNumber>60</maxConnectionsNumber>
+          <JdbcDriverName>PostgreSQL</JdbcDriverName>
+        </DbInterface>
+        <DbInterface xsi:type="DBSourceGenericDb" k2StudioObjectName="COLLECTION_DB" dbType="genericdb" active="false">
+          <dbHost>10.21.2.64</dbHost>
+          <dbPort>5433</dbPort>
+          <dbScheme>TAR_COLLECTION</dbScheme>
+          <dbUser>TAR_COLLECTION_USER</dbUser>
+          <dbPasswordEncrypted>~encs2~KdwnMULb//wz8ES7NWoElzsaiheQOylCxowaGuV7F1FnYRq7rzF3f8GIDyXz8WerSihZ</dbPasswordEncrypted>
+          <connString>jdbc:postgresql://10.21.2.64:5433/TAR_COLLECTION?stringtype=unspecified</connString>
+          <minConnectionsNumber>0</minConnectionsNumber>
+          <maxConnectionsNumber>60</maxConnectionsNumber>
+          <JdbcDriverName>PostgreSQL</JdbcDriverName>
+        </DbInterface>
+        <DbInterface xsi:type="DBSourceGenericDb" k2StudioObjectName="CRM_DB" dbType="genericdb" active="true">
+          <dbHost>10.21.2.64</dbHost>
+          <dbPort>5433</dbPort>
+          <dbScheme>TAR_CRM_DB</dbScheme>
+          <dbUser>TAR_CRM_USER</dbUser>
+          <dbPasswordEncrypted>~encs2~zahE23MbhtAMT7Bx62lwBeM7gnb+77mtl/ueeo/zyYA4jVJ6K6yVl2A3eQU=</dbPasswordEncrypted>
+          <connString>jdbc:postgresql://10.21.2.64:5433/TAR_CRM_DB?stringtype=unspecified</connString>
+          <minConnectionsNumber>0</minConnectionsNumber>
+          <maxConnectionsNumber>60</maxConnectionsNumber>
+          <JdbcDriverName>PostgreSQL</JdbcDriverName>
+        </DbInterface>
+        <DbInterface xsi:type="DBSourceGenericDb" k2StudioObjectName="DB_CASSANDRA" dbType="genericdb" active="true">
+          <dbHost>host.docker.internal</dbHost>
+          <dbPort>9042</dbPort>
+          <dbUser>cassandra</dbUser>
+          <dbPasswordEncrypted>~encs2~c9DtpTCDInLSrerPVAuxCLbfJe79g+uh3mpmHbsAuFwuvHzILJhPSRY=</dbPasswordEncrypted>
+          <connString>jdbc:cassandra://host.docker.internal:9042/?consistency=QUORUM&amp;internodesssl=false</connString>
+          <minConnectionsNumber>0</minConnectionsNumber>
+          <maxConnectionsNumber>60</maxConnectionsNumber>
+          <JdbcDriverName>Cassandra</JdbcDriverName>
+        </DbInterface>
+        <DbInterface xsi:type="DBSourceGenericDb" k2StudioObjectName="ORDERS_DB" dbType="genericdb" active="false">
+          <dbHost>10.21.2.64</dbHost>
+          <dbPort>5433</dbPort>
+          <dbScheme>TAR_ORDERING</dbScheme>
+          <dbUser>TAR_ORDERING_USER</dbUser>
+          <dbPasswordEncrypted>~encs2~VyGkPudEptmfwjwjd3D/6sUkOaT+28gPrSw5tr4jgV8fPpS2yTKlr8F6o7KVuW7ZKw==</dbPasswordEncrypted>
+          <connString>jdbc:postgresql://10.21.2.64:5433/TAR_ORDERING?stringtype=unspecified</connString>
+          <minConnectionsNumber>0</minConnectionsNumber>
+          <maxConnectionsNumber>60</maxConnectionsNumber>
+          <JdbcDriverName>PostgreSQL</JdbcDriverName>
+        </DbInterface>
+        <DbInterface xsi:type="DBSourceGenericDb" k2StudioObjectName="TDM" dbType="genericdb" active="true">
+          <dbHost>host.docker.internal</dbHost>
+          <dbPort>5433</dbPort>
+          <dbScheme>TDMDB</dbScheme>
+          <dbUser>tdm</dbUser>
+          <dbPasswordEncrypted>~encs2~se0AkDxttPjx5Qo6Ie1PErVK9JH8efMnR8BcTTZhSLpFJak=</dbPasswordEncrypted>
+          <connString>jdbc:postgresql://host.docker.internal:5433/TDMDB?stringtype=unspecified</connString>
+          <minConnectionsNumber>0</minConnectionsNumber>
+          <maxConnectionsNumber>60</maxConnectionsNumber>
+          <JdbcDriverName>PostgreSQL</JdbcDriverName>
+        </DbInterface>
+      </DbInterfacesList>
+      <GlobalsList>
+        <Global name="COMBO_MAX_COUNT" luName="">
+          <Value>49</Value>
+          <Comment>Maximum values of combo box input object</Comment>
+        </Global>
+        <Global name="TDM_DELETE_BEFORE_LOAD" luName="">
+          <Value>false</Value>
+          <Comment>Indicator to delete the instance to target DB</Comment>
+        </Global>
+        <Global name="TDM_INSERT_TO_TARGET" luName="">
+          <Value>true</Value>
+          <Comment>Indicator to insert the instance to target DB</Comment>
+        </Global>
+        <Global name="TDM_SYNC_SOURCE_DATA" luName="">
+          <Value>true</Value>
+        </Global>
+        <Global name="TDM_TARGET_PRODUCT_VERSION" luName="">
+          <Value>DEV</Value>
+          <Comment>Target product version to override by task execution process</Comment>
+        </Global>
+        <Global name="TDM_SOURCE_PRODUCT_VERSION" luName="">
+          <Value>PROD</Value>
+          <Comment>Source product version to override by task execution process</Comment>
+        </Global>
+        <Global name="TDM_REPLACE_SEQUENCES" luName="">
+          <Value>false</Value>
+        </Global>
+        <Global name="TDM_TASK_EXE_ID" luName="">
+          <Value>0</Value>
+        </Global>
+        <Global name="MASK_FLAG" luName="">
+          <Value>0</Value>
+        </Global>
+        <Global name="TDM_SOURCE_ENVIRONMENT_NAME" luName="">
+          <Value>SRC</Value>
+        </Global>
+        <Global name="TDM_SYNTHETIC_DATA" luName="">
+          <Value>false</Value>
+        </Global>
+        <Global name="TDM_TASK_ID" luName="">
+          <Value>0</Value>
+        </Global>
+        <Global name="TDM_VERSION_DATETIME" luName="">
+          <Value>19700101000000</Value>
+        </Global>
+        <Global name="TDM_VERSION_NAME" luName="">
+          <Value />
+        </Global>
+        <Global name="TDM_DATAFLUX_TASK" luName="">
+          <Value>false</Value>
+          <Comment>Indicator to mark the task as dataflux or not</Comment>
+        </Global>
+        <Global name="TDM_EXTERNAL_ENTITY_LIST_TTL" luName="">
+          <Value>2592000</Value>
+        </Global>
+        <Global name="MAX_NUMBER_OF_ENTITIES_IN_LIST" luName="">
+          <Value>100</Value>
+          <Comment>The maximum number of entities to be returned to be displayed in list of entities</Comment>
+        </Global>
+        <Global name="TDM_LU_RETENTION_PERIOD_TYPE" luName="">
+          <Value>Days</Value>
+          <Comment>Each Instance can have a TTL, this global holds the type of the TTL and it can have one of the following values:Minutes, Days, Weeks, Months</Comment>
+        </Global>
+        <Global name="TDM_LU_RETENTION_PERIOD_VALUE" luName="">
+          <Value>10</Value>
+          <Comment>The value of the TTL based on the type defined in TDM_LU_RETENTION_PERIOD_TYPE</Comment>
+        </Global>
+        <Global name="GET_RESERVED_ENTITIES_LIMIT" luName="">
+          <Value>0</Value>
+          <Comment>The max number of retrieved entities from TDM_RESERVED_ENTITIES, if set to zero then no limit</Comment>
+        </Global>
+        <Global name="USER_NAME" luName="">
+          <Value>admin</Value>
+        </Global>
+        <Global name="USER_FABRIC_ROLES" luName="">
+          <Value>admin</Value>
+        </Global>
+        <Global name="USER_PERMISSION_GROUP" luName="">
+          <Value>admin</Value>
+        </Global>
+        <Global name="TDM_RESERVE_IND" luName="">
+          <Value>false</Value>
+        </Global>
+        <Global name="RESERVE_RETENTION_PERIOD_TYPE" luName="">
+          <Value>Days</Value>
+        </Global>
+        <Global name="RESERVE_RETENTION_PERIOD_VALUE" luName="">
+          <Value>10</Value>
+        </Global>
+        <Global name="BE_ID" luName="">
+          <Value>0</Value>
+        </Global>
+        <Global name="TASK_TYPE" luName="">
+          <Value>EXTRACT</Value>
+        </Global>
+        <Global name="enable_masking" luName="">
+          <Value>true</Value>
+        </Global>
+        <Global name="enable_sequences" luName="">
+          <Value>false</Value>
+        </Global>
+        <Global name="TDM_REF_UPD_SIZE" luName="">
+          <Value>10000</Value>
+        </Global>
+        <Global name="TDM_TARGET_ENVIRONMENT_NAME" luName="">
+          <Value>TAR</Value>
+        </Global>
+        <Global name="REGION" luName="Test">
+          <Value>WEST</Value>
+        </Global>
+      </GlobalsList>
+      <GenericInterfacesList>
+        <GenericInterface type="REDIS" displayName="Redis" enabled="true" version="1.8">
+          <Name>FabricRedis</Name>
+          <Properties>
+            <Property name="Servers">
+              <Value>localhost:6379</Value>
+            </Property>
+            <Property name="Password">
+              <Value />
+            </Property>
+            <Property name="ConnectionTimeout">
+              <Value>10000</Value>
+            </Property>
+            <Property name="SoTimeout">
+              <Value>10000</Value>
+            </Property>
+            <Property name="MaxAttempts">
+              <Value>10</Value>
+            </Property>
+            <Property name="MaxTotal">
+              <Value>128</Value>
+            </Property>
+            <Property name="MaxIdle">
+              <Value>128</Value>
+            </Property>
+            <Property name="MinIdle">
+              <Value>16</Value>
+            </Property>
+            <Property name="TestOnBorrow">
+              <Value>True</Value>
+            </Property>
+            <Property name="TestOnReturn">
+              <Value>True</Value>
+            </Property>
+            <Property name="TestWhileIdle">
+              <Value>True</Value>
+            </Property>
+            <Property name="MinEvictableIdle">
+              <Value>60000</Value>
+            </Property>
+            <Property name="EvictionRunIntervals">
+              <Value>30000</Value>
+            </Property>
+            <Property name="TestPerEviction">
+              <Value>3</Value>
+            </Property>
+            <Property name="BlockWhenExhausted">
+              <Value>False</Value>
+            </Property>
+          </Properties>
+        </GenericInterface>
+        <GenericInterface type="LOCAL" displayName="Local File System" enabled="false" version="1.4">
+          <Name>TDM_APIDOC_JSON</Name>
+          <Properties>
+            <Property name="WorkingDir">
+              <Value>C:\k2view\TDM_APIDOC</Value>
+            </Property>
+            <Property name="FilesFilter">
+              <Value />
+            </Property>
+            <Property name="Affinity">
+              <Value />
+            </Property>
+          </Properties>
+        </GenericInterface>
+        <GenericInterface type="LDAP" displayName="LDAP" enabled="false" version="1.0">
+          <Name>ldapInterface</Name>
+          <Properties>
+            <Property name="URL">
+              <Value />
+            </Property>
+            <Property name="USER">
+              <Value />
+            </Property>
+            <Property name="PASSWORD">
+              <Value />
+            </Property>
+            <Property name="SecurityLevel">
+              <Value>simple</Value>
+            </Property>
+          </Properties>
+        </GenericInterface>
+        <GenericInterface type="CassandraLoader" displayName="Cassandra Loader" enabled="true" version="1.0">
+          <Name>CASSANDRA_LD</Name>
+          <Properties>
+            <Property name="section">
+              <Value>default</Value>
+            </Property>
+          </Properties>
+        </GenericInterface>
+      </GenericInterfacesList>
+    </Environment>
+  </EnvironmentsList>
 </FabEnvironmentsManager>

@@ -1,0 +1,47 @@
+[
+   {
+      "name": "Admin",
+      "appId": "admin",
+      "hidden": false
+   },
+   {
+      "name": "Graphit",
+      "appId": "graphit",
+      "hidden": true
+   },
+   {
+      "name": "Statistics",
+      "appId": "status",
+      "hidden": false
+   },
+   {
+      "name": "API",
+      "appId": "swaggerUI",
+      "hidden": false
+   },
+   {
+      "name": "Trace",
+      "appId": "trace",
+      "hidden": false
+   },
+   {
+      "name": "Data Explorer",
+      "appId": "dataExplorer",
+      "hidden": false
+   },
+   {
+      "name": "Catalog",
+      "appId": "catalog",
+      "hidden": true
+   },
+   {
+      "name": "Documentation",
+      "appId": "doc",
+      "hidden": false
+   },
+   {
+      "name": "GG Simulator",
+      "appId": "GG_SIMULATOR",
+      "hidden": false
+   }
+]

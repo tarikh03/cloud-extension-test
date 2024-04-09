@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DBConn xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="DBConnGenericAdoJdbc" name="CRM_DB_from_docker" type="genericdb" version="8.0.0.2">
+  <Active>true</Active>
+  <DataSource>10.100.102.57</DataSource>
+  <PortNum>5433</PortNum>
+  <DataBase>postgres</DataBase>
+  <UserId>postgres</UserId>
+  <Password>~encs2~r1BUKCaNFtIIzcszeXzKmXn+dPiTQ4HZo2pUH0gTNoVscc4TE//mDQ==</Password>
+  <ConnectionStringServerSide>jdbc:postgresql://10.100.102.57:5433/postgres?stringtype=unspecified</ConnectionStringServerSide>
+  <MinConnectionsNumber>0</MinConnectionsNumber>
+  <MaxConnectionsNumber>60</MaxConnectionsNumber>
+  <UseSelectAsteriskInAutoCreatedQueries>true</UseSelectAsteriskInAutoCreatedQueries>
+  <AutomaticMetadataLoading>false</AutomaticMetadataLoading>
+  <OfflineMode>true</OfflineMode>
+  <CommandList />
+  <JdbcDriverName>PostgreSQL</JdbcDriverName>
+  <ConnectionProperties />
+</DBConn>

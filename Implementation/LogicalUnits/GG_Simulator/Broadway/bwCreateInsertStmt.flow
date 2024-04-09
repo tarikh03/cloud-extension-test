@@ -1,0 +1,728 @@
+{
+    "tags": [
+        "GG"
+    ],
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Single select stmt result",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "SelectStmtResult",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "customer_id": {
+                                                    "type": "integer"
+                                                },
+                                                "activity_id": {
+                                                    "type": "integer"
+                                                },
+                                                "activity_note": {
+                                                    "type": "string"
+                                                },
+                                                "activity_date": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stringify",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ToString",
+                            "actorType": {
+                                "parentType": "ToString",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Select stmt result fields",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ResultFields",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "map.keySet();"
+                                    },
+                                    {
+                                        "name": "map",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "customer_id": {
+                                                    "type": "integer"
+                                                },
+                                                "activity_id": {
+                                                    "type": "integer"
+                                                },
+                                                "activity_date": {
+                                                    "type": "date"
+                                                },
+                                                "activity_note": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Fields to upper case",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "FieldsUpperCase",
+                            "actorType": {
+                                "parentType": "Mapper",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "value.toUpperCase();"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "values",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Concat fields with ,",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ConcatFields",
+                            "actorType": {
+                                "parentType": "Concat",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Select stmt result vals",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ResultValues",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "map.values();"
+                                    },
+                                    {
+                                        "name": "map",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "customer_id": {
+                                                    "type": "integer"
+                                                },
+                                                "activity_id": {
+                                                    "type": "integer"
+                                                },
+                                                "activity_date": {
+                                                    "type": "date"
+                                                },
+                                                "activity_note": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "integer"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "If String",
+                    "dependsOnList": [
+                        "Select stmt result vals"
+                    ],
+                    "isLast": 0,
+                    "remark": "this check is done by checking if the value is wrapped in quotes in the result.\nthis is done to check if to put '' around the value in the insert stmt",
+                    "actors": [
+                        {
+                            "name": "isString",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "values.indexOf(':\"'.concat(val).concat('\"'))!=-1"
+                                    },
+                                    {
+                                        "name": "values",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "val",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ReplaceQuotesInValue",
+                            "actorType": {
+                                "parentType": "Replace",
+                                "inputs": [
+                                    {
+                                        "name": "search",
+                                        "const": "'"
+                                    },
+                                    {
+                                        "name": "replace",
+                                        "const": "''"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "If Null",
+                    "dependsOnList": [
+                        "Select stmt result vals"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "remark": "if value is null, replace with nullFromBW, this field will be skipped when creating the GG message",
+                    "actors": [
+                        {
+                            "name": "IsNull",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "IsNull",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "nullFromBW",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "nullFromBW"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "else",
+                    "dependsOnList": [
+                        "Select stmt result vals"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": [
+                        {
+                            "name": "Value",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Wrap in quotes",
+                    "dependsOnList": [
+                        "If String"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "'Value'",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "'${val}'"
+                                    },
+                                    {
+                                        "name": "val",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Stage 2",
+                    "dependsOnList": [
+                        "If Null"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                },
+                {
+                    "name": "Stage 3",
+                    "dependsOnList": [
+                        "else"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Create values Array",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "actors": [
+                        {
+                            "name": "ValuesArray",
+                            "resetOnFirstIteration": true,
+                            "actorType": {
+                                "parentType": "ArrayBuilder",
+                                "inputs": [],
+                                "outputs": [
+                                    {
+                                        "name": "array",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "integer"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Concat values with ,",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ConcatValues",
+                            "actorType": {
+                                "parentType": "Concat",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Format insert stmt",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "FormatInsertStmt",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "insert into ${table} (${fields}) VALUES(${values})"
+                                    },
+                                    {
+                                        "name": "table",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "fields",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "values",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "SelectStmtResult",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ResultValues",
+                "name": "map"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SelectStmtResult",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ResultFields",
+                "name": "map"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SelectStmtResult",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ToString",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ToString",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "isString",
+                "name": "values"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ResultFields",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "FieldsUpperCase",
+                "name": "values"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "FieldsUpperCase",
+                "name": "values"
+            },
+            "rightPort": {
+                "actor": "ConcatFields",
+                "name": "elements"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ConcatFields",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "FormatInsertStmt",
+                "name": "fields"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ResultValues",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Value",
+                "name": "value"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "ResultValues",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "isString",
+                "name": "val"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "ResultValues",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "IsNull",
+                "name": "value"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "ResultValues",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "ReplaceQuotesInValue",
+                "name": "string"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "ReplaceQuotesInValue",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "'Value'",
+                "name": "val"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "nullFromBW",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ValuesArray",
+                "name": "input"
+            },
+            "arrayPosition": 0
+        },
+        {
+            "leftPort": {
+                "actor": "Value",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ValuesArray",
+                "name": "input"
+            },
+            "arrayPosition": 0
+        },
+        {
+            "leftPort": {
+                "actor": "'Value'",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "ValuesArray",
+                "name": "input"
+            },
+            "arrayPosition": 0
+        },
+        {
+            "leftPort": {
+                "actor": "ValuesArray",
+                "name": "array"
+            },
+            "rightPort": {
+                "actor": "ConcatValues",
+                "name": "elements"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ConcatValues",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "FormatInsertStmt",
+                "name": "values"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "values"
+            },
+            "rightPort": {
+                "actor": "SelectStmtResult",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "FormatInsertStmt",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "sqlStmt"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "table_name"
+            },
+            "rightPort": {
+                "actor": "FormatInsertStmt",
+                "name": "table"
+            }
+        }
+    ]
+}

@@ -1,0 +1,717 @@
+{
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Flow inputs",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Values",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {}
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Columns",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {}
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "primary_keys",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Prepare cols and vals",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ReplaceQuotes",
+                            "actorType": {
+                                "parentType": "Mapper",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": {
+                                            "userCode": "if(value.stringValue != null){\r\n    Number(value.value);\r\n}else if(value.value == null){\r\n    null;\r\n}\r\nelse (value.value).replaceAll(\"''\",\"'\")",
+                                            "script": "if (value.stringValue != null) {\n  Number(value.value);\n} else if (value.value == null) {\n  null;\n} else value.value.replaceAll(\"''\", \"'\");"
+                                        }
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "values",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "integer"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ColumnNames",
+                            "actorType": {
+                                "parentType": "Mapper",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": {
+                                            "userCode": "(value.columnName).toUpperCase();",
+                                            "script": "value.columnName.toUpperCase();"
+                                        }
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "values",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Loop columns",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Value",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Name",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Skip null values",
+                    "dependsOnList": [
+                        "Loop columns"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "IfNull",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "EqualsIgnoreCase",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "nullFromBW"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "LoopSkip",
+                            "actorType": {
+                                "parentType": "LoopSkip",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Else",
+                    "dependsOnList": [
+                        "Loop columns"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Compare table pks with sql pks",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "PrimaryKeys",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ColumnUppercase",
+                            "actorType": {
+                                "parentType": "Uppercase",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Check if col is pk",
+                    "dependsOnList": [
+                        "Compare table pks with sql pks"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "IfColumnIsPk",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "EqualsIgnoreCase",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Else ",
+                    "dependsOnList": [
+                        "Compare table pks with sql pks"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 1",
+                    "dependsOnList": [
+                        "Check if col is pk"
+                    ],
+                    "isLast": 1,
+                    "actors": [
+                        {
+                            "name": "NotNull1",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "NotNull",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "PksFromSqlArr",
+                            "actorType": {
+                                "parentType": "ArrayBuilder",
+                                "inputs": [],
+                                "outputs": [
+                                    {
+                                        "name": "array",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Stage 2",
+                    "dependsOnList": [
+                        "Else "
+                    ],
+                    "isLast": 1,
+                    "isTransactional": false,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Pks from sql array",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "FinalPksArray",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Build after section map",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "actors": [
+                        {
+                            "name": "AfterMap",
+                            "actorType": {
+                                "parentType": "MapBuild",
+                                "inputs": [],
+                                "outputs": [
+                                    {
+                                        "name": "map",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "address_id": {
+                                                    "type": "integer"
+                                                },
+                                                "customer_id": {
+                                                    "type": "integer"
+                                                },
+                                                "city": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Output",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "MessageAfter",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "address_id": {
+                                                    "type": "integer"
+                                                },
+                                                "customer_id": {
+                                                    "type": "integer"
+                                                },
+                                                "city": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "SqlPks",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "Values",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ReplaceQuotes",
+                "name": "values"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Columns",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ColumnNames",
+                "name": "values"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "primary_keys",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "PrimaryKeys",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ReplaceQuotes",
+                "name": "values"
+            },
+            "rightPort": {
+                "actor": "Value",
+                "name": "value"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "ColumnNames",
+                "name": "values"
+            },
+            "rightPort": {
+                "actor": "Name",
+                "name": "value"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "Value",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "IfNull",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Value",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "AfterMap",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Value",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "NotNull1",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Name",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "IfColumnIsPk",
+                "name": "b"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Name",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "AfterMap",
+                "name": "key"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Name",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ColumnUppercase",
+                "name": "string"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "PrimaryKeys",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "IfColumnIsPk",
+                "name": "a"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "ColumnUppercase",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "PksFromSqlArr",
+                "name": "input"
+            },
+            "arrayPosition": 0
+        },
+        {
+            "leftPort": {
+                "actor": "PksFromSqlArr",
+                "name": "array"
+            },
+            "rightPort": {
+                "actor": "FinalPksArray",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "FinalPksArray",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "SqlPks",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "AfterMap",
+                "name": "map"
+            },
+            "rightPort": {
+                "actor": "MessageAfter",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "statementValues"
+            },
+            "rightPort": {
+                "actor": "Values",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "statementColumns"
+            },
+            "rightPort": {
+                "actor": "Columns",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "primary_keys"
+            },
+            "rightPort": {
+                "actor": "primary_keys",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "MessageAfter",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "messageAfter"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SqlPks",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "sqlPrimaryKeys"
+            }
+        }
+    ]
+}

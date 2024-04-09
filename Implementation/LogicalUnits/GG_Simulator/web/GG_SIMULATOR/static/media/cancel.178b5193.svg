@@ -1,0 +1,10 @@
+<svg version="1.2" baseProfile="tiny-ps" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26" width="26" height="26">
+	<title>cancel (1)-svg</title>
+	<style>
+		tspan { white-space:pre }
+		.shp0 { fill: #2e2e2e } 
+	</style>
+	<g id="Layer">
+		<path id="Layer" fill-rule="evenodd" class="shp0" d="M25.26 25.46L1.18 25.46C1.09 25.46 1.01 25.45 0.93 25.42C0.86 25.38 0.79 25.34 0.73 25.28C0.67 25.22 0.62 25.15 0.59 25.07C0.56 25 0.54 24.91 0.54 24.83L0.54 0.75C0.54 0.4 0.83 0.12 1.18 0.12L25.26 0.12C25.61 0.12 25.89 0.4 25.89 0.75L25.89 24.83C25.89 25.18 25.61 25.46 25.26 25.46ZM1.81 24.2L24.62 24.2L24.62 1.38L1.81 1.38L1.81 24.2Z" />
+	</g>
+</svg>

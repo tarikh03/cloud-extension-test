@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Name>customer1</Name>
+  <ID>tbl_customer1</ID>
+  <Columns>
+    <Column name="Id" id="Id" index="0" datatype="real" />
+  </Columns>
+  <IndexesList />
+  <EnrichmentList />
+  <LazyDataUpdate syncMethod="Inherited" performEvery="1.00:00:00">
+    <TruncateBeforeSync>true</TruncateBeforeSync>
+  </LazyDataUpdate>
+  <TriggersList />
+</TableObject>

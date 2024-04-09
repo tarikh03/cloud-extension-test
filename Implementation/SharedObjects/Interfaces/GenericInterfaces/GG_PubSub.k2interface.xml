@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<GenericInterface xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="PubSub" displayName="PubSub Configuration" enabled="true" version="1.0">
+  <Name>GG_PubSub</Name>
+  <Properties>
+    <Property name="ConfigSection">
+      <Value>default_pubsub</Value>
+    </Property>
+  </Properties>
+</GenericInterface>

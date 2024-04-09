@@ -1,0 +1,1799 @@
+{
+    "tags": [
+        "GG"
+    ],
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Flow inputs",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "sql_stmt",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "table_type",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "lu_name",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "before_values",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "source_table",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "StatementVals",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {}
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "StatementCols",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {}
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "WhereClause",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Set Lu name",
+                    "dependsOnList": [
+                        "Flow inputs"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "IsReference",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "EqualsIgnoreCase",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "Reference"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "k2_ref",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "k2_ref"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Else",
+                    "dependsOnList": [
+                        "Flow inputs"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": [
+                        {
+                            "name": "LU name",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Extract source table name",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ExtractLUTableMetadata1",
+                            "actorType": {
+                                "parentType": "ExtractLUTableMetadata",
+                                "inputs": [],
+                                "outputs": [
+                                    {
+                                        "name": "primaryKeys",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "luTableName",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Create insert msg sections",
+                    "dependsOnList": [
+                        "Extract source table name"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "IsInsert",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": {
+                                            "userCode": "let pattern = /^insert/i;\r\npattern.test(sql);",
+                                            "script": "var pattern = /^insert/i;\npattern.test(sql);"
+                                        }
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "AnalyzeInsertStmt",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwAnalyzeInsertStmt"
+                                    },
+                                    {
+                                        "name": "primary_keys",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "statementValues",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {}
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "statementColumns",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {}
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "messageAfter",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "address_id": {
+                                                    "type": "integer"
+                                                },
+                                                "customer_id": {
+                                                    "type": "integer"
+                                                },
+                                                "city": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "sqlPrimaryKeys",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "InsertOp",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "I"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Create update msg sections",
+                    "dependsOnList": [
+                        "Extract source table name"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "IsUpdate",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": {
+                                            "userCode": "let pattern = /^update/i;\r\npattern.test(sql);",
+                                            "script": "var pattern = /^update/i;\npattern.test(sql);"
+                                        }
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "AnalyzeUpdateStmt",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwAnalyzeUpdateStmt"
+                                    },
+                                    {
+                                        "name": "statementValues",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {}
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "statementColumns",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {}
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "whereClause",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "primary_keys",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "messageAfter",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "address_id": {
+                                                    "type": "integer"
+                                                },
+                                                "customer_id": {
+                                                    "type": "integer"
+                                                },
+                                                "city": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "sqlPrimaryKeys",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "messageBefore",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "customer_id": {
+                                                    "type": "integer"
+                                                },
+                                                "address_id": {
+                                                    "type": "integer"
+                                                },
+                                                "city": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "UpdateOp",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "U"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Create delete msg sections",
+                    "dependsOnList": [
+                        "Extract source table name"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "IsDelete",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": {
+                                            "userCode": "let pattern = /^delete/i;\r\npattern.test(sql);",
+                                            "script": "var pattern = /^delete/i;\npattern.test(sql);"
+                                        }
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "AnalyzeDeleteStmt",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwAnalyzeDeleteStmt"
+                                    },
+                                    {
+                                        "name": "whereClause",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "primary_keys",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "sqlPrimaryKeys",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "messageBefore",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "customer_id": {
+                                                    "type": "integer"
+                                                },
+                                                "address_id": {
+                                                    "type": "integer"
+                                                },
+                                                "city": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "DeleteOp",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "D"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 13",
+                    "dependsOnList": [
+                        "Create insert msg sections"
+                    ],
+                    "isLast": 0,
+                    "actors": []
+                },
+                {
+                    "name": "Add before section",
+                    "dependsOnList": [
+                        "Create update msg sections"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "IsBeforeTrue",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "EqualsIgnoreCase",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "boolean"
+                                        },
+                                        "const": true
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "BeforeSection",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "customer_id": {
+                                                    "type": "integer"
+                                                },
+                                                "address_id": {
+                                                    "type": "integer"
+                                                },
+                                                "city": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Else  ",
+                    "dependsOnList": [
+                        "Create update msg sections"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": [
+                        {
+                            "name": "NullValue",
+                            "actorType": {
+                                "parentType": "NullValue",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "  ",
+                    "dependsOnList": [
+                        "Create delete msg sections"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Merge stages",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Now",
+                            "actorType": {
+                                "parentType": "Now",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Validate PK exists",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ValidatePKsExists",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwValidatePKsExistsInSql"
+                                    },
+                                    {
+                                        "name": "table_primary_keys",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "sql_primary_keys",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "FormatMsgDate",
+                            "actorType": {
+                                "parentType": "DateFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "yyyy-MM-dd HH:mm:ss.SSSSSS"
+                                    },
+                                    {
+                                        "name": "tz",
+                                        "const": "GMT"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Pos is null",
+                    "dependsOnList": [
+                        "Validate PK exists"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "PosIsNull",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "IsNull",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "msg_pos",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "00000000020030806864"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Else   ",
+                    "dependsOnList": [
+                        "Validate PK exists"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": [
+                        {
+                            "name": "pos",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Merge stages  ",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Op ts is null",
+                    "dependsOnList": [
+                        "Merge stages  "
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "OpTsIsNull",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "IsNull",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "msg_op_ts",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Else    ",
+                    "dependsOnList": [
+                        "Merge stages  "
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": [
+                        {
+                            "name": "op_ts",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Msg curr ts",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "msg_curr_ts",
+                            "actorType": {
+                                "parentType": "Replace",
+                                "inputs": [
+                                    {
+                                        "name": "search",
+                                        "const": " "
+                                    },
+                                    {
+                                        "name": "replace",
+                                        "const": "T"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Create and return msg",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "CreateMsg",
+                            "actorType": {
+                                "parentType": "MapCreate",
+                                "inputs": [
+                                    {
+                                        "name": "op_ts",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "current_ts",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "pos",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "table",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "primary_keys",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "op_type",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "after",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "address_id": {
+                                                    "type": "integer"
+                                                },
+                                                "customer_id": {
+                                                    "type": "integer"
+                                                },
+                                                "city": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "before",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "customer_id": {
+                                                    "type": "integer"
+                                                },
+                                                "address_id": {
+                                                    "type": "integer"
+                                                },
+                                                "city": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "map",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "table": {
+                                                    "type": "string"
+                                                },
+                                                "after": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "address_id": {
+                                                            "type": "integer"
+                                                        },
+                                                        "customer_id": {
+                                                            "type": "integer"
+                                                        },
+                                                        "city": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                },
+                                                "primary_keys": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "op_type": {
+                                                    "type": "string"
+                                                },
+                                                "pos": {
+                                                    "type": "string"
+                                                },
+                                                "op_ts": {
+                                                    "type": "string"
+                                                },
+                                                "current_ts": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "sql_stmt",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "IsInsert",
+                "name": "sql"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "sql_stmt",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "IsUpdate",
+                "name": "sql"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "sql_stmt",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "IsDelete",
+                "name": "sql"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "table_type",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ExtractLUTableMetadata1",
+                "name": "table_type"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "table_type",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "IsReference",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "lu_name",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "LU name",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "before_values",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "IsBeforeTrue",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "source_table",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ExtractLUTableMetadata1",
+                "name": "source_table"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "source_table",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "CreateMsg",
+                "name": "table"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "StatementVals",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "AnalyzeInsertStmt",
+                "name": "statementValues"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "StatementVals",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "AnalyzeUpdateStmt",
+                "name": "statementValues"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "StatementCols",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "AnalyzeInsertStmt",
+                "name": "statementColumns"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "StatementCols",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "AnalyzeUpdateStmt",
+                "name": "statementColumns"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "WhereClause",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "AnalyzeUpdateStmt",
+                "name": "whereClause"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "WhereClause",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "AnalyzeDeleteStmt",
+                "name": "whereClause"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "k2_ref",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ExtractLUTableMetadata1",
+                "name": "lu_name"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "LU name",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ExtractLUTableMetadata1",
+                "name": "lu_name"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ExtractLUTableMetadata1",
+                "name": "primaryKeys"
+            },
+            "rightPort": {
+                "actor": "ValidatePKsExists",
+                "name": "table_primary_keys"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ExtractLUTableMetadata1",
+                "name": "primaryKeys"
+            },
+            "rightPort": {
+                "actor": "AnalyzeInsertStmt",
+                "name": "primary_keys"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ExtractLUTableMetadata1",
+                "name": "primaryKeys"
+            },
+            "rightPort": {
+                "actor": "AnalyzeUpdateStmt",
+                "name": "primary_keys"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ExtractLUTableMetadata1",
+                "name": "primaryKeys"
+            },
+            "rightPort": {
+                "actor": "AnalyzeDeleteStmt",
+                "name": "primary_keys"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "AnalyzeInsertStmt",
+                "name": "sqlPrimaryKeys"
+            },
+            "rightPort": {
+                "actor": "ValidatePKsExists",
+                "name": "sql_primary_keys"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "AnalyzeInsertStmt",
+                "name": "messageAfter"
+            },
+            "rightPort": {
+                "actor": "CreateMsg",
+                "name": "after"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "AnalyzeInsertStmt",
+                "name": "sqlPrimaryKeys"
+            },
+            "rightPort": {
+                "actor": "CreateMsg",
+                "name": "primary_keys"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "InsertOp",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "CreateMsg",
+                "name": "op_type"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "AnalyzeUpdateStmt",
+                "name": "sqlPrimaryKeys"
+            },
+            "rightPort": {
+                "actor": "ValidatePKsExists",
+                "name": "sql_primary_keys"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "AnalyzeUpdateStmt",
+                "name": "sqlPrimaryKeys"
+            },
+            "rightPort": {
+                "actor": "CreateMsg",
+                "name": "primary_keys"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "AnalyzeUpdateStmt",
+                "name": "messageAfter"
+            },
+            "rightPort": {
+                "actor": "CreateMsg",
+                "name": "after"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "AnalyzeUpdateStmt",
+                "name": "messageBefore"
+            },
+            "rightPort": {
+                "actor": "BeforeSection",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "UpdateOp",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "CreateMsg",
+                "name": "op_type"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "AnalyzeDeleteStmt",
+                "name": "sqlPrimaryKeys"
+            },
+            "rightPort": {
+                "actor": "ValidatePKsExists",
+                "name": "sql_primary_keys"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "AnalyzeDeleteStmt",
+                "name": "sqlPrimaryKeys"
+            },
+            "rightPort": {
+                "actor": "CreateMsg",
+                "name": "primary_keys"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "AnalyzeDeleteStmt",
+                "name": "messageBefore"
+            },
+            "rightPort": {
+                "actor": "CreateMsg",
+                "name": "before"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "DeleteOp",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "CreateMsg",
+                "name": "op_type"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "BeforeSection",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "CreateMsg",
+                "name": "before"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "NullValue",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "CreateMsg",
+                "name": "before"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Now",
+                "name": "date"
+            },
+            "rightPort": {
+                "actor": "FormatMsgDate",
+                "name": "date"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "FormatMsgDate",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "msg_curr_ts",
+                "name": "string"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "FormatMsgDate",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "msg_op_ts",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "msg_pos",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "CreateMsg",
+                "name": "pos"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "pos",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "CreateMsg",
+                "name": "pos"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "msg_op_ts",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "CreateMsg",
+                "name": "op_ts"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "op_ts",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "CreateMsg",
+                "name": "op_ts"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "msg_curr_ts",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "CreateMsg",
+                "name": "current_ts"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "sql_stmt"
+            },
+            "rightPort": {
+                "actor": "sql_stmt",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "table_type"
+            },
+            "rightPort": {
+                "actor": "table_type",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "lu_name"
+            },
+            "rightPort": {
+                "actor": "lu_name",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "before_values"
+            },
+            "rightPort": {
+                "actor": "before_values",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "source_table"
+            },
+            "rightPort": {
+                "actor": "source_table",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "statementValues"
+            },
+            "rightPort": {
+                "actor": "StatementVals",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "statementColumns"
+            },
+            "rightPort": {
+                "actor": "StatementCols",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "whereClause"
+            },
+            "rightPort": {
+                "actor": "WhereClause",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "pos"
+            },
+            "rightPort": {
+                "actor": "PosIsNull",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "pos"
+            },
+            "rightPort": {
+                "actor": "pos",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "op_ts"
+            },
+            "rightPort": {
+                "actor": "OpTsIsNull",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "op_ts"
+            },
+            "rightPort": {
+                "actor": "op_ts",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "CreateMsg",
+                "name": "map"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "GGMessage"
+            }
+        }
+    ]
+}
