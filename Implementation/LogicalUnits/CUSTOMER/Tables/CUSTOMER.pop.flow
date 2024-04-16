@@ -57,7 +57,7 @@
                                 "inputs": [
                                     {
                                         "name": "interface",
-                                        "const": "PTL_oracle"
+                                        "const": "oracleSourceDB"
                                     },
                                     {
                                         "name": "sql",
