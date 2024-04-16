@@ -4,8 +4,8 @@
 
 package com.k2view.cdbms.usercode.common.IIDF;
 
-import com.datastax.oss.driver.api.core.CqlSession;
-import com.k2view.cdbms.cluster.CassandraClusterSingleton;
+//import com.datastax.oss.driver.api.core.CqlSession;
+//import com.k2view.cdbms.cluster.CassandraClusterSingleton;
 import com.k2view.cdbms.exceptions.InstanceNotFoundException;
 import com.k2view.cdbms.finder.DataChange;
 import com.k2view.cdbms.finder.api.IidFinderApi;
@@ -16,6 +16,7 @@ import com.k2view.cdbms.shared.IifProperties;
 import com.k2view.cdbms.shared.LUTypeFactoryImpl;
 import com.k2view.cdbms.shared.logging.LogEntry;
 import com.k2view.cdbms.shared.logging.MsgId;
+import com.k2view.cdbms.shared.user.UserCode;
 import com.k2view.cdbms.shared.utils.UserCodeDescribe.out;
 import com.k2view.cdbms.shared.utils.UserCodeDescribe.type;
 import com.k2view.cdbms.sync.SyncMode;
@@ -387,7 +388,7 @@ public class SharedLogic {
                 setThreadGlobals("DELETE_ORPHAN_IGNORE_REPLICATES", "N");
             }
         }
-        if (false) yield(new Object[]{null});
+        if (false) UserCode.yield(new Object[]{null});        
     }
 
     @SuppressWarnings({"unchecked"})
@@ -536,7 +537,7 @@ public class SharedLogic {
                 Operation = DataChange.Operation.upsert;
             } else {
                 sql = dataChange.toSql(dataChange.getOperation(), String.format("%s.%s", getLuType().luName, tableName));
-            }
+            }            
             Object[] valueArrays = dataChange.sqlValues();//Get messages values to use for execute
             if ((System.currentTimeMillis() - dataChange.getCurrentTimestamp() / 1000) <= Long.valueOf(IIDF_SOURCE_DELAY) * 60 * 1000 && !trnIIDFForceReplicateOnDelete.contains(tableName))//Check if it is needed to insert data change to queue table
                 savedDC.add(new Object[]{dataChange.toJson(), IID, optTimeStamp, currTimeStamp, dataChange.getPos()});
@@ -555,7 +556,7 @@ public class SharedLogic {
                     deleteOrphan.put(tableName, dataChange);
                 }
                 startTime = Instant.now();
-                try {
+                try {                    
                     ludb().execute(fnIIDFReplaceSqliteKeywords(sql), valueArrays);
                 }catch (SQLiteException e) {
                     if (e.getMessage().contains("SQLITE_CONSTRAINT") && getTranslationsData("trnIIDFIgnoreSqliteConstraint").keySet().contains(tableName)) {
@@ -572,7 +573,7 @@ public class SharedLogic {
                 debugTiming.put("fnIIDFExecInsNullPK", Duration.between(startTime, Instant.now()).toMillis());
             } else {//If data change is a normal data change execute it
                 startTime = Instant.now();
-                try {
+                try {                    
                     ludb().execute(fnIIDFReplaceSqliteKeywords(sql), valueArrays);
                 }catch (SQLiteException e) {
                     if (e.getMessage().contains("SQLITE_CONSTRAINT") && getTranslationsData("trnIIDFIgnoreSqliteConstraint").keySet().contains(tableName)) {
@@ -796,7 +797,7 @@ public class SharedLogic {
 
         fnIIDFCleanIIDFRecentUpdates(maxUpdated);//Check which records to delete from IIDF_RECENT_UPDATES
 
-        yield(new Object[]{IID, maxHandleTime});
+        UserCode.yield(new Object[]{IID, maxHandleTime});
     }
 
     public static void fnIIDFCheckIfInstanceFound() throws Exception {
@@ -1346,7 +1347,7 @@ public class SharedLogic {
     @out(name = "IID", type = String.class, desc = "")
     public static void fnIIDFPopRecentDummy(String IID) throws Exception {
         if (false)
-            yield(new Object[]{null});
+            UserCode.yield(new Object[]{null});
     }
 
     private static void setTblPrnt(LudbObject table, Map<String, Set<String>> prntTable) {
@@ -1429,7 +1430,7 @@ public class SharedLogic {
             p.put(key, value);
         }
     }
-
+/*
     @SuppressWarnings({"unchecked"})
     public static void fnIIDFInsertIIDStats() {
         if (inDebugMode()) return;
@@ -1508,7 +1509,7 @@ public class SharedLogic {
             executor.shutdown();
         }
     }
-
+*/
     @out(name = "rs", type = Boolean.class, desc = "")
     private static Boolean fnIIDFExecNonLUTableDelta(Object i_dataChange) throws Exception {
         DataChange dataChange = (DataChange) i_dataChange;

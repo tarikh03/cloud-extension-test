@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<lu xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" keyspace="CUSTOMER" name="CUSTOMER" xsi:noNamespaceSchemaLocation="https://cloud.k2view.com/static/xsd/iid_finder.xsd">
+  <table additionalParent="false" isCrossIID="false" key="CUSTOMER_ID" keyspace="discovery" luid="customer_id" name="customer" stored="true" targetTableName="CUSTOMER"/>
+  <table additionalParent="false" isCrossIID="false" key="ACTIVITY_ID" keyspace="discovery" luid="customer_id" name="activity" stored="true" targetTableName="ACTIVITY">
+     <table additionalParent="false" isCrossIID="false" key="CASE_ID" keyspace="discovery" name="cases" stored="true" parentKey="activity_id=activity_id" targetTableName="CASES"/>
+  </table>
+</lu>

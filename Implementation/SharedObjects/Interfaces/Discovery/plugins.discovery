@@ -1,0 +1,115 @@
+{
+	"name": "plugins_pipeline",
+	"description": "Main configuration file of the Plugin Framework including the settings: Data snapshot size, Data platform include and exclude lists, List of plugins with their threshold and input parameters. ",
+	"version": 1,
+	"sample_size": {
+		"percentage": 10,
+		"min_size": 100,
+		"max_size": 10000
+	 },
+	 "data_platforms":{
+	         "data_platform_1": {
+	           "exclude_list": ["schema"]
+	         },
+	         "data_platform_2": {
+	           "include_list": ["main.PATIENT","main.INVOICE"]
+	         },
+	         "description": "<data_platform_1>/<data_platform_2> are placeholders for Project interface names. The <exclude_list> and <include_list> arrays should be defined in the following format: <schema> or <schema>.<table> or *.<table>."
+       },
+	"plugins": [{
+			"name": "Metadata Logical Reference",
+			"class": "com.k2view.discovery.plugins.AddRelationsPlugin",
+			"active": true,
+			"threshold": 0.4,
+			"monitor_desc": "Refers To Relations",
+			"input_parameters": {
+			    "rules": {
+                          "field_name_is_id_and_pk": {
+                            "score": 0.8,
+                            "description": "Dataset1 has a PK field \"id\\“ and dataset2 has a field \\”dataset1id\\” (normalized)\n"
+                          },
+                          "field_name_is_id_and_not_pk": {
+                            "score": 0.6,
+                            "description": "Dataset1 has a non-PK field called \"id\\“ and dataset2 has a field called \\”dataset1id\\”"
+                          },
+                          "single_field_pk_and_not_pk": {
+                            "score": 0.8,
+                            "description": "Dataset1 has a PK field and dataset2 has a field with the same name (normalized), non-PK"
+                          },
+                          "common_fields_in_both_pk": {
+                            "score": 0.8,
+                            "description": "Common fields which a part of PK in both datasets, but dataset1 has less PKs than dataset2"
+                          },
+                          "same_field_names_pk": {
+                            "score": 0.4,
+                            "description": "Common fields, a part of PK in both datasets, and both datasets have identical number of PKs"
+                          },
+                          "same_field_names_not_pk": {
+                            "score": 0.2,
+                            "description": "Both datasets have fields with the same names (normalized, not in field_name_blk), both are non-PK"
+                          }
+                        },
+				"field_name_exclude_list": [
+					"name",
+					"username"
+				],
+				"field_type_exclude_list": [
+					"float",
+					"char"
+				]
+			}
+		},
+		{
+			"name": "Data Regex Classifier",
+			"class": "com.k2view.discovery.plugins.DataProfilingPlugin",
+			"active": true,
+			"threshold": 0.4,
+			"monitor_desc": "Classifications",
+			"input_parameters": {}
+		},
+		{
+			"name": "Metadata Regex Classifier",
+			"class": "com.k2view.discovery.plugins.profiling.MetadataProfilingPlugin",
+			"active": true,
+			"threshold": 0.4,
+			"monitor_desc": "Classifications",
+			"input_parameters": {
+			    "field_name_exclude_list": [
+			    ],
+			    "field_type_exclude_list": [
+			    ]
+			}
+		},
+		{
+			"name": "Classification PII Marker",
+			"class": "com.k2view.discovery.plugins.PIIAnalyzerPlugin",
+			"active": true,
+			"threshold": 0.2,
+			"monitor_desc": "PII Fields",
+			"input_parameters": {
+			    "field_name_exclude_list": [
+			    ],
+			    "field_type_exclude_list": [
+			    ]
+			}
+		},
+		{
+			"name": "NULL Percentage",
+			"class": "com.k2view.discovery.plugins.nulls.NullPercentagePlugin",
+			"active": true,
+			"threshold": 0.2,
+			"monitor_desc": "NULL Value Fields",
+			"input_parameters": {}
+		},
+		{
+			"name": "Custom Property Addition",
+			"type": "plugin",
+			"class": "com.k2view.discovery.plugins.CustomPropertyPlugin",
+			"active": false,
+			"factor": 0.2,
+			"threshold": 0.4,
+			"monitor_desc":"",
+			"input_parameters": {}
+		}
+	]
+}

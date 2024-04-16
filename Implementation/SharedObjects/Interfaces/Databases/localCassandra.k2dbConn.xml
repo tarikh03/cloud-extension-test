@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DBConn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:type="DBConnGenericAdoJdbc" name="localCassandra" type="genericdb" version="8.0.0">
+    <JdbcDriverName>Cassandra</JdbcDriverName>
+    <Active>true</Active>
+    <ConnectionProperties></ConnectionProperties>
+    <ConnectionStringServerSide>jdbc:cassandra://dev-cassandra-service:9042/?consistency=QUORUM&amp;internodesssl=false</ConnectionStringServerSide>
+    <PortNum>9042</PortNum>
+    <IsCustomConnectionStringServerSide>false</IsCustomConnectionStringServerSide>
+    <MinConnectionsNumber>0</MinConnectionsNumber>
+    <MaxConnectionsNumber>60</MaxConnectionsNumber>
+    <UseSelectAsteriskInAutoCreatedQueries>true</UseSelectAsteriskInAutoCreatedQueries>
+    <AutomaticMetadataLoading>false</AutomaticMetadataLoading>
+    <OfflineMode>true</OfflineMode>
+    <UserId>cassandra</UserId>
+    <Password>~encs0~La6/yIuy2ZfeDIfFPSRxkA==</Password>
+    <DataSource>dev-cassandra-service</DataSource>
+    <DataBase></DataBase>
+    <SchemaFilter></SchemaFilter>
+    <CommandList></CommandList>
+</DBConn>

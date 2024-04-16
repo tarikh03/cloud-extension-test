@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>PTL_PATIENT</Name>
+  <ID>tbl_PTL_PATIENT</ID>
+  <ColumnsCollation>BINARY</ColumnsCollation>
+  <FullTextSearch>false</FullTextSearch>
+  <Columns>
+    <Column name="PATIENT_ID" id="PATIENT_ID" index="0" datatype="Text" />
+    <Column name="SSN" id="SSN" index="1" datatype="Text" />
+    <Column name="FIRST_NAME" id="FIRST_NAME" index="2" datatype="Text" />
+    <Column name="LAST_NAME" id="LAST_NAME" index="3" datatype="Text" />
+    <Column name="ADDRESS" id="ADDRESS" index="4" datatype="Text" />
+    <Column name="CITY" id="CITY" index="5" datatype="Text" />
+    <Column name="ZIP" id="ZIP" index="6" datatype="Text" />
+    <Column name="STATE" id="STATE" index="7" datatype="Text" />
+    <Column name="COUNTRY" id="COUNTRY" index="8" datatype="Text" />
+    <Column name="DATE1" id="DATE1" index="9" datatype="datetime" />
+  </Columns>
+  <IndexesList>
+    <Index id="1" pk="false" unique="true" instanceOnly="true" columnsIdsList="PATIENT_ID" />
+  </IndexesList>
+  <EnrichmentList>
+  </EnrichmentList>
+  <LazyDataUpdate syncMethod="Inherited" performEvery="1.00:00:00">
+    <DecisionFunction></DecisionFunction>
+  </LazyDataUpdate>
+  <TriggersList>
+  </TriggersList>
+</TableObject>

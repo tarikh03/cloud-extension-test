@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VirtualDB xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" version="">
+  <Name>vdb</Name>
+  <RootView>IIDF</RootView>
+  <CacheLocationType>Default</CacheLocationType>
+  <LuLazyDataUpdate syncMethod="None" performEvery="1.00:00:00" syncTimeout="0">
+  	<DecisionFunction></DecisionFunction>
+  </LuLazyDataUpdate>
+  <EventsList>
+  </EventsList>
+  <IidFinderProp>
+    <NumberOfPartitions>100</NumberOfPartitions>
+    <NumberOfJobs>50</NumberOfJobs>
+  </IidFinderProp>
+  <Tables>
+	 <Table>CASES</Table>
+	 <Table>CUSTOMER</Table>
+	 <Table>ACTIVITY</Table>
+	 <Table>IIDF</Table>
+	 <Table>IIDF_QUEUE</Table>
+	 <Table>IIDF_RECENT_UPDATES</Table>
+  </Tables>
+  <TablesProperties>
+	 <TableProperties name="CASES">
+      <Populations>
+        <Population name="pop.flow" order="7" disabled="false" populationType="FLOW" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="CUSTOMER">
+      <Populations>
+        <Population name="pop.flow" order="5" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="ACTIVITY">
+      <Populations>
+        <Population name="pop.flow" order="6" disabled="false" populationType="FLOW" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="IIDF">
+      <Populations>
+        <Population name="query_IIDF" order="4" disabled="false" populationType="REGULAR" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="IIDF_QUEUE">
+      <Populations>
+        <Population name="query_iidf_queue" order="5" disabled="false" populationType="REGULAR" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="IIDF_RECENT_UPDATES">
+      <Populations>
+        <Population name="query_iidf_recent_updates" order="5" disabled="false" populationType="REGULAR" />
+      </Populations>
+    </TableProperties>
+  </TablesProperties>
+  <EnrichmentsOrderList>
+	  <Item order="1" active="true" name="IIDF" columnName="fnIIDFCheckIfInstanceFound" type="Table" />
+	  <Item order="2" active="true" name="IIDF" columnName="fnIIDFCleanThreadGlobals" type="Table" />
+  </EnrichmentsOrderList>
+  <ReferencesList>
+  </ReferencesList>
+  <Relations />
+  <DatabaseRelations>
+	  <Relation>
+        <From tableType="TableObject" table="IIDF" column="IID" columnId="tblCol_55bbb1eee3034c8d891320b17f47d7f1" />
+        <To tableType="TableObject" table="CUSTOMER" populationObjectName="pop.flow" column="CUSTOMER_ID" columnId="CUSTOMER_ID" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="IIDF" column="IID" columnId="tblCol_55bbb1eee3034c8d891320b17f47d7f1" />
+        <To tableType="TableObject" table="IIDF_QUEUE" populationObjectName="query_iidf_queue" column="IID" columnId="tblCol_8b9da9b5d9854890841140ed4ffea5cf" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="IIDF" column="IID" columnId="tblCol_55bbb1eee3034c8d891320b17f47d7f1" />
+        <To tableType="TableObject" table="IIDF_RECENT_UPDATES" populationObjectName="query_iidf_recent_updates" column="IID" columnId="tblCol_7abd5e73f28a4aed9bdcfa98a6292e4f" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="CUSTOMER" column="CUSTOMER_ID" columnId="CUSTOMER_ID" />
+        <To tableType="TableObject" table="ACTIVITY" populationObjectName="pop.flow" column="CUSTOMER_ID" columnId="CUSTOMER_ID" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="ACTIVITY" column="ACTIVITY_ID" columnId="ACTIVITY_ID" />
+        <To tableType="TableObject" table="CASES" populationObjectName="pop.flow" column="ACTIVITY_ID" columnId="ACTIVITY_ID" />
+      </Relation>
+  </DatabaseRelations>
+  <DiagramGraph>
+    <Graph name="vdb.k2vdb.xml">
+      <Node name="CASES" pos="1201 606" viewType="Table" />
+      <Node name="CUSTOMER" pos="505 756" viewType="Table" />
+      <Node name="ACTIVITY" pos="786 676" viewType="Table" />
+      <Node name="IIDF" pos="120 431" viewType="Table" />
+      <Node name="IIDF_QUEUE" pos="505 306" viewType="Table" />
+      <Node name="IIDF_RECENT_UPDATES" pos="505 81" viewType="Table" />
+    </Graph>
+  </DiagramGraph>
+</VirtualDB>

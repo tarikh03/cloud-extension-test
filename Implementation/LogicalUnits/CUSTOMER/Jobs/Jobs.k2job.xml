@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<JobsGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>Jobs</Name>
+  <Jobs>
+    <Job methodName="deltaJobsExecutor" jobName="deltaJobsExecutor" active="false">
+      <ScheduleType>TimeInterval</ScheduleType>
+      <ExecuteEvery>00:00:01</ExecuteEvery>
+      <InputParams />
+    </Job>
+  </Jobs>
+</JobsGroup>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TablePopulationObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ID>query_VISIT</ID>
+  <PopulationObjectName>query_VISIT</PopulationObjectName>
+  <TableName>QA_VISIT</TableName>
+  <RootItemID>query_query_VISIT</RootItemID>
+  <LazyDataUpdate syncMethod="Inherited" performEvery="1.00:00:00">
+    <TruncateBeforeSync>false</TruncateBeforeSync>
+  </LazyDataUpdate>
+  <SimpleObject>true</SimpleObject>
+  <IidFinderProp>
+      <ProactiveIndicator>true</ProactiveIndicator>
+    <SourceSchema>qa</SourceSchema>
+    <SourceTableName>visit</SourceTableName>
+    <SourceTableKey>VISIT_ID</SourceTableKey>
+  </IidFinderProp>
+  <InputArguments>
+    <Arg name="PATIENT_ID" id="queryCol_0" dataType="Text" index="0" />
+    <Arg name="VISIT_ID" id="queryCol_1" dataType="Text" index="1" />
+    <Arg name="VISIT_DATE" id="queryCol_2" dataType="Text" index="2" />
+    <Arg name="STATUS" id="queryCol_3" dataType="Text" index="3" />
+    <Arg name="PHYSICIAN" id="queryCol_4" dataType="Text" index="4" />
+    <Arg name="DIAGNOSIS" id="queryCol_5" dataType="Text" index="5" />
+  </InputArguments>
+  <ItemsList>
+    <Item xsi:type="DBQueryDataSave" id="query_query_VISIT" name="query_VISIT" nodeOrder="0" module="DBQuery" mapObjectModule="DBQuery" connName="dbOracle">
+      <OutputsList>
+        <Output xsi:type="DBQueryDataSaveColumn" id="queryCol_0" name="PATIENT_ID" dataType="Text" index="0" />
+        <Output xsi:type="DBQueryDataSaveColumn" id="queryCol_1" name="VISIT_ID" dataType="Text" index="1" />
+        <Output xsi:type="DBQueryDataSaveColumn" id="queryCol_2" name="VISIT_DATE" dataType="Text" index="2" />
+        <Output xsi:type="DBQueryDataSaveColumn" id="queryCol_3" name="STATUS" dataType="Text" index="3" />
+        <Output xsi:type="DBQueryDataSaveColumn" id="queryCol_4" name="PHYSICIAN" dataType="Text" index="4" />
+        <Output xsi:type="DBQueryDataSaveColumn" id="queryCol_5" name="DIAGNOSIS" dataType="Text" index="5" />
+      </OutputsList>
+      <SQL><![CDATA[SELECT * FROM HIS_USER.VISIT]]></SQL>
+    </Item>
+  </ItemsList>
+  <LinksList>
+    <Link partId="16" fromNodeOrder="0" fromItemID="query_query_VISIT" fromColID="queryCol_0" toItemID="tbl_QA_VISIT" toColID="tblCol_0a8f7ffd47cc4408ba936484f6dbe53d" />
+    <Link partId="17" fromNodeOrder="0" fromItemID="query_query_VISIT" fromColID="queryCol_1" toItemID="tbl_QA_VISIT" toColID="tblCol_91838ec6d7eb4de28d97eb4fa226efe8" />
+    <Link partId="18" fromNodeOrder="0" fromItemID="query_query_VISIT" fromColID="queryCol_2" toItemID="tbl_QA_VISIT" toColID="tblCol_3c466bc5b93d4148a54b28b4240cf26b" />
+    <Link partId="19" fromNodeOrder="0" fromItemID="query_query_VISIT" fromColID="queryCol_3" toItemID="tbl_QA_VISIT" toColID="tblCol_b1f1345ee4f04702a89775c23fb289d5" />
+    <Link partId="20" fromNodeOrder="0" fromItemID="query_query_VISIT" fromColID="queryCol_4" toItemID="tbl_QA_VISIT" toColID="tblCol_470d8b6483214c2998ecd7fcea36e5fe" />
+    <Link partId="21" fromNodeOrder="0" fromItemID="query_query_VISIT" fromColID="queryCol_5" toItemID="tbl_QA_VISIT" toColID="tblCol_209454bf8c024305ba0887112a98e250" />
+  </LinksList>
+  <ModeKeyColumnIDs />
+  <DiagramGraph>
+    <Graph name="QA_VISIT.query_VISIT.k2tablePop.xml" lastPartID="63">
+      <TableNode partID="0" name="QA_VISIT" pos="383.000031 5.74479675" width="309.3242" />
+      <DBQueryNode partID="9" name="dbOracle" pos="10 0.78125" size="253 135.177689" isRoot="true">
+        <DBQuery>{"Name":"query_VISIT","ID":"query_query_VISIT","ConnName":"dbOracle","SQL":"SELECT * FROM HIS_USER.VISIT","ColumnsList":[{"ID":"queryCol_0","Name":"PATIENT_ID","DataType":"Text","Index":0,"IsInputArgument":true},{"ID":"queryCol_1","Name":"VISIT_ID","DataType":"Text","Index":1,"IsInputArgument":true},{"ID":"queryCol_2","Name":"VISIT_DATE","DataType":"Text","Index":2,"IsInputArgument":true},{"ID":"queryCol_3","Name":"STATUS","DataType":"Text","Index":3,"IsInputArgument":true},{"ID":"queryCol_4","Name":"PHYSICIAN","DataType":"Text","Index":4,"IsInputArgument":true},{"ID":"queryCol_5","Name":"DIAGNOSIS","DataType":"Text","Index":5,"IsInputArgument":true}]}</DBQuery>
+      </DBQueryNode>
+      <Link partID="16" from="0" to="1" pointsArr="263 38.1878052 273 38.1878052 373.000031 36.7812538 383.000031 36.7812538" fromNodePartID="9" fromNodeColumnName="PATIENT_ID" toNodePartID="0" toNodeColumnName="PATIENT_ID" />
+      <Link partID="17" from="2" to="3" pointsArr="263 50.26072 273 50.26072 373.000031 48.85417 383.000031 48.85417" fromNodePartID="9" fromNodeColumnName="VISIT_ID" toNodePartID="0" toNodeColumnName="VISIT_ID" />
+      <Link partID="18" from="4" to="5" pointsArr="263 62.3336334 273 62.3336334 373.000031 60.9270859 383.000031 60.9270859" fromNodePartID="9" fromNodeColumnName="VISIT_DATE" toNodePartID="0" toNodeColumnName="VISIT_DATE" />
+      <Link partID="19" from="6" to="7" pointsArr="263 74.4065552 273 74.4065552 373.000031 73 383.000031 73" fromNodePartID="9" fromNodeColumnName="STATUS" toNodePartID="0" toNodeColumnName="STATUS" />
+      <Link partID="20" from="8" to="9" pointsArr="263 86.47946 273 86.47946 373.000031 85.0729141 383.000031 85.0729141" fromNodePartID="9" fromNodeColumnName="PHYSICIAN" toNodePartID="0" toNodeColumnName="PHYSICIAN" />
+      <Link partID="21" from="10" to="11" pointsArr="263 98.55238 273 98.55238 373.000031 97.14583 383.000031 97.14583" fromNodePartID="9" fromNodeColumnName="DIAGNOSIS" toNodePartID="0" toNodeColumnName="DIAGNOSIS" />
+    </Graph>
+  </DiagramGraph>
+</TablePopulationObject>

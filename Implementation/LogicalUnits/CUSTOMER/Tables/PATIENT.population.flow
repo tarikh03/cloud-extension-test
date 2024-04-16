@@ -1,0 +1,425 @@
+{
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Input",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "PopulationArgs",
+                            "actorType": {
+                                "parentType": "PopulationArgs",
+                                "readOnly": true,
+                                "inputs": [
+                                    {
+                                        "name": "PATIENT_ID",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "SSN",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "FIRST_NAME",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "LAST_NAME",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "ADDRESS",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "CITY",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "ZIP",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "STATE",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "COUNTRY",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "DATE1",
+                                        "schema": {}
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "SyncDeleteMode",
+                            "actorType": {
+                                "parentType": "SyncDeleteMode",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "table",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Source",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Query",
+                            "actorType": {
+                                "parentType": "SourceDbQuery",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "OracleDB"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": "select * from DISCOVERY.PATIENT"
+                                    },
+                                    {
+                                        "name": "use_mbd_finder",
+                                        "const": true
+                                    },
+                                    {
+                                        "name": "luid_column_name",
+                                        "const": "SSN"
+                                    },
+                                    {
+                                        "name": "sourceTable",
+                                        "const": "discovery.patient"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "PATIENT_ID": {
+                                                    "type": {}
+                                                },
+                                                "SSN": {
+                                                    "type": {}
+                                                },
+                                                "FIRST_NAME": {
+                                                    "type": {}
+                                                },
+                                                "LAST_NAME": {
+                                                    "type": {}
+                                                },
+                                                "ADDRESS": {
+                                                    "type": {}
+                                                },
+                                                "CITY": {
+                                                    "type": {}
+                                                },
+                                                "ZIP": {
+                                                    "type": {}
+                                                },
+                                                "STATE": {
+                                                    "type": {}
+                                                },
+                                                "COUNTRY": {
+                                                    "type": {}
+                                                },
+                                                "DATE1": {
+                                                    "type": {}
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 1",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "LU Table",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "actors": [
+                        {
+                            "name": "PATIENT",
+                            "actorType": {
+                                "parentType": "DbLoad",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "fabric"
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "table",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "fields",
+                                        "const": [
+                                            "PATIENT_ID",
+                                            "SSN",
+                                            "FIRST_NAME",
+                                            "LAST_NAME",
+                                            "ADDRESS",
+                                            "CITY",
+                                            "ZIP",
+                                            "STATE",
+                                            "COUNTRY",
+                                            "DATE1"
+                                        ]
+                                    },
+                                    {
+                                        "name": "dialect",
+                                        "const": "sqlite"
+                                    },
+                                    {
+                                        "name": "PATIENT_ID",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "SSN",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "FIRST_NAME",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "LAST_NAME",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "ADDRESS",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "CITY",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "ZIP",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "STATE",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "COUNTRY",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "DATE1",
+                                        "schema": {}
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Post Load",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": []
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "PopulationArgs",
+                "name": "parent_rows"
+            },
+            "rightPort": {
+                "actor": "Query",
+                "name": "parent_rows"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Query",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "PATIENT",
+                "name": "params"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "PATIENT_ID"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "PATIENT_ID"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "SSN"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "SSN"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "FIRST_NAME"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "FIRST_NAME"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "LAST_NAME"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "LAST_NAME"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "ADDRESS"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "ADDRESS"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "CITY"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "CITY"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "ZIP"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "ZIP"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "STATE"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "STATE"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "COUNTRY"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "COUNTRY"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "DATE1"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "DATE1"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "table"
+            },
+            "rightPort": {
+                "actor": "SyncDeleteMode",
+                "name": "table"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "PATIENT",
+                "name": "schema"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "table"
+            },
+            "rightPort": {
+                "actor": "PATIENT",
+                "name": "table"
+            }
+        }
+    ]
+}

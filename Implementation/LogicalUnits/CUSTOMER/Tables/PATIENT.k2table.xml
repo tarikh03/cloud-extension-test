@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>PATIENT</Name>
+  <ID>tbl_PATIENT</ID>
+  <EntityId>PATIENT_ID</EntityId>
+  <ColumnsCollation>BINARY</ColumnsCollation>
+  <FullTextSearch>false</FullTextSearch>
+  <Columns>
+    <Column name="PATIENT_ID" id="PATIENT_ID" index="0" datatype="TEXT" mandatory="true" />
+    <Column name="SSN" id="SSN" index="1" datatype="TEXT" />
+    <Column name="FIRST_NAME" id="FIRST_NAME" index="2" datatype="TEXT" />
+    <Column name="LAST_NAME" id="LAST_NAME" index="3" datatype="TEXT" />
+    <Column name="ADDRESS" id="ADDRESS" index="4" datatype="TEXT" />
+    <Column name="CITY" id="CITY" index="5" datatype="TEXT" />
+    <Column name="ZIP" id="ZIP" index="6" datatype="TEXT" />
+    <Column name="STATE" id="STATE" index="7" datatype="TEXT" />
+    <Column name="COUNTRY" id="COUNTRY" index="8" datatype="TEXT" />
+    <Column name="DATE1" id="DATE1" index="9" datatype="DATETIME" />
+  </Columns>
+  <IndexesList>
+    <Index id="1" pk="true" unique="true" instanceOnly="true" columnsIdsList="PATIENT_ID" />
+    <Index id="2" pk="false" unique="true" instanceOnly="true" columnsIdsList="PATIENT_ID" />
+  </IndexesList>
+  <EnrichmentList>
+  </EnrichmentList>
+  <LazyDataUpdate syncMethod="Inherited" performEvery="1.00:00:00">
+    <DecisionFunction></DecisionFunction>
+  </LazyDataUpdate>
+  <TriggersList>
+  </TriggersList>
+  <BasedOn>
+    <Source interface="OracleDB" schema="DISCOVERY" table="PATIENT" timestamp="2024-03-27">
+      <ColumnsList>PATIENT_ID,SSN,FIRST_NAME,LAST_NAME,ADDRESS,CITY,ZIP,STATE,COUNTRY,DATE1</ColumnsList>
+    </Source>
+  </BasedOn>
+</TableObject>

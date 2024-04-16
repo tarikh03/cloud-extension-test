@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DBConn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:type="DBConnGenericAdoJdbc" name="OracleDB" type="genericdb" version="8.0.0">
+    <JdbcDriverName>Oracle</JdbcDriverName>
+    <Active>true</Active>
+    <ConnectionProperties>
+        <Property name="includeSynonyms">
+            <Value>
+                <![CDATA[true]]>
+            </Value>
+        </Property>
+    </ConnectionProperties>
+    <ConnectionStringServerSide>jdbc:oracle:thin:@10.21.3.85:1521/ORCLPDB1.localdomain</ConnectionStringServerSide>
+    <PortNum>1521</PortNum>
+    <IsCustomConnectionStringServerSide>false</IsCustomConnectionStringServerSide>
+    <MinConnectionsNumber>0</MinConnectionsNumber>
+    <MaxConnectionsNumber>60</MaxConnectionsNumber>
+    <UseSelectAsteriskInAutoCreatedQueries>true</UseSelectAsteriskInAutoCreatedQueries>
+    <AutomaticMetadataLoading>false</AutomaticMetadataLoading>
+    <OfflineMode>true</OfflineMode>
+    <DataSource>10.21.3.85</DataSource>
+    <DataBase>ORCLPDB1.localdomain</DataBase>
+    <UserId>DISCOVERY</UserId>
+    <Password>~encs2~EUjKLsmR+jd7mRtxAcWBerDRECbRl7E9hagPn3PtGoHc4/oe9aJsWTwECQ==</Password>
+    <SchemaFilter></SchemaFilter>
+    <CommandList></CommandList>
+</DBConn>

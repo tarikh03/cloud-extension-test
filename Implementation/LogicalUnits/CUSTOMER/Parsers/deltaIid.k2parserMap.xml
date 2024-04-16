@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ParserMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" version="5.3.13.0">
+  <Name>deltaIid</Name>
+  <MapType>ParserMap</MapType>
+  <RootItemID>f_1</RootItemID>
+  <SimpleObject>false</SimpleObject>
+  <TargetsList>
+    <Target xsi:type="ParserMapTargetItem">
+      <TargetName>dummy_delta</TargetName>
+      <Module>Parser_Map</Module>
+      <ItemsList>
+        <Item xsi:type="FunctionDiagramItemDataSave" id="f_1" name="k2_MsgParser2" nodeOrder="0" module="Function" mapObjectModule="Function" fileName="k2_MsgParser2.k2function.xml">
+          <InputsList>
+            <Input id="fi_1.0" name="in" />
+          </InputsList>
+          <OutputsList>
+            <Output id="fo_1.0" name="out" />
+          </OutputsList>
+        </Item>
+        <Item xsi:type="ParserRecordTypeDataSave" id="rt_dummy_delta" name="dummy_delta" nodeOrder="1" module="ParserRecordType" mapObjectModule="ParserRecordType" parentParser="deltaIid">
+          <InputsList>
+            <Input xsi:type="ParserRecordTypeDataSaveColumnInput" id="rtCol_8bacc9a174614800a8ff9def5102c011" name="iid" dataType="Text" />
+          </InputsList>
+          <OutputsList />
+          <RecordTypeKeyColumn />
+          <PkColumnsList>
+            <RecordTypePkColumn id="rtCol_8bacc9a174614800a8ff9def5102c011" name="iid" pkType="Partition_Key" />
+          </PkColumnsList>
+          <ClusteringKeyOrder>ASC</ClusteringKeyOrder>
+          <CompactionStrategy>SizeTieredCompactionStrategy</CompactionStrategy>
+          <TimeToLive>0</TimeToLive>
+          <CreateStatement><![CDATA[]]></CreateStatement>
+        </Item>
+      </ItemsList>
+      <LinksList>
+        <Link partId="5" fromNodeOrder="0" fromItemID="f_1" fromColID="fo_1.0" toItemID="rt_dummy_delta" toColID="rtCol_8bacc9a174614800a8ff9def5102c011" />
+      </LinksList>
+      <ParserMapRecordType id="rt_dummy_delta" name="dummy_delta" parentParser="deltaIid">
+        <Active xsi:nil="true" />
+        <RecordTypeKeyColumn />
+        <Columns>
+          <Column id="rtCol_8bacc9a174614800a8ff9def5102c011" name="iid" index="0">
+            <DataType>Text</DataType>
+          </Column>
+        </Columns>
+        <PkColumns>
+          <PkColumn id="rtCol_8bacc9a174614800a8ff9def5102c011" name="iid" pkType="Partition_Key" />
+        </PkColumns>
+        <CreateStatement><![CDATA[]]></CreateStatement>
+      </ParserMapRecordType>
+    </Target>
+  </TargetsList>
+  <DiagramGraph>
+    <Graph name="deltaIid.k2parserMap.xml" lastPartID="11" mapType="ParserMap" logicalUnitNodeType="Full_Hierarchy">
+      <ParserRecordTypeTargetNode partID="0" name="dummy_delta" pos="575.000732 30" size="312.999268 62.0729141" parserName="deltaIid" isTargetNode="true" isRoot="false" />
+      <FunctionMapNode id="0" L0="1" R0="2" partID="1" topLabel="k2_MsgParser2 (1)" pos="291.995239 68.00001" size="153.918762 45.09115" isRoot="true">
+        <KFunction>{"Name":"k2_MsgParser2","ID":"f_1","Category":"Parser","FunctionLevel":0,"FunctionType":0,"FunctionType2":1,"RegisterAsLuDbFunction":false,"SaveToDLUR":false,"ApiFunction":false,"DecisionFunction":false,"RequiresLuReference":false,"Desc":"","Language":1,"IsRootFunction":true,"inputParams":[{"Name":"in","ID":"fi_1.0","Index":0,"DataType":"String"}],"outputParams":[{"Name":"out","ID":"fo_1.0","Index":0,"DataType":"String","Comment":""}],"HideMethodInUi":false}</KFunction>
+      </FunctionMapNode>
+      <Link from="2" to="3" partID="5" pointsArr="445.914 93.091156 455.914 93.091156 565.000732 61.0364571 575.000732 61.0364571" fromNodePartID="1" fromNodeColumnName="out" toNodePartID="0" toNodeColumnName="iid" />
+    </Graph>
+  </DiagramGraph>
+  <Active>true</Active>
+  <ExecutionMode>Manually</ExecutionMode>
+  <ScheduleType>TimeInterval</ScheduleType>
+  <syncEvery>00:00:00</syncEvery>
+  <InterfaceName>Kafka</InterfaceName>
+</ParserMap>
