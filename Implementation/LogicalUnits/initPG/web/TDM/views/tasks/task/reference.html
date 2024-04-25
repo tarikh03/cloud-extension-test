@@ -1,0 +1,22 @@
+<div class="k2-card" style="margin-top: 50px" ng-init="taskCtrl.initReferenceForm(ReferenceForm)">
+    <div class="k2-header">
+      <span class="k2-card-title" style="color: var(--secondary-text-color)">
+        Reference Tables</span>
+    </div>
+    <hr>
+    <div class="k2-body">
+        <div style="margin-bottom: 10px;color: red;">{{taskCtrl.referenceTabError}}</div>
+        <div class="row">
+            <div class="col-lg-12" ng-if="taskCtrl.logicalUnits.length > 0">
+                <reference-task task-data="taskCtrl.taskData" logical-unit="taskCtrl.logicalUnit" logical-units="taskCtrl.logicalUnits"></reference-task>
+            </div>
+        </div>
+        <hr>
+        <span
+        style="display: flex; flex-direction: row; justify-content: space-between"
+      >
+        <button type="button" class="btn k2-primary-btn" ng-click="taskCtrl.openStep(1,'back')">Back</button>
+        <button type="submit" class="btn k2-primary-btn">Next</button>
+        </span>
+    </div>
+</div>

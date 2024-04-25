@@ -1,0 +1,67 @@
+<div class="col-lg-12">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <div class="row">
+                <div class="col-lg-10">
+                    <h2>{{ 'DATA_CENTER' | translate }} {{dataCenterCtrl.dataCenterData.data_center_name}} </h2>
+                    <h5 style="padding-left:1em;font-weight: 300;" ng-if="dataCenterCtrl.dataCenterData.data_center_status == 'Inactive'">{{ 'INACTIVE' | translate }}</h5>
+                </div>
+                <div  class="col-lg-2 pull-right" role-handler role="0">
+                    <a uib-tooltip="Delete Data Center" tooltip-placement="left" ng-if="dataCenterCtrl.dataCenterData.data_center_status == 'Active'" class="pull-right"
+                       mwl-confirm
+                       message="{{dataCenterCtrl.dataCenterEnvironments == 0 ? 'Are you sure you want to delete Data Center?'
+                       : 'Data Center  ' + dataCenterCtrl.dataCenterData.data_center_name + ' is attached to testing environments. If you remove this data center, product attached to this data center will be removed from environments. Tasks for this product will be also deleted. Are you sure you want to delete it?'}}"
+                       confirm-text="Yes <i class='glyphicon glyphicon-ok'></i>" cancel-text="No <i class='glyphicon glyphicon-remove'></i>" placement="left"
+                       on-confirm="dataCenterCtrl.deleteDataCenter()" on-cancel="cancelClicked = true" confirm-button-type="danger" cancel-button-type="default">
+                        <i class="fa fa-trash fa-2x" style="color: var(--secondary-text-color)" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <form role="form" name="dataCenterForm" class="form-horizontal" ng-submit="dataCenterCtrl.saveChanges()">
+                <div class="row">
+                    <div class="col-lg-6 form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">{{"NAME" | translate}}<span style="color: red">*</span></label>
+                            <div class="col-sm-10">
+                                <input type="text" disabled class="form-control1" ng-model="dataCenterCtrl.dataCenterData.data_center_name" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">{{"DESCRIPTION" | translate}}</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control1" ng-model="dataCenterCtrl.dataCenterData.data_center_description" ng-disabled="dataCenterCtrl.disableChange">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">{{"ETL_ADDRESS" | translate}}<span style="color: red">*</span></label>
+                            <div class="col-sm-5">
+                                <select ng-disabled="dataCenterCtrl.disableChange" ng-model="dataCenterCtrl.etlAddress" class="form-control1" ng-options="option.id as option.name for option in dataCenterCtrl.etlAddressOptions" ng-change="dataCenterCtrl.dataCenterData.data_center_etl_ip_address = ''" required>
+                                </select>
+                            </div>
+                            <div class="col-sm-5" ng-if="dataCenterCtrl.etlAddress == 1">
+                                <input type="text" ng-disabled="dataCenterCtrl.disableChange" ng-ip-address name="ip" required
+                                       ng-pattern="/\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/"
+                                       class="form-control1" ng-model="dataCenterCtrl.dataCenterData.data_center_etl_ip_address">
+                                <p ng-show="dataCenterForm.ip.$error.ipAddress == true && dataCenterForm.ip.$error.pattern == true" style="color: red;" class="help-block">
+                                    {{ "PLEASE_ENTER_VALID_IP_ADDRESS" |  translate}}
+                                </p>
+                            </div>
+                            <div class="col-sm-5" ng-if="dataCenterCtrl.etlAddress == 2">
+                                <input type="text" ng-disabled="dataCenterCtrl.disableChange" required
+                                       class="form-control1" ng-model="dataCenterCtrl.dataCenterData.data_center_etl_ip_address">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <button class="pull-right btn k2-primary-btn" ng-if="dataCenterCtrl.dataCenterData.data_center_status === 'Active' || dataCenterForm.ip.$invalid" type="submit" role-handler role="0">{{"SAVE_CHANGES" | translate}}</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 form-horizontal">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>CASE_NOTE</Name>
+  <ID>tbl_CASE_NOTE</ID>
+  <Columns>
+    <Column name="case_id" id="case_id" index="0" datatype="INTEGER" />
+    <Column name="note_id" id="note_id" index="1" datatype="INTEGER" mandatory="true" />
+    <Column name="note_date" id="note_date" index="2" datatype="DATETIME" />
+    <Column name="note_text" id="note_text" index="3" datatype="TEXT" />
+  </Columns>
+  <IndexesList>
+    <Index id="1" pk="true" unique="true" instanceOnly="true" columnsIdsList="note_id" />
+  </IndexesList>
+  <EnrichmentList>
+  </EnrichmentList>
+  <LazyDataUpdate syncMethod="Inherited" performEvery="1.00:00:00">
+    <DecisionFunction></DecisionFunction>
+  </LazyDataUpdate>
+  <TriggersList>
+  </TriggersList>
+</TableObject>

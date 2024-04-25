@@ -1,0 +1,177 @@
+{
+    "tags": [
+        "Create"
+    ],
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Start",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Create Source Tables",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Get  SQL Resource File To create CRM DB Tables",
+                            "actorType": {
+                                "parentType": "LuFunction",
+                                "inputs": [
+                                    {
+                                        "name": "functionName",
+                                        "const": "loadFromLUResource"
+                                    },
+                                    {
+                                        "const": "TDM/DEMO/crm_create.sql",
+                                        "name": "path",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "blob"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Get  SQL Resource File To create BILLING DB Tables",
+                            "actorType": {
+                                "parentType": "LuFunction",
+                                "inputs": [
+                                    {
+                                        "name": "functionName",
+                                        "const": "loadFromLUResource"
+                                    },
+                                    {
+                                        "const": "TDM/DEMO/billing_create.sql",
+                                        "name": "path",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "blob"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Statements For Source",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Create Error Handler",
+                            "onError": "result",
+                            "actorType": {
+                                "parentType": "ErrorHandler",
+                                "inputs": [
+                                    {
+                                        "name": "config",
+                                        "const": [
+                                            {
+                                                "exceptionKey": "com.k2view.fabric.common.io.basic.exception.StandardSqlException",
+                                                "conditions": {
+                                                    "standardType": "UNIQUE_CONSTRAINT"
+                                                },
+                                                "actions": {
+                                                    "suppress": false,
+                                                    "log": true,
+                                                    "flowName": ""
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "CREATE CRM DB TABLES",
+                            "actorType": {
+                                "parentType": "DbCommand",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "CRM_DB"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "CREATE BILLING DB TABLES",
+                            "actorType": {
+                                "parentType": "DbCommand",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "BILLING_DB"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "Get  SQL Resource File To create CRM DB Tables",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "CREATE CRM DB TABLES",
+                "name": "sql"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Get  SQL Resource File To create BILLING DB Tables",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "CREATE BILLING DB TABLES",
+                "name": "sql"
+            }
+        }
+    ]
+}

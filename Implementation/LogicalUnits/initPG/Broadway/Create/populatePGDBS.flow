@@ -1,0 +1,232 @@
+{
+    "tags": [
+        "Create"
+    ],
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Check Flag",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "is_first_deploy",
+                            "remark": "A boolean representing if this is the first deploy",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "boolean"
+                                        },
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "True",
+                    "dependsOnList": [
+                        "Check Flag"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Equals",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "Equals",
+                                "inputs": [
+                                    {
+                                        "name": "a",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "boolean"
+                                        },
+                                        "const": true
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "False",
+                    "dependsOnList": [
+                        "Check Flag"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Insert Data To CRM",
+                    "dependsOnList": [
+                        "True"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "CRM",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "populateDbs"
+                                    },
+                                    {
+                                        "const": "CRM_DB",
+                                        "name": "interface",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "editor": {
+                                            "id": "com.k2view.interface",
+                                            "interfaceType": [
+                                                "database",
+                                                "CassandraLoader"
+                                            ],
+                                            "interfaces": [
+                                                "fabric"
+                                            ]
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "TDM/DEMO/crm.sql.gz",
+                                        "name": "path",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Stage 1",
+                    "dependsOnList": [
+                        "False"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Insert Data To Billing",
+                    "dependsOnList": [
+                        "Insert Data To CRM"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "BILLING",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "populateDbs"
+                                    },
+                                    {
+                                        "const": "BILLING_DB",
+                                        "name": "interface",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "editor": {
+                                            "id": "com.k2view.interface",
+                                            "interfaceType": [
+                                                "database",
+                                                "CassandraLoader"
+                                            ],
+                                            "interfaces": [
+                                                "fabric"
+                                            ]
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "TDM/DEMO/billing.sql.gz",
+                                        "name": "path",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Stage 2",
+                    "dependsOnList": [
+                        "Stage 1"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "is_first_deploy",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Equals",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "is_first_deploy"
+            },
+            "rightPort": {
+                "actor": "is_first_deploy",
+                "name": "value"
+            }
+        }
+    ]
+}

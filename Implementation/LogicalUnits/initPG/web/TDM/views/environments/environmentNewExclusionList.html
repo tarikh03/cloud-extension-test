@@ -1,0 +1,82 @@
+<div class="ibox float-e-margins k2-card">
+    <div class="k2-header" style="border: none;">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="k2-card-title">{{ 'NEW_EXCLUSION_LIST' | translate }}</div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="k2-body">
+        <form name="exclusionListForm" role="form" ng-submit="environmentCtrl.validateAndAddExclusionList()">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group col-lg-12">
+                        <label>{{"BUSINESS_ENTITY" | translate}}</label>
+                        <select class="form-control1" width="'100%'"
+                                ng-change="environmentCtrl.onBeSelect();environmentCtrl.validateExclusionListRequestedBy()"
+                                chosen ng-model="environmentCtrl.exclusionListData.be_id"
+                                ng-options="o.be_id as o.be_name for o in environmentCtrl.allBusinessEntities" required>
+                            <option></option>
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label>{{"REQUESTED_BY" | translate}}</label>
+                        <select ng-disabled="!environmentCtrl.beIsSelected" class="form-control1" width="'100%'"
+                                ng-change="environmentCtrl.validateExclusionListRequestedBy()" chosen
+                                ng-model="environmentCtrl.exclusionListData.requested_by"
+                                ng-options="o.uid as o.uid for o in environmentCtrl.allusers" required>
+                            <option></option>
+                        </select>
+                        <div class="m-t-xs" ng-show="environmentCtrl.exclusionListRequestedByIsNotValid">
+                            <small class="text-danger">An exclusion list already exists for user, environment and
+                                business entity. Please update the existing list.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label>{{"EXCLUSION_LIST" | translate}}</label>
+                        <textarea rows="5" name="exclusionEntitiesList" class="col-lg-12"
+                                  ng-model="environmentCtrl.exclusionListData.exclusion_list">
+                        </textarea>
+
+                        <div class="m-t-xs" ng-show="environmentCtrl.patternFailed">
+                            <small class="text-dark">Please Enter Entity IDs, separated by a comma</small>
+                        </div>
+                        <div class="m-t-xs" ng-show="environmentCtrl.exclusionListIsNotValid">
+                            <small class="text-danger">The following entities are already included in another exclusion
+                                list: {{environmentCtrl.existingExclusionListMembers}}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-12 form-buttons">
+                            <button ng-disabled="environmentCtrl.exclusionListRequestedByIsNotValid"
+                                    class="btn k2-primary-btn pull-left" type="submit">{{"ADD" | translate}}
+                            </button>
+                            <a uib-tooltip="Close Exclusion List Editor"
+                               tooltip-placement="left"
+                               ng-if="!environmentCtrl.disableChangeExclusionList"
+                               type="button"
+                               role-handler
+                               role="1"
+                               class="pull-right"
+                               mwl-confirm message="Are you sure you want to close?"
+                               confirm-text="Yes <i class='glyphicon glyphicon-ok'></i>"
+                               cancel-text="No <i class='glyphicon glyphicon-remove'></i>"
+                               placement="left"
+                               on-confirm="environmentCtrl.getSummaryData()"
+                               on-cancel="cancelClicked = true"
+                               confirm-button-type="danger"
+                               cancel-button-type="default">
+
+                                <button class="btn  k2-primary-btn pull-right" type="button">{{"CLOSE" | translate}}
+                                </button>
+                            </a></div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

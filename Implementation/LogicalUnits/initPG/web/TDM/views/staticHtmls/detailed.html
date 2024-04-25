@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			table { 
+				font-family: arial, sans-serif;
+				border-collapse: collapse;
+				width: 100%;
+			}td, th { 
+				border: 1px solid #000000;
+				text-align: left;
+				padding: 8px;
+			}tr:nth-child(even) { 
+				background-color: #dddddd; 
+			}
+		</style>
+		<title style="display: {{migration}}">Migrate details report for migrate {{migrateId}}</title>
+	</head>
+	<body>
+		<h2 style="display: {{migration}}">Migrate details report for migrate {{migrateId}}</h2>
+		<h4 style="display: {{migration}}">Migrate details:</h4>
+		<table style="display: {{migration}}">
+			<tr>
+				<td style='border:0;width:110px;'>Command:</td>
+				<td style='border:0;'>{{migrateCommand}}</td>
+			</tr>
+			<tr>
+				<td style='border:0;'>Status:</td>
+				<td style='border:0;'>{{status}}</td>
+			</tr>
+			<tr>
+				<td style='border:0;'>Executed by:</td>
+				<td style='border:0;'>{{userName}}</td>
+			</tr>
+			<tr>
+				<td style='border:0;'>Logical unit:</td>
+				<td style='border:0;'>{{logicalUnit}}</td>
+			</tr>
+			<tr>
+				<td style='border:0;'>Nodes list:</td>
+				<td style='border:0;'>{{nodeList}}</td>
+			</tr>
+		</table>
+		<div style='height:30px;'>
+		</div>
+		<table style="display: {{migration}}">
+            {{dataRows}}
+		</table>
+		<h2 style="display: {{reference}}">Execution Details Report for Reference Tables</h2>
+		<div style='height:30px;'>
+		</div>
+		<table style="display: {{reference}}">
+			{{dataRowsReference}}
+		</table>
+	</body>
+</html>

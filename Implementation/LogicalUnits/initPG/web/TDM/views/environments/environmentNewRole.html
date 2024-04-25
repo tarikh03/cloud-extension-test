@@ -1,0 +1,244 @@
+<div class="ibox float-e-margins k2-card">
+    <div class="k2-header" style="border: none;">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="k2-card-title">{{ 'NEW_ROLE' | translate }}</div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="k2-body">
+        <form role="form" ng-submit="environmentCtrl.addNewRole()">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group col-lg-12">
+                        <label>{{"NAME" | translate}}</label>
+                        <input id="environment_new_role_name" type="text" class="form-control1" ng-model="environmentCtrl.roleData.role_name" required>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label>{{"DESCRIPTION" | translate}}</label>
+                        <input id="environment_new_role_description" type="text" class="form-control1" ng-model="environmentCtrl.roleData.role_description">
+                    </div>
+                    <div class="col-lg-12" ng-if="environmentCtrl.environmentDataOrig.allow_read">
+                        <div class="row">
+                            <div class="col-lg-3" style="margin-top: 18px;">
+                                <div class="form-group option-button">
+                                    <input
+                                        id="environment_new_role_allow_read"
+                                        ng-disabled="environmentCtrl.roleData.allow_read == true && !environmentCtrl.roleData.allow_write"
+                                        type="checkbox" ng-change="environmentCtrl.checkBoxChanged()"
+                                        ng-model="environmentCtrl.roleData.allow_read" />
+                                    <label class="control-label option-button-label">Read</label>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-9" ng-show="environmentCtrl.roleData.allow_read">
+                                <label>{{"NUMBER_OF_ENTITIES" | translate}}</label>
+                                <input 
+                                    id="environment_new_role_entities_read" style="width: 100%" type="number" class="form-control1" min="1"
+                                    ng-change="environmentCtrl.roleData.allowed_number_of_entities_to_read === undefined ? environmentCtrl.roleData.allowed_number_of_entities_to_read = 1 : environmentCtrl.roleData.allowed_number_of_entities_to_read"
+                                    ng-model="environmentCtrl.roleData.allowed_number_of_entities_to_read" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12" ng-if="environmentCtrl.environmentDataOrig.allow_write">
+                        <div class="row">
+                            <div class="col-lg-3" style="margin-top: 18px;">
+                                <div class="form-group option-button">
+                                    <input
+                                        id="environment_new_role_allow_write"
+                                        ng-disabled="!environmentCtrl.roleData.allow_read && environmentCtrl.roleData.allow_write == true"
+                                        type="checkbox" ng-change="environmentCtrl.checkBoxChanged()"
+                                        ng-model="environmentCtrl.roleData.allow_write" />
+                                    <label class="control-label option-button-label">Write</label>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-9" ng-show="environmentCtrl.roleData.allow_write">
+                                <label>{{"NUMBER_OF_ENTITIES" | translate}}</label>
+                                <input 
+                                    id="environment_new_role_entities_write" style="width: 100%" type="number" class="form-control1" min="0"
+                                    ng-change="environmentCtrl.roleData.allowed_number_of_entities_to_copy === undefined ? environmentCtrl.roleData.allowed_number_of_entities_to_copy = 1 : environmentCtrl.roleData.allowed_number_of_entities_to_copy"
+                                    ng-model="environmentCtrl.roleData.allowed_number_of_entities_to_copy" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12" ng-if="!environmentCtrl.hideUsersInput">
+                        <label>{{"TESTERS" | translate}}</label>
+                        <div style="display: flex;">
+                            <select width="'100%'" chosen multiple class="form-control1 chosen-select"
+                                id="environment_new_role_testers"
+                                ng-model="environmentCtrl.testers"
+                                ng-options="option as option.username for option in environmentCtrl.allTesters track by option.user_id">
+                            </select>
+                            <div off-click="environmentCtrl.isOpen1 = false" off-click-activator="environmentCtrl.isOpen1">
+                                <button  id="environment_new_role_add_testers"
+                                    uib-tooltip="Add Tester" tooltip-placement="top" popover-placement="left"
+                                    ng-click="environmentCtrl.initAddNewTesterPopup()" type="button"
+                                    class="btn k2-primary-btn">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <user-settings 
+                                        class="testers"
+                                        ng-if="environmentCtrl.isOpen1"
+                                        enable-all-users="true"
+                                        selected-users="environmentCtrl.testers.concat(environmentCtrl.environmentData.owners)"
+                                        users="environmentCtrl.allTesters" 
+                                        close="environmentCtrl.closeAddTesterModal"
+                                        save="environmentCtrl.saveUsersAndGroupsTester"
+                                        groups="environmentCtrl.testerFabricRoles">
+                                    </user-settings>
+                                <!-- <script type="text/ng-template" id="addNewTesterRole.html">
+                                    <div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label>Please type in new tester:</label>
+                                                    <input type="text" ng-model="environmentCtrl.newTesterToAdd"
+                                                            class="form-control1" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="color: #ec4758"
+                                                ng-show="environmentCtrl.addNewTesterError == true">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label>Tester exist, Please type in new tester</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <button type="button"  class="btn k2-primary-btn"
+                                                        ng-click="environmentCtrl.addTester(environmentCtrl.newTesterToAdd, environmentCtrl.allTesters)">
+                                                    Add
+                                                </button>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <button type="button" class="btn k2-primary-btn"
+                                                        ng-click="environmentCtrl.isOpen1 = false">Cancel
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </script> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6 permissionsLabels">
+                        <div class="option-button">
+                            <input 
+                                id="environment_new_role_ignore_test_connection"
+                                ng-disabled="environmentCtrl.disableChangeRole" type="checkbox"
+                                ng-model="environmentCtrl.roleData.allowed_test_conn_failure" />
+                            <label class="option-button-label">
+                                {{"ENABLE_TASK_EXECUTION_UPON_FAILURE" | translate}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12 permissionsLabelsNew"
+                        ng-show="environmentCtrl.roleData.allow_write">
+                        <div class="option-button">
+                            <input type="checkbox" id="environment_new_role_delete_before_load" ng-model="environmentCtrl.roleData.allowed_delete_before_load" />
+                            <label class="option-button-label">
+                                {{"DELETE_BEFORE_LOAD" | translate}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12 permissionsLabelsNew"
+                        ng-show="environmentCtrl.roleData.allow_write">
+                        <div class="option-button">
+                            <input type="checkbox"
+                                id="environment_new_role_entity_clone"
+                                ng-model="environmentCtrl.roleData.allowed_creation_of_synthetic_data" />
+                            <label class="option-button-label">
+                                Entity Clone
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12 permissionsLabelsNew"
+                        ng-show="environmentCtrl.roleData.allow_write">
+                        <div class="option-button">
+                            <input type="checkbox" id="environment_new_role_random_selection"
+                                ng-model="environmentCtrl.roleData.allowed_random_entity_selection" />
+                            <label class="option-button-label">
+                                {{"RANDOM_ENTITY_SELECTION" | translate}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12 permissionsLabelsNew">
+                        <div class="option-button">
+                            <input type="checkbox" id="environment_new_role_request_fresh_data" 
+                                ng-model="environmentCtrl.roleData.allowed_request_of_fresh_data" />
+                            <label class="option-button-label">
+                                {{"REQUEST_OF_FRESH_DATA" | translate}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12 permissionsLabelsNew">
+                        <div class="option-button">
+                            <input type="checkbox" id="environment_new_role_refresh_refernce_data" 
+                                ng-model="environmentCtrl.roleData.allowed_refresh_reference_data" />
+                            <label class="option-button-label">
+                                {{"REFRESH_REFERENCE_DATA" | translate}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12 permissionsLabelsNew">
+                        <div class="option-button">
+                            <input type="checkbox" id="environment_new_role_task_scheduling" 
+                                ng-model="environmentCtrl.roleData.allowed_task_scheduling" />
+                            <label class="option-button-label">
+                                {{"TASK_SCHEDULING" | translate}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12 permissionsLabelsNew"
+                        ng-show="environmentCtrl.roleData.allow_write">
+                        <div class="option-button">
+                            <input type="checkbox" id="environment_new_role_replace_sequences" 
+                                ng-model="environmentCtrl.roleData.allowed_replace_sequences" />
+                            <label class="option-button-label">
+                                {{"REPLACE_SEQUENCES" | translate}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12 permissionsLabelsNew" ng-if="environmentCtrl.isFluxMode">
+                        <div class="option-button">
+                            <input type="checkbox" id="environment_new_role_data_versioning"    
+                                ng-model="environmentCtrl.roleData.allowed_entity_versioning" />
+                            <label class="option-button-label">
+                                Data Versioning
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12 permissionsLabelsNew" ng-if="environmentCtrl.envType !== 'Source' && environmentCtrl.isFluxMode">
+                        <div class="option-button" style="flex-direction: column;justify-content: flex-start;align-items: flex-start;">
+                            <label class="option-button-label">
+                                Max Number of Reserved Entities On Env
+                            </label>
+                            <input style="width: 100%" type="number" class="form-control1"  id="environment_new_role_reserve_entities"
+                                min="{{!environmentCtrl.roleData.allowed_number_of_entities_to_copy && environmentCtrl.envType === 'Target' ? 1 : 0}}"
+                                ng-model="environmentCtrl.roleData.allowed_number_of_reserved_entities" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-12 form-buttons">
+                            <button id="environment_new_role_save" class="btn k2-primary-btn pull-left" type="submit">{{"ADD" | translate}}</button>
+                            <a uib-tooltip="Close Role Editor" tooltip-placement="left" type="button" role-handler
+                                id="environment_new_role_close"
+                                role="1" ng-if="!environmentCtrl.disableChangeRole" class="pull-right" mwl-confirm
+                                message="Are you sure you want to close?"
+                                confirm-text="Yes <i class='glyphicon glyphicon-ok'></i>"
+                                cancel-text="No <i class='glyphicon glyphicon-remove'></i>" placement="left"
+                                on-confirm="environmentCtrl.getSummaryData()" on-cancel="cancelClicked = true"
+                                confirm-button-type="danger" cancel-button-type="default">
+
+                                <button class="btn  k2-primary-btn pull-right" type="button">{{"CLOSE" |
+                                    translate}}</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,241 @@
+<div
+  class="alert alert-warning alert-group"
+  style="
+    background-color: #f9f9f9;
+    border: 2px solid #cccccc;
+    color: var(--default-text-color);
+  "
+>
+  <p
+    class="form-control1"
+    style="background-color: transparent; border-color: transparent"
+  >
+    <!-- For dates use the following format: 'YYYYMMDD' -->
+  </p>
+  <div class="form-inline">
+    <!--<select required ng-disabled="disablechange" ng-options="o.name as o.name for o in operators" ng-model="group.operator" class="form-control1"  ></select>-->
+    <button
+      ng-if="!disablechange"
+      type="button"
+      style="margin-left: 5px"
+      ng-click="addCondition()"
+      class="btn btn-sm btn-success btn-outline"
+    >
+      <span class="glyphicon glyphicon-plus-sign"></span> Add Condition
+    </button>
+    <button
+      ng-if="!disablechange"
+      type="button"
+      style="margin-left: 5px"
+      ng-click="addGroup()"
+      class="btn btn-sm btn-success btn-outline"
+    >
+      <span class="glyphicon glyphicon-plus-sign"></span> Add Group
+    </button>
+    <button
+      ng-if="!disablechange"
+      type="button"
+      style="margin-left: 5px"
+      ng-click="removeGroup()"
+      class="btn btn-sm btn-danger btn-outline"
+    >
+      <span class="glyphicon glyphicon-minus-sign"></span> Remove Group
+    </button>
+  </div>
+  <div class="group-conditions">
+    <div ng-repeat="rule in group.rules | orderBy:'index'" class="condition">
+      <div ng-switch="rule.hasOwnProperty('group')" style="margin-top: 4px">
+        <div ng-switch-when="true">
+          <query-builder
+            group="rule.group"
+            form="form"
+            index="$index"
+            params="params"
+            lastindex="$index != group.rules.length - 1"
+            disablechange="disablechange"
+          ></query-builder>
+        </div>
+        <div ng-switch-default="ng-switch-default">
+          <div class="form-inline">
+            <select
+              required
+              name="paramsKey_{{$index}}_{{index}}"
+              ng-disabled="disablechange"
+              ng-init="field = rule.field"
+              style="margin-left: 5px;width: auto;"
+              ng-options="t.param_name as t.param_name for t in params | orderBy:'param_name'"
+              ng-model="field"
+              class="form-control1"
+              ng-change="changeParam(rule,field)"
+            ></select>
+
+            <select
+              name="paramsOper_{{$index}}_{{index}}"
+              required
+              ng-disabled="disablechange"
+              ng-change="disableIfNull(rule, condition); changeData(rule,rule.data); changeCondition(rule,condition)"
+              ng-if="rule.type !== 'combo'"
+              ng-init="condition = rule.condition"
+              style="margin-left: 5px;width: auto;"
+              ng-options="c.id as c.name for c in conditions"
+              ng-model="condition"
+              class="form-control1"
+            ></select>
+
+            <select
+              name="paramsOper_{{$index}}_{{index}}"
+              required
+              ng-disabled="disablechange"
+              ng-change="disableIfNull(rule, condition); changeData(rule,rule.data); changeCondition(rule,condition)"
+              ng-if="rule.type === 'combo'"
+              ng-init="condition = rule.condition"
+              style="margin-left: 5px;width: auto;"
+              ng-options="c.name as c.name for c in comboConditions"
+              ng-model="condition"
+              class="form-control1"
+            ></select>
+
+            <input
+              name="parametersField_{{$index}}_{{index}}"
+              autocomplete="off"
+              required
+              ng-disabled="disablechange"
+              ng-if="(rule.type == 'number') && rule.disableThird === false"
+              min="{{rule.min}}"
+              max="{{rule.max}}"
+              ng-init="data = rule.data"
+              step="any"
+              style="margin-left: 5px;width: auto;"
+              type="number"
+              ng-model="data"
+              class="form-control1"
+              ng-change="changeData(rule,data)"
+            />
+            <input
+              placeholder="{{rule.type == 'real' ? 'Real Number' : 'Integer Number'}}"
+              autocomplete="off"
+              required
+              ng-disabled="disablechange"
+              ng-if="rule.type == 'real' || rule.type == 'integer'"
+              min="{{rule.min}}"
+              max="{{rule.max}}"
+              ng-init="data = rule.data"
+              step="any"
+              style="margin-left: 5px;width: auto;"
+              type="number"
+              ng-model="data"
+              class="form-control1"
+              ng-change="changeData(rule,data)"
+            />
+            <input
+              name="parametersField_{{$index}}_{{index}}"
+              autocomplete="off"
+              required
+              ng-disabled="disablechange"
+              ng-if="(rule.type == 'text' || !rule.type) && rule.disableThird === false"
+              ng-init="data = rule.data"
+              style="margin-left: 5px;width: auto;"
+              type="text"
+              ng-model="data"
+              class="form-control1"
+              ng-change="changeData(rule,data)"
+            />
+            <select
+              name="parametersField_{{$index}}_{{index}}"
+              required
+              ng-disabled="disablechange"
+              ng-if="(rule.type == 'combo') && rule.disableThird === false "
+              ng-init="data = rule.data"
+              style="margin-left: 5px;width: auto;"
+              ng-options="t as t for t in rule.validValues"
+              ng-model="data"
+              class="form-control1"
+              ng-change="changeData(rule,data)"
+            ></select>
+
+            <span
+              ng-if="!disablechange"
+              ng-click="removeCondition($index)"
+              style="margin-left: 5px; margin-bottom: 0px; color: #ec4758"
+            >
+              <span class="glyphicon glyphicon-minus-sign"></span>
+            </span>
+            <div>
+              <div>
+                <p
+                  class="form-control1"
+                  ng-if="rule.type == 'number'"
+                  style="
+                    color: white;
+                    background-color: transparent;
+                    border-color: transparent;
+                  "
+                >
+                  (Min : {{rule.min}} Max : {{rule.max}}) {{}}
+                </p>
+                <div class="requestedEntitiesErrors">
+                  <div
+                    ng-show="form['paramsKey_' + $index + '_' + index].$invalid || form['paramsOper_' + $index + '_' + index].$invalid"
+                  >
+                    <p
+                      ng-if="form.submitted"
+                      style="margin-top: 2px"
+                      class="form-control1 ng-binding ng-scope text-dark requestedEntitiesAlert"
+                    >
+                      Please Select Parameter/Operator<span style="color: red"
+                        >*</span
+                      >
+                    </p>
+                  </div>
+                  <div
+                    ng-show="form['parametersField_' + $index + '_' + index].$invalid"
+                  >
+                    <p
+                      ng-if="form['parametersField_' + $index + '_' + index].$error.required && form.submitted"
+                      style="margin-top: 2px"
+                      class="form-control1 ng-binding ng-scope text-danger requestedEntitiesAlert"
+                    >
+                      Please Enter Value<span>*</span>
+                    </p>
+                    <p
+                      ng-if="form['parametersField_' + $index + '_' + index].$error.min && !form['parametersField_' + $index + '_' + index].$error.required"
+                      style="margin-top: 2px"
+                      class="requestedEntitiesAlert form-control1 ng-binding ng-scope text-danger"
+                    >
+                      Please Enter value bigger or equal to {{rule.min}}
+                    </p>
+                    <p
+                      ng-if="form['parametersField_' + $index + '_' + index].$error.max && !form['parametersField_' + $index + '_' + index].$error.required"
+                      style="margin-top: 2px"
+                      class="requestedEntitiesAlert form-control1 ng-binding ng-scope text-danger"
+                    >
+                      Please Enter value less or equal to {{rule.max}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <select
+            style="width: 80px; margin-top: 4px; min-width: 90px"
+            ng-if="$index != group.rules.length - 1"
+            required
+            ng-disabled="disablechange"
+            ng-options="o.name as o.name for o in operators"
+            ng-model="rule.operator"
+            class="form-control1"
+          ></select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<select
+  style="width: 80px"
+  ng-if="lastindex"
+  required
+  ng-disabled="disablechange"
+  ng-options="o.name as o.name for o in operators"
+  ng-model="group.operator"
+  class="form-control1"
+></select>

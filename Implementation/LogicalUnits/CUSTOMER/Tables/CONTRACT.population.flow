@@ -1,0 +1,377 @@
+{
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Input",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "PopulationArgs",
+                            "actorType": {
+                                "parentType": "PopulationArgs",
+                                "readOnly": true,
+                                "inputs": [
+                                    {
+                                        "name": "customer_id",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "contract_id",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "contract_ref_id",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "associated_line",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "contract_description",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "from_date",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "to_date",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "associated_line_fmt",
+                                        "schema": {}
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "SyncDeleteMode",
+                            "actorType": {
+                                "parentType": "SyncDeleteMode",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "table",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Source",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Query",
+                            "actorType": {
+                                "parentType": "SourceDbQuery",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "CRM_DB"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": "select * from public.contract"
+                                    },
+                                    {
+                                        "name": "use_mbd_finder",
+                                        "const": true
+                                    },
+                                    {
+                                        "name": "luid_column_name",
+                                        "const": "customer_id"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "customer_id": {
+                                                    "type": {}
+                                                },
+                                                "contract_id": {
+                                                    "type": {}
+                                                },
+                                                "contract_ref_id": {
+                                                    "type": {}
+                                                },
+                                                "associated_line": {
+                                                    "type": {}
+                                                },
+                                                "contract_description": {
+                                                    "type": {}
+                                                },
+                                                "from_date": {
+                                                    "type": {}
+                                                },
+                                                "to_date": {
+                                                    "type": {}
+                                                },
+                                                "associated_line_fmt": {
+                                                    "type": {}
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 1",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "LU Table",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "actors": [
+                        {
+                            "name": "CONTRACT",
+                            "actorType": {
+                                "parentType": "DbLoad",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "fabric"
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "table",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "fields",
+                                        "const": [
+                                            "customer_id",
+                                            "contract_id",
+                                            "contract_ref_id",
+                                            "associated_line",
+                                            "contract_description",
+                                            "from_date",
+                                            "to_date",
+                                            "associated_line_fmt"
+                                        ]
+                                    },
+                                    {
+                                        "name": "dialect",
+                                        "const": "sqlite"
+                                    },
+                                    {
+                                        "name": "customer_id",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "contract_id",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "contract_ref_id",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "associated_line",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "contract_description",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "from_date",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "to_date",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "associated_line_fmt",
+                                        "schema": {}
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Post Load",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": []
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "PopulationArgs",
+                "name": "parent_rows"
+            },
+            "rightPort": {
+                "actor": "Query",
+                "name": "parent_rows"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Query",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "CONTRACT",
+                "name": "params"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "customer_id"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "customer_id"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "contract_id"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "contract_id"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "contract_ref_id"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "contract_ref_id"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "associated_line"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "associated_line"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "contract_description"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "contract_description"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "from_date"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "from_date"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "to_date"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "to_date"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "associated_line_fmt"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "associated_line_fmt"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "table"
+            },
+            "rightPort": {
+                "actor": "SyncDeleteMode",
+                "name": "table"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "CONTRACT",
+                "name": "schema"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "table"
+            },
+            "rightPort": {
+                "actor": "CONTRACT",
+                "name": "table"
+            }
+        }
+    ]
+}

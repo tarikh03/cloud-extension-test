@@ -1,0 +1,247 @@
+<div class="col-lg-12" style="min-height: 590px">
+  <div class="ibox float-e-margins k2-card">
+    <div class="k2-header">
+      <div class="row">
+        <div class="col-lg-3">
+          <div class="k2-card-title">{{ 'NEW_TASK' | translate }}</div>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="k2-body">
+      <div class="wizard">
+        <div class="steps clearfix custom-ul">
+          <span style="display: none">
+            {{newTaskCtrl.viewSteps = newTaskCtrl.getStepsArray() }}
+          </span>
+          <hr class="wizard-hr" />
+          <ul
+            class="ul-wizard"
+            style="display: flex; width: 70%; justify-content: space-between"
+          >
+            <li class="pull-left" ng-class="{current : newTaskCtrl.step == 1}">
+              <a
+                class="btn-default"
+                ng-class="{
+                          activestep:newTaskCtrl.step == 1 ,
+                          finishedstep:  generalForm.$submitted && newTaskCtrl.step !== 1 ,
+                          disabledstep: !generalForm.$submitted && newTaskCtrl.step !== 1 }"
+                          ng-click="newTaskCtrl.submitForm(newTaskCtrl.step,1)"
+              >
+                <span class="wizard-step">
+                  {{newTaskCtrl.viewSteps.indexOf(1) + 1}}
+                </span>
+              </a>
+              <span
+                class="step-title"
+                ng-class="{
+                activesteptitle:newTaskCtrl.step == 1 ,
+                 finishedsteptitle: generalForm.$submitted && newTaskCtrl.step !== 1 ,
+                 disabledsteptitle: !generalForm.$submitted && newTaskCtrl.step !== 1 }"
+                >
+                {{"GENERAL" | translate}}
+              </span>
+            </li>
+            <li
+              class="pull-left"
+              ng-if="newTaskCtrl.taskData.reference != null"
+              ng-class="{current : newTaskCtrl.step == 6}"
+            >
+              <a
+                class="btn-default"
+                ng-click="newTaskCtrl.submitForm(newTaskCtrl.step,6)"
+                ng-class="{
+                  activestep: newTaskCtrl.step == 6 ,
+                   finishedstep: ReferenceForm.$submitted && newTaskCtrl.step !== 6 , 
+                   disabledstep: !ReferenceForm.$submitted && newTaskCtrl.step !== 6
+                   }"
+                ><span class="wizard-step"
+                  >{{newTaskCtrl.viewSteps.indexOf(6) + 1}}</span
+                ></a
+              >
+              <span
+                class="step-title"
+                ng-class="{
+                activesteptitle:newTaskCtrl.step == 6 ,
+                 finishedsteptitle: ReferenceForm.$submitted && newTaskCtrl.step !== 6 , 
+                 disabledsteptitle: !ReferenceForm.$submitted && newTaskCtrl.step !== 6 }"
+              >
+                Reference
+              </span>
+            </li>
+            <li
+              class="pull-left"
+              ng-if="!(newTaskCtrl.taskData.task_type == 'EXTRACT' && newTaskCtrl.taskData.selectAllEntites) && newTaskCtrl.taskData.reference !== 'refernceOnly'"
+              ng-class="{current : newTaskCtrl.step == 2}"
+            >
+              <a
+                class="btn-default"
+                ng-click="newTaskCtrl.submitForm(newTaskCtrl.step,2)"
+                ng-class="{
+                  activestep: newTaskCtrl.step == 2 ,
+                   finishedstep: requestedEntitiesForm.$submitted  && newTaskCtrl.step !== 2, 
+                   disabledstep: !requestedEntitiesForm.$submitted && newTaskCtrl.step !== 2 }"
+                ><span class="wizard-step"
+                  >{{newTaskCtrl.viewSteps.indexOf(2) + 1}}
+                </span></a
+              >
+              <span
+                class="step-title"
+                ng-class="{
+                activesteptitle: newTaskCtrl.step == 2 ,
+                 finishedsteptitle:  requestedEntitiesForm.$submitted  && newTaskCtrl.step !== 2, 
+                 disabledsteptitle: !requestedEntitiesForm.$submitted && newTaskCtrl.step !== 2 }"
+                >{{"REQUESTED_ENTITIES" | translate}}
+              </span>
+            </li>
+            <li
+              class="pull-left"
+              ng-if="newTaskCtrl.taskData.task_globals"
+              ng-class="{current : newTaskCtrl.step == 5}"
+            >
+              <a
+                class="btn-default"
+                ng-click="newTaskCtrl.submitForm(newTaskCtrl.step,5)"
+                ng-class="{
+                  activestep: newTaskCtrl.step == 5 ,
+                   finishedstep: AddGlobalForm.$submitted &&  newTaskCtrl.step !== 5 ,
+                    disabledstep: !AddGlobalForm.$submitted && newTaskCtrl.step !== 5 }"
+                ><span class="wizard-step"
+                  >{{newTaskCtrl.viewSteps.indexOf(5) + 1}}</span
+                >
+              </a>
+              <span
+                class="step-title"
+                ng-class="{
+                activesteptitle: newTaskCtrl.step == 5 ,
+                 finishedsteptitle:AddGlobalForm.$submitted &&  newTaskCtrl.step !== 5 ,
+                 disabledsteptitle: !AddGlobalForm.$submitted && newTaskCtrl.step !== 5 }"
+                >{{"TASK_GLOBALS" | translate}}
+              </span>
+            </li>
+            <li
+              class="pull-left"
+              ng-if="
+                            ((newTaskCtrl.taskData.task_type == 'LOAD' && !newTaskCtrl.taskData.version_ind) ||
+                            (newTaskCtrl.taskData.task_type == 'EXTRACT' && !newTaskCtrl.taskData.version_ind 
+                                && (newTaskCtrl.sourceUserRole.allowed_request_of_fresh_data || newTaskCtrl.userRole.allowed_request_of_fresh_data))) &&
+                            newTaskCtrl.taskData.reference !== 'refernceOnly'"
+              ng-class="{current : newTaskCtrl.step == 3}"
+            >
+              <a
+                class="btn-default"
+                ng-click="newTaskCtrl.submitForm(newTaskCtrl.step,3)"
+                ng-class="{
+                  activestep:newTaskCtrl.step == 3 ,
+                   finishedstep: requestParametersForm.$submitted && newTaskCtrl.step !== 3 ,
+                    disabledstep: !requestParametersForm.$submitted && newTaskCtrl.step !== 3 }"
+                ><span class="wizard-step"
+                  >{{newTaskCtrl.viewSteps.indexOf(3) + 1}}
+                </span>
+              </a>
+              <span
+                class="step-title"
+                ng-class="{
+                activesteptitle: newTaskCtrl.step == 3 ,
+                 finishedsteptitle:  requestParametersForm.$submitted && newTaskCtrl.step !== 3 ,
+                 disabledsteptitle: !requestParametersForm.$submitted && newTaskCtrl.step !== 3 }"
+                >{{"REQUEST_PARAMETERS" | translate}}
+              </span>
+            </li>
+            <li class="pull-left" ng-class="{current : newTaskCtrl.step == 4}">
+              <a
+                class="btn-default"
+                ng-click="newTaskCtrl.submitForm(newTaskCtrl.step,4)"
+                ng-class="{
+                  activestep:newTaskCtrl.step == 4 ,
+                   finishedstep: executionTimingForm.$submitted && newTaskCtrl.step !== 4 ,
+                    disabledstep: !executionTimingForm.$submitted && newTaskCtrl.step !== 4 }"
+              >
+                <span class="wizard-step"
+                  >{{newTaskCtrl.viewSteps.indexOf(4) + 1}}
+                </span>
+              </a>
+              <span
+                class="step-title"
+                ng-class="{
+                activesteptitle: newTaskCtrl.step == 4 ,
+                 finishedsteptitle: executionTimingForm.$submitted && newTaskCtrl.step !== 4 ,
+                 disabledsteptitle: !executionTimingForm.$submitted && newTaskCtrl.step !== 4 }"
+                >{{"EXECUTION_TIMING" | translate}}
+              </span>
+            </li>
+          </ul>
+        </div>
+        <div class="wizard">
+          <div class="content" ng-show="newTaskCtrl.step == 1">
+            <form
+              name="generalForm"
+              role="form"
+              novalidate
+              ng-init="newTaskCtrl.initGeneral(generalForm)"
+              ng-submit="newTaskCtrl.generalNext(generalForm)"
+            >
+              <div ng-include="'views/tasks/newTask/general.html'"></div>
+            </form>
+          </div>
+          <div class="content" ng-show="newTaskCtrl.step == 2">
+            <form
+              name="requestedEntitiesForm"
+              role="form"
+              novalidate
+              ng-submit="newTaskCtrl.requestedEntitiesNext(requestedEntitiesForm)"
+            >
+              <div
+                ng-include="'views/tasks/newTask/requestedEntities.html'"
+              ></div>
+            </form>
+          </div>
+          <div class="content" ng-show="newTaskCtrl.step == 3">
+            <form
+              name="requestParametersForm"
+              role="form"
+              novalidate
+              ng-submit="newTaskCtrl.requestParametersNext(requestParametersForm)"
+            >
+              <div
+                ng-include="'views/tasks/newTask/requestParameters.html'"
+              ></div>
+            </form>
+          </div>
+          <div class="content" ng-show="newTaskCtrl.step == 4">
+            <form
+              name="executionTimingForm"
+              role="form"
+              novalidate
+              ng-submit="newTaskCtrl.executionTimingFinish(executionTimingForm)"
+            >
+              <div
+                ng-include="'views/tasks/newTask/executionTiming.html'"
+              ></div>
+            </form>
+          </div>
+          <div class="content" ng-show="newTaskCtrl.step == 5">
+            <form
+              name="AddGlobalForm"
+              role="form"
+              novalidate
+              ng-submit="newTaskCtrl.globalsNext()"
+            >
+              <div ng-include="'views/tasks/newTask/addGlobal.html'"></div>
+            </form>
+          </div>
+          <div class="content" ng-if="newTaskCtrl.step == 6">
+            <form
+              name="ReferenceForm"
+              role="form"
+              novalidate
+              ng-submit="newTaskCtrl.referenceNext()"
+            >
+              <div ng-include="'views/tasks/newTask/reference.html'"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

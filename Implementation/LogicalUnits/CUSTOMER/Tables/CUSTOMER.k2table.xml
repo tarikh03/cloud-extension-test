@@ -5,17 +5,17 @@
   <ColumnsCollation>BINARY</ColumnsCollation>
   <FullTextSearch>false</FullTextSearch>
   <Columns>
-    <Column name="CUSTOMER_ID" id="CUSTOMER_ID" index="0" datatype="integer" mandatory="true" />
-    <Column name="SSN" id="SSN" index="1" datatype="Text" />
-    <Column name="FIRST_NAME" id="FIRST_NAME" index="2" datatype="Text" />
-    <Column name="LAST_NAME" id="LAST_NAME" index="3" datatype="Text" />
+    <Column name="customer_id" id="customer_id" index="0" datatype="integer" mandatory="true" />
+    <Column name="ssn" id="ssn" index="1" datatype="Text" />
+    <Column name="first_name" id="first_name" index="2" datatype="Text" />
+    <Column name="last_name" id="last_name" index="3" datatype="Text" />
   </Columns>
   <IndexesList>
-    <Index id="1" pk="true" unique="true" instanceOnly="true" columnsIdsList="CUSTOMER_ID" />
+    <Index id="1" pk="true" unique="true" instanceOnly="true" columnsIdsList="customer_id" />
   </IndexesList>
   <EnrichmentList>
   </EnrichmentList>
-  <LazyDataUpdate syncMethod="Inherited" performEvery="1.00:00:00">
+  <LazyDataUpdate syncMethod="Inherited" performEvery="1.00:00:00" deleteMode="">
     <DecisionFunction></DecisionFunction>
   </LazyDataUpdate>
   <TriggersList>

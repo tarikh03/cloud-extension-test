@@ -1,0 +1,59 @@
+<link href="js/components/task/advancedBusinessOptions/advancedBusinessOptions.css" rel="stylesheet" /> 
+
+<div class="advanced-business-options" style="position: absolute;" click-outside="close()">
+    <div class="title">
+        <span>Systems & Logical Units</span>
+        <span ng-click="close()" style="cursor: pointer"><img src="img/xclose.svg"/></span>
+    </div>
+    <div class="body">
+        <div class="clear-add-all-container">
+            <span ng-click="advancedBusinessOptionsCtrl.addClearAll(false)">
+                Clear All
+            </span>
+            <span ng-click="advancedBusinessOptionsCtrl.addClearAll(true)">
+                Add All
+            </span>
+        </div>
+        <div class="seperator">
+        </div>
+        <div class="product-logicalUnits-container" ng-repeat="(key, value) in advancedBusinessOptionsCtrl.prodLogicalUnits">
+            <div class="product-row">
+                <div style="display: flex; align-items: center;">
+                    <input type="checkbox"
+                        ng-change="advancedBusinessOptionsCtrl.addClearAllProd(key, advancedBusinessOptionsCtrl.prod[key])"
+                        ng-model="advancedBusinessOptionsCtrl.prod[key]" />
+                    <label class="prod-name-text">
+                        {{key}}
+                    </label>
+                </div>
+                
+                <span ng-click="advancedBusinessOptionsCtrl.toggleProds[key] = !advancedBusinessOptionsCtrl.toggleProds[key]"> 
+                    <img ng-class="{
+                    'closed' : !advancedBusinessOptionsCtrl.toggleProds[key]
+                    }" src="img\arrow-up.svg" />
+                </span>
+            </div>
+            <div class="logicalUnits-row" ng-show="advancedBusinessOptionsCtrl.toggleProds[key]">
+                <div class="logicalUnit-item" ng-repeat="lu in value">
+                    <input type="checkbox"
+                    style="min-width: 24px; max-width: 24px;"
+                        ng-change="advancedBusinessOptionsCtrl.isAllSelected(key)"
+                        ng-model="lu.selected" />
+                    <label class="lu-name-text" title="{{lu.lu_name}}">
+                        {{lu.lu_name}}
+                    </label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="buttons-container">
+            <span class="cancel-button" ng-click="close()">
+                CANCEL
+            </span>
+            <span class="add-button" ng-click="advancedBusinessOptionsCtrl.saveData()">
+                SAVE
+            </span>
+        </div>
+    </div>
+</div>

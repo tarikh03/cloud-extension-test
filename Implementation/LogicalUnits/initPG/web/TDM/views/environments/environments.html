@@ -1,0 +1,25 @@
+<div class="wrapper  animated fadeInRight" ng-controller="environmentsCtrl as environments">
+
+    <div ng-switch on="environments.pageDisplay">
+        <div ng-switch-when="environmentsTable">
+            <div class="row">
+                <environments-table-directive content="environments.environmentsData"></environments-table-directive>
+            </div>
+        </div>
+        <div ng-switch-when="environment">
+            <div class="row">
+                <environment-directive content="environments.environmentData"></environment-directive>
+            </div>
+        </div>
+        <div ng-switch-when="environmentProduct">
+            <div class="row">
+                <product-directive content="environments.productData"></product-directive>
+            </div>
+        </div>
+        <div ng-switch-default>
+            <div class="row">
+                <new-environment-directive content="environments.newEnvironmentData"></new-environment-directive>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DBConn xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:type="DBConnGenericAdoJdbc" name="BILLING_DB" type="genericdb" version="8.0.0">
+    <JdbcDriverName>PostgreSQL</JdbcDriverName>
+    <Active>true</Active>
+    <ConnectionProperties></ConnectionProperties>
+    <ConnectionStringServerSide>jdbc:postgresql://dev-pg-service:5432/BILLING_DB?stringtype=unspecified</ConnectionStringServerSide>
+    <PortNum>5432</PortNum>
+    <IsCustomConnectionStringServerSide>false</IsCustomConnectionStringServerSide>
+    <MinConnectionsNumber>0</MinConnectionsNumber>
+    <MaxConnectionsNumber>60</MaxConnectionsNumber>
+    <UseSelectAsteriskInAutoCreatedQueries>true</UseSelectAsteriskInAutoCreatedQueries>
+    <AutomaticMetadataLoading>false</AutomaticMetadataLoading>
+    <OfflineMode>true</OfflineMode>
+    <DataSource>dev-pg-service</DataSource>
+    <DataBase>BILLING_DB</DataBase>
+    <UserId>BILLING_USER</UserId>
+    <Password>~encs2~+r0pYiuk6g3XEPp/f9rHQdrkA+8kgIUdjp5DHsOm7lF5Cl/XiaUVX5QKQuU=</Password>
+    <SchemaFilter></SchemaFilter>
+    <CommandList></CommandList>
+</DBConn>

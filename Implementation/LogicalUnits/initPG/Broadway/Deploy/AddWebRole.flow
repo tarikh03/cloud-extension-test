@@ -1,0 +1,221 @@
+{
+    "tags": [
+        "Deploy"
+    ],
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Get Roles",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Get List of Roles",
+                            "actorType": {
+                                "parentType": "DbCommand",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "fabric"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": "list roles"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "security profiles": {
+                                                        "type": "string"
+                                                    },
+                                                    "description": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Get TDMDB Schema",
+                            "actorType": {
+                                "parentType": "FabricSetRead",
+                                "inputs": [
+                                    {
+                                        "name": "key",
+                                        "const": "TDMDB_SCHEMA",
+                                        "isDefault": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Check Role Name",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "StringPos1",
+                            "actorType": {
+                                "parentType": "StringPos",
+                                "inputs": [
+                                    {
+                                        "name": "substring",
+                                        "const": "_k2v_"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Insert Role to Permission Groups Table",
+                    "dependsOnList": [
+                        "Check Role Name"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Equals1",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "Equals",
+                                "inputs": [
+                                    {
+                                        "name": "a",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "boolean"
+                                        },
+                                        "const": true
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "DbCommand1",
+                            "actorType": {
+                                "parentType": "DbCommand",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "TDM"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": "INSERT INTO ${@schema}.permission_groups_mapping(\r\n\tdescription, fabric_role, permission_group, created_by, updated_by, creation_date, update_date)\r\n\tVALUES ('Initial mapping for admin user',${k2v_user} ,'admin', 'admin', 'admin', NOW(), NOW()) ON CONFLICT DO NOTHING;\r\n\t"
+                                    },
+                                    {
+                                        "name": "k2v_user",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Stage 3",
+                    "dependsOnList": [
+                        "Check Role Name"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": []
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "Get List of Roles",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "StringPos1",
+                "name": "string"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "name"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Get List of Roles",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "DbCommand1",
+                "name": "k2v_user"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "name"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Get TDMDB Schema",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "DbCommand1",
+                "name": "schema"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "StringPos1",
+                "name": "found"
+            },
+            "rightPort": {
+                "actor": "Equals1",
+                "name": "a"
+            }
+        }
+    ]
+}

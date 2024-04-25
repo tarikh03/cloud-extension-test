@@ -1,0 +1,351 @@
+{
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Input",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "PopulationArgs",
+                            "actorType": {
+                                "parentType": "PopulationArgs",
+                                "readOnly": true,
+                                "inputs": [
+                                    {
+                                        "name": "subscriber_id",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "invoice_id",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "issued_date",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "due_date",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "status",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "balance",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "invoice_image",
+                                        "schema": {}
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "SyncDeleteMode",
+                            "actorType": {
+                                "parentType": "SyncDeleteMode",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "table",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Source",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Query",
+                            "actorType": {
+                                "parentType": "SourceDbQuery",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "BILLING_DB"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": "select * from public.invoice"
+                                    },
+                                    {
+                                        "name": "use_mbd_finder",
+                                        "const": true
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "subscriber_id": {
+                                                    "type": {}
+                                                },
+                                                "invoice_id": {
+                                                    "type": {}
+                                                },
+                                                "issued_date": {
+                                                    "type": {}
+                                                },
+                                                "due_date": {
+                                                    "type": {}
+                                                },
+                                                "status": {
+                                                    "type": {}
+                                                },
+                                                "balance": {
+                                                    "type": {}
+                                                },
+                                                "invoice_image": {
+                                                    "type": {}
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 1",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "LU Table",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "actors": [
+                        {
+                            "name": "INVOICE",
+                            "actorType": {
+                                "parentType": "DbLoad",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "fabric"
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "table",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "fields",
+                                        "const": [
+                                            "subscriber_id",
+                                            "invoice_id",
+                                            "issued_date",
+                                            "due_date",
+                                            "status",
+                                            "balance",
+                                            "invoice_image"
+                                        ]
+                                    },
+                                    {
+                                        "name": "dialect",
+                                        "const": "sqlite"
+                                    },
+                                    {
+                                        "name": "subscriber_id",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "invoice_id",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "issued_date",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "due_date",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "status",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "balance",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "invoice_image",
+                                        "schema": {}
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Post Load",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": []
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "PopulationArgs",
+                "name": "parent_rows"
+            },
+            "rightPort": {
+                "actor": "Query",
+                "name": "parent_rows"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Query",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "INVOICE",
+                "name": "params"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "subscriber_id"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "subscriber_id"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "invoice_id"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "invoice_id"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "issued_date"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "issued_date"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "due_date"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "due_date"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "status"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "status"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "balance"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "balance"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "invoice_image"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "invoice_image"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "table"
+            },
+            "rightPort": {
+                "actor": "SyncDeleteMode",
+                "name": "table"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "INVOICE",
+                "name": "schema"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "table"
+            },
+            "rightPort": {
+                "actor": "INVOICE",
+                "name": "table"
+            }
+        }
+    ]
+}

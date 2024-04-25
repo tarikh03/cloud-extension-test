@@ -1,0 +1,9 @@
+<div class="col-lg-12" ng-if="envProductsCtrl.pageDisplay == 'productsTable'">
+    <environment-products-table-directive content="envProductsCtrl.productsData"></environment-products-table-directive>
+</div>
+<div class="col-lg-12" ng-if="envProductsCtrl.pageDisplay == 'product'">
+    <environment-product-directive content="envProductsCtrl.productData"></environment-product-directive>
+</div>
+<div class="col-lg-12" ng-if="envProductsCtrl.pageDisplay == 'newProduct'">
+    <environment-new-product-directive content="envProductsCtrl.newProductData"></environment-new-product-directive>
+</div>

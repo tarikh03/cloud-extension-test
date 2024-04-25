@@ -1,0 +1,11 @@
+<div class="wrapper animated" ng-controller="businessEntitiesCtrl as businessEntities">
+    <div class="row" ng-if="businessEntities.pageDisplay == 'businessEntitiesTable'">
+        <business-entities-table-directive content="businessEntities.businessEntitiesData"></business-entities-table-directive>
+    </div>
+    <div class="row" ng-if="businessEntities.pageDisplay == 'businessEntity'">
+        <business-entity-directive content="businessEntities.businessEntityData"></business-entity-directive>
+    </div>
+    <div class="row" ng-if="businessEntities.pageDisplay == 'newBusinessEntity'">
+        <new-business-entity-directive content="businessEntities.newBusinessEntityData"></new-business-entity-directive>
+    </div>
+</div>

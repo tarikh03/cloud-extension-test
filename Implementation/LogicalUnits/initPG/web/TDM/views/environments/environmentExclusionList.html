@@ -1,0 +1,93 @@
+<div class="ibox float-e-margins k2-card">
+    <div class="k2-header">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="k2-card-title">{{ 'EXCLUSION_LIST' | translate }}</div>
+            </div>
+            <div class="col-lg-4 pull-right">
+                <a 	uib-tooltip="Delete Exclusion List"
+                      tooltip-placement="left"
+                      type="button"
+                      role-handler
+                      role="1"
+                      ng-if="!environmentCtrl.disableChangeExclusionList"
+                      class="pull-right"
+                      mwl-confirm message="Are you sure you want to Delete Exclusion List?"
+                      confirm-text="Yes <i class='glyphicon glyphicon-ok'></i>"
+                      cancel-text="No <i class='glyphicon glyphicon-remove'></i>"
+                      placement="left"
+                      on-confirm="environmentCtrl.deleteExclusionList()"
+                      on-cancel="cancelClicked = true"
+                      confirm-button-type="danger"
+                      cancel-button-type="default">
+
+                      <img src="icons/delete-icon-2.svg">
+                </a>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="k2-body">
+        <form name="exclusionListForm" role="form" ng-submit="environmentCtrl.validateAndSaveExclusionList()">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group col-lg-12">
+                        <label>{{"BUSINESS_ENTITY" |  translate}}</label>
+                        <select ng-disabled="environmentCtrl.disableChangeExclusionList" class="form-control1" width="'100%'" ng-change="environmentCtrl.onBeSelect();environmentCtrl.validateExclusionListRequestedBy()" chosen ng-model="environmentCtrl.exclusionListData.be_id"  ng-options="o.be_id as o.be_name for o in environmentCtrl.allBusinessEntities" required>
+                            <option></option>
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label>{{"REQUESTED_BY" |  translate}}</label>
+                        <select ng-disabled="environmentCtrl.disableChangeExclusionList" class="form-control1" width="'100%'" ng-change="environmentCtrl.validateExclusionListRequestedBy()" chosen ng-model="environmentCtrl.exclusionListData.requested_by"  ng-options="o.uid as o.uid for o in environmentCtrl.allusers" required>
+                            <option></option>
+                        </select>
+                        <div class="m-t-xs" ng-show="environmentCtrl.exclusionListRequestedByIsNotValid">
+                            <small class="text-danger">An exclusion list already exists for user, environment and business entity. Please update the existing list.</small>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label>{{"EXCLUSION_LIST" |  translate}}</label>
+                        <textarea ng-disabled="environmentCtrl.disableChangeExclusionList" rows="5"  name="exclusionEntitiesList" class="col-lg-12" ng-model="environmentCtrl.exclusionListData.exclusion_list">
+                        </textarea>
+
+                        <div class="m-t-xs" ng-show="environmentCtrl.patternFailed">
+                            <small class="text-dark">Please Enter Entity IDs, separated by a comma</small>
+                        </div>
+                        <div class="m-t-xs" ng-show="environmentCtrl.exclusionListIsNotValid">
+                            <small class="text-danger">The following entities are already included in another exclusion list: {{environmentCtrl.existingExclusionListMembers}}</small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-12 form-buttons">
+                            <button ng-disabled="environmentCtrl.exclusionListRequestedByIsNotValid"
+                            ng-if="!environmentCtrl.disableChangeExclusionList"
+                            class="btn k2-primary-btn pull-left" 
+                            type="submit" role-handler role="1">
+                            {{"SAVE_CHANGES" | translate}}</button>
+                            <a 	uib-tooltip="Close Exclusion List Editor"
+                                  tooltip-placement="left"
+                                  ng-if="!environmentCtrl.disableChangeExclusionList"
+                                  type="button"
+                                  role-handler
+                                  role="1"
+                                  class="pull-right"
+                                  mwl-confirm message="Are you sure you want to close?"
+                                  confirm-text="Yes <i class='glyphicon glyphicon-ok'></i>"
+                                  cancel-text="No <i class='glyphicon glyphicon-remove'></i>"
+                                  placement="left"
+                                  on-confirm="environmentCtrl.getSummaryData()"
+                                  on-cancel="cancelClicked = true"
+                                  confirm-button-type="danger"
+                                  cancel-button-type="default">
+
+                                <button class="btn k2-primary-btn pull-right" type="button">{{"CLOSE" | translate}}</button>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

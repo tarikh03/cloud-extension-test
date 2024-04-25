@@ -1,0 +1,167 @@
+{
+    "tags": [
+        "Create"
+    ],
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Test Connection",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Create Roles & Databases",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Get  SQL Resource File To Create CRM DB Tables and Functions",
+                            "actorType": {
+                                "parentType": "LuFunction",
+                                "inputs": [
+                                    {
+                                        "name": "functionName",
+                                        "const": "loadFromLUResource"
+                                    },
+                                    {
+                                        "const": "TDM/DEMO/roles.sql",
+                                        "name": "path",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "blob"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Execute Create Sql Statements For Roles&Dbs",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "DB Error Handler",
+                            "onError": "result",
+                            "actorType": {
+                                "parentType": "ErrorHandler",
+                                "inputs": [
+                                    {
+                                        "name": "config",
+                                        "const": [
+                                            {
+                                                "exceptionKey": "com.k2view.fabric.common.io.basic.exception.StandardSqlException",
+                                                "conditions": {
+                                                    "standardType": "UNIQUE_CONSTRAINT"
+                                                },
+                                                "actions": {
+                                                    "suppress": false,
+                                                    "log": true,
+                                                    "flowName": ""
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Create ROLES",
+                            "actorType": {
+                                "parentType": "DbCommand",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "POSTGRESQL_ADMIN"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Create Databases",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Create CRM",
+                            "actorType": {
+                                "parentType": "DbCommand",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "POSTGRESQL_ADMIN"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": "CREATE DATABASE \"CRM_DB\" WITH TEMPLATE = template0 ENCODING = 'UTF8' CONNECTION LIMIT = -1 OWNER =\"CRM_USER\";"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Create Billing",
+                            "actorType": {
+                                "parentType": "DbCommand",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "POSTGRESQL_ADMIN"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": "CREATE DATABASE \"BILLING_DB\" WITH TEMPLATE = template0 ENCODING = 'UTF8' CONNECTION LIMIT = -1 OWNER =\"BILLING_USER\";"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "Get  SQL Resource File To Create CRM DB Tables and Functions",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Create ROLES",
+                "name": "sql"
+            }
+        }
+    ]
+}

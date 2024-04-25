@@ -1,0 +1,44 @@
+<div>
+    <div class="k2-card-title">
+        Update Reservation Period
+    </div>
+    <hr>
+    <div class="k2-body">
+        <div class="row">
+            <form role="form" name="extendReservationPeriodForm"
+                ng-submit="extendReservationPeriodCtrl.extend()">
+                <div class="col-lg-12">
+                    <div class="form-group" style="margin-left: calc(50% - 110px);">
+                        <div>
+                            <label>End By:</label>
+                        </div>
+                        <div
+                            class="input-group date"
+                            style="width: 220px;">
+                            <span class="input-group-addon"
+                                ><i style="color: #1483f3;" class="fa fa-calendar"></i
+                            ></span>
+                            <input
+                                id="extend_reservations_endBy"
+                                style="border: 1px solid #e5e6e7"
+                                type="datetime"
+                                class="form-control1"
+                                min-date="extendReservationPeriodCtrl.minDate"
+                                ng-model="extendReservationPeriodCtrl.endBy"
+                                date-time
+                                format="DD MMM YYYY"
+                                view="date"
+                                auto-close="true"
+                                min-view="date"
+                            />
+                        </div>
+                    </div>
+                    <div style="display: flex;flex-direction: row;justify-content: flex-end;">
+                        <button id="extend_reservations_close" class="k2-card-ok-cancel-btn custom-hover" type="button" ng-click="extendReservationPeriodCtrl.close()">Cancel</button>
+                        <button id="extend_reservations_update" class="k2-card-ok-cancel-btn custom-hover" type="submit">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

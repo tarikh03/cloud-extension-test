@@ -1,0 +1,512 @@
+{
+    "tags": [
+        "Deploy"
+    ],
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Check Flag For Deploy Envs",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "TDM_DEPLOY_ENVIRONMENTS",
+                            "actorType": {
+                                "parentType": "FabricSetRead",
+                                "inputs": [
+                                    {
+                                        "name": "key",
+                                        "const": "TDM_DEPLOY_ENVIRONMENTS"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "If True",
+                    "dependsOnList": [
+                        "Check Flag For Deploy Envs"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "True",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "EqualsIgnoreCase",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "true"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "If Flase",
+                    "dependsOnList": [
+                        "Check Flag For Deploy Envs"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Build Statement",
+                    "dependsOnList": [
+                        "If True"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Starting Deploy Activities",
+                            "actorType": {
+                                "parentType": "Logger",
+                                "inputs": [
+                                    {
+                                        "name": "message",
+                                        "const": "Starting Deploy Activities"
+                                    },
+                                    {
+                                        "name": "level",
+                                        "const": "info"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Command",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "DEPLOY ENVIRONMENTS FROM FILE '"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "PROJECT_DIR",
+                            "actorType": {
+                                "parentType": "SysEnv",
+                                "inputs": [
+                                    {
+                                        "name": "name",
+                                        "const": "PROJECT_DIR"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Path",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "/Implementation/SharedObjects/Environments/Environments.k2fabEnv.xml'"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Stage 5",
+                    "dependsOnList": [
+                        "If Flase"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Create Deploy Environment Command",
+                    "dependsOnList": [
+                        "Build Statement"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Concat",
+                            "actorType": {
+                                "parentType": "Concat",
+                                "inputs": [
+                                    {
+                                        "name": "delimiter",
+                                        "const": ""
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Stage 6",
+                    "dependsOnList": [
+                        "Stage 5"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Run Deploy Environments",
+                    "dependsOnList": [
+                        "Create Deploy Environment Command"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Deploy Environments",
+                            "actorType": {
+                                "parentType": "DbCommand",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "fabric"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Stage 7",
+                    "dependsOnList": [
+                        "Stage 6"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Create TDMDB Tables",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Create TDMDB",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "TDMDB"
+                                    },
+                                    {
+                                        "name": "is_first_deploy",
+                                        "schema": {
+                                            "type": "boolean"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Get Globals For k2masking",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "SEQ_CACHE_INTERFACE",
+                            "actorType": {
+                                "parentType": "FabricSetRead",
+                                "inputs": [
+                                    {
+                                        "name": "key",
+                                        "const": "SEQ_CACHE_INTERFACE",
+                                        "isDefault": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "SEQ_DROP_KEYSPACE",
+                            "actorType": {
+                                "parentType": "FabricSetRead",
+                                "inputs": [
+                                    {
+                                        "name": "key",
+                                        "const": "SEQ_DROP_KEYSPACE",
+                                        "isDefault": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "SEQ_DO_TRUNCATE",
+                            "actorType": {
+                                "parentType": "FabricSetRead",
+                                "inputs": [
+                                    {
+                                        "name": "key",
+                                        "const": "SEQ_DO_TRUNCATE",
+                                        "isDefault": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Create k2masking if it does not exists",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "maskingCreateCacheTable",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "masking-create-cache-table"
+                                    },
+                                    {
+                                        "name": "interface",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "editor": {
+                                            "id": "com.k2view.interface",
+                                            "interfaceType": [
+                                                "database",
+                                                "CassandraLoader"
+                                            ],
+                                            "interfaces": [
+                                                "fabric"
+                                            ]
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "dropKeySpace",
+                                        "schema": {
+                                            "type": "boolean"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "doTruncate",
+                                        "schema": {
+                                            "type": "boolean"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "End",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Finished Deploy Activities",
+                            "actorType": {
+                                "parentType": "Logger",
+                                "inputs": [
+                                    {
+                                        "name": "message",
+                                        "const": "Finished Deploy Activities"
+                                    },
+                                    {
+                                        "name": "level",
+                                        "const": "info"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "TDM_DEPLOY_ENVIRONMENTS",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "True",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Command",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Concat",
+                "name": "elements"
+            },
+            "arrayPosition": 0
+        },
+        {
+            "leftPort": {
+                "actor": "PROJECT_DIR",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Concat",
+                "name": "elements"
+            },
+            "arrayPosition": 1
+        },
+        {
+            "leftPort": {
+                "actor": "Path",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Concat",
+                "name": "elements"
+            },
+            "arrayPosition": 2
+        },
+        {
+            "leftPort": {
+                "actor": "Concat",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Deploy Environments",
+                "name": "sql"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SEQ_CACHE_INTERFACE",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "maskingCreateCacheTable",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SEQ_DROP_KEYSPACE",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "maskingCreateCacheTable",
+                "name": "dropKeySpace"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SEQ_DO_TRUNCATE",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "maskingCreateCacheTable",
+                "name": "doTruncate"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "is_first_deploy"
+            },
+            "rightPort": {
+                "actor": "Create TDMDB",
+                "name": "is_first_deploy"
+            }
+        }
+    ]
+}

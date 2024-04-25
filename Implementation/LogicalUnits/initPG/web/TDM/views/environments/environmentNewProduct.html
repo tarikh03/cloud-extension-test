@@ -1,0 +1,115 @@
+<div class="ibox float-e-margins k2-card">
+    <div class="k2-header" style="border: none;">
+        <div class="k2-card-title">{{ 'NEW_PRODUCT' | translate }}</div>
+    </div>
+    <hr>
+    <div class="k2-body">
+        <form role="form" ng-submit="environmentCtrl.addProduct()">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group col-lg-12">
+                        <label>{{"PRODUCT_NAME" | translate}}</label>
+                        <select id="environment_new_product_name" ng-if="environmentCtrl.newEnvProducts" class="form-control1" width="'100%'" chosen ng-model="environmentCtrl.productData.product_id" ng-change="environmentCtrl.productChanged()" ng-options="option.product_id as option.product_name for option in environmentCtrl.newEnvProducts | orderBy:'product_name'" required>
+                            <option></option>
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label>{{"DATA_CENTER_NAME" | translate}}</label>
+                        <select id="environment_new_product_data_center_name" class="form-control1" width="'100%'" ng-change="environmentCtrl.dataCenterChanged(option)" ng-model="environmentCtrl.productData.data_center_name" ng-options="option.dc as option.dc for option in environmentCtrl.dataCenters | orderBy:'dc'">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-12" ng-if="environmentCtrl.productData.product_versions">
+                        <label>{{"PRODUCT_VERSION" | translate}}</label>
+                        <select id="environment_new_product_version" class="form-control1" width="'100%'" chosen ng-model="environmentCtrl.productData.product_version" ng-options="option as option for option in environmentCtrl.productData.product_versions.split(',')" required>
+                            <option></option>
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-12" ng-hide="true" ng-if="environmentCtrl.productData.interfaces && (environmentCtrl.environmentDataOrig.allow_write || environmentCtrl.adi_only)" ng-init="environmentCtrl.dummyInput = 'dummy'">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label ng-show="!environmentCtrl.adi_only">{{"TARGET_INTERFACES" | translate}}</label>
+                                <label ng-show="environmentCtrl.adi_only">{{"INTERFACES" | translate}}</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <input id="environment_new_product_display_all_interfaces" style="width: 100%"  type="checkbox" ng-init="environmentCtrl.showAllInterfaces = false;" ng-model="environmentCtrl.showAllInterfaces"/>
+                                    <label class="control-label">Display Full Interface List</label>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="agile-list" style="padding-left: 0px">
+                            <li style="border-left: 3px solid {{interface.status ? '#51B3C3' : 'red'}};opacity: {{interface.deleted ? 0.4 : 1}}" 
+                            ng-if="!interface.deleted || environmentCtrl.showAllInterfaces" 
+                            class="success-element" ng-repeat="interface in environmentCtrl.productData.interfaces" 
+                            ng-if="interface.interface_status == 'Active'">
+                                {{interface.interface_name}}&nbsp;&nbsp;&nbsp;&nbsp;Type: {{interface.interface_type}}
+                                <a tooltip-class="deleteIcon" 
+                                    id="environment_new_product_interface_delete_{{$index}}"
+                                    ng-click="interface.deleted = true" 
+                                    uib-tooltip="{{'DELETE_INTERFACE' | translate}}" 
+                                    style="margin-top: -2px;margin-left: 10px;" 
+                                    ng-if="(environmentCtrl.productData.interfaces | atLeastOneInterface ) && !interface.deleted || environmentCtrl.adi_only" class="pull-right">
+                                    <img src="icons/delete-icon-2.svg">
+                                </a>
+                                <a id="environment_new_product_interface_edit_{{$index}}" tooltip-class="editIcon" uib-tooltip="{{interface.status == false ? 'ADD_INTERFACE' : 'EDIT_INTERFACE' | translate}}" ng-click="environmentCtrl.openEnvProductInterfaceEdit($index)" 
+                                    class="pull-right btn btn-xs k2-primary-btn btn-circle" style="width: 22px;height: 22px;padding: 1px 0;">
+                                    <img src="icons/edit.svg" alt="edit">
+                                </a>
+                                <input ng-if="interface.status == false && !interface.deleted" ng-model="interface.myTest" class="form-control1" style="height:0px; padding: 0" ng-required="!environmentCtrl.adi_only">
+                                <input ng-if="interface.status == true && !interface.deleted" ng-model="environmentCtrl.dummyInput" class="form-control1" style="height:0px; padding: 0" ng-required="!environmentCtrl.adi_only">
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="form-group col-lg-12" ng-if="environmentCtrl.productData.lus == 0">
+                        <h4 style="color: #ec4758">Product does not have Logical Units. Please add a Logical Unit to the product before you can add it to environment</h4>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-12 form-buttons" >
+                            <a ng-if="environmentCtrl.addProductWarning"
+                                id="environment_new_product_save"
+                                ng-show="environmentCtrl.productData.lus > 0"
+                                uib-tooltip="Add System Editor"
+                                tooltip-placement="left"
+                                type="button"
+                                role-handler
+                                role="1"
+                                ng-if="!environmentCtrl.disableChangeProduct"
+                                class="pull-left"
+                                mwl-confirm message="DC {{environmentCtrl.addProductWarning.dc_name}} is not equal to the DC name of logical unit {{environmentCtrl.addProductWarning.lu_name}}: {{environmentCtrl.addProductWarning.lu_dc_name}}. Are you sure? "
+                                confirm-text="Yes <i class='glyphicon glyphicon-ok'></i>"
+                                cancel-text="No <i class='glyphicon glyphicon-remove'></i>"
+                                placement="left"
+                                on-confirm="environmentCtrl.addProduct()"
+                                on-cancel="cancelClicked = true"
+                                confirm-button-type="danger"
+                                cancel-button-type="default">
+                                <button class="btn k2-primary-btn pull-left" type="submit">{{"ADD" | translate}}</button>
+                            </a>
+                            <button id="environment_new_product_save" ng-if="!environmentCtrl.addProductWarning" ng-show="environmentCtrl.productData.lus > 0" 
+                                    class="btn k2-primary-btn pull-left" type="submit">{{"ADD" | translate}}</button>
+                            <a uib-tooltip="Close System Editor"
+                                id="environment_new_product_close"
+                                  tooltip-placement="left"
+                                  type="button"
+                                  role-handler
+                                  role="1"
+                                  ng-if="!environmentCtrl.disableChangeProduct"
+                                  class="pull-right"
+                                  mwl-confirm message="Are you sure you want to close?"
+                                  confirm-text="Yes <i class='glyphicon glyphicon-ok'></i>"
+                                  cancel-text="No <i class='glyphicon glyphicon-remove'></i>"
+                                  placement="left"
+                                  on-confirm="environmentCtrl.getSummaryData()"
+                                  on-cancel="cancelClicked = true"
+                                  confirm-button-type="danger"
+                                  cancel-button-type="default">
+
+                                <button class="btn k2-primary-btn pull-right" type="button">{{"CLOSE" | translate}}</button>
+                            </a>                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

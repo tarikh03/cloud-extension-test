@@ -1,0 +1,100 @@
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <div class="row">
+            <div class="col-lg-3">
+                <h2>{{ 'ROLE' | translate }} # {{environmentRoleCtrl.roleData.role_name}}</h2>
+            </div>
+            <div class="col-lg-2 pull-right">
+                <button type="button" role-handler role="1"  ng-disabled="environmentRoleCtrl.disableChange" class="btn btn-danger pull-right" ng-click="environmentRoleCtrl.deleteEnvironmentRole()">{{ 'DELETE' | translate }}</button>
+            </div>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <div class="row">
+            <div class="col-lg-12 form-horizontal">
+                <form role="form" ng-submit="environmentRoleCtrl.saveChanges()">
+                    <div class="well">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group col-lg-6">
+                                    <label class="col-sm-2 control-label">{{"NAME" | translate}}</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control1" ng-model="environmentRoleCtrl.roleData.role_name" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label class="col-sm-2 control-label">{{"DESCRIPTION" | translate}}</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control1" ng-model="environmentRoleCtrl.roleData.role_description" ng-disabled="environmentRoleCtrl.disableChange">
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-6">
+                                    <label class="col-sm-2 control-label">{{"NUMBER_OF_ENTITIES" | translate}}</label>
+                                    <div class="col-sm-10">
+                                        <input ng-disabled="environmentRoleCtrl.disableChange" style="width: 100%" type="number" class="form-control1" min="1" ng-change="environmentRoleCtrl.roleData.allowed_number_of_entities_to_copy === undefined ? environmentRoleCtrl.roleData.allowed_number_of_entities_to_copy = 1 : environmentRoleCtrl.roleData.allowed_number_of_entities_to_copy" ng-model="environmentRoleCtrl.roleData.allowed_number_of_entities_to_copy"/>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-6" ng-if="!environmentRoleCtrl.hideUsersInput">
+                                    <label class="col-sm-2 control-label">{{"TESTERS" | translate}}</label>
+                                    <div class="col-sm-10">
+                                        <select ng-disabled="environmentRoleCtrl.disableChange" chosen multiple class="form-control1" ng-model="environmentRoleCtrl.testers" ng-options="option as option.username for option in environmentRoleCtrl.allTesters track by option.user_id">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="well">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group col-lg-4">
+                                    <label class="col-sm-10 control-label">{{"DELETE_BEFORE_LOAD" | translate}}</label>
+                                    <div class="col-sm-2">
+                                        <input ng-disabled="environmentRoleCtrl.disableChange" type="checkbox" ng-model="environmentRoleCtrl.roleData.allowed_delete_before_load"/>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label class="col-sm-10 control-label">{{"CREATE_OF_SYNTHETIC_DATA" | translate}}</label>
+                                    <div class="col-sm-2">
+                                        <input ng-disabled="environmentRoleCtrl.disableChange" type="checkbox" ng-model="environmentRoleCtrl.roleData.allowed_creation_of_synthetic_data"/>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label class="col-sm-10 control-label">{{"RANDOM_ENTITY_SELECTION" | translate}}</label>
+                                    <div class="col-sm-2">
+                                        <input ng-disabled="environmentRoleCtrl.disableChange" type="checkbox" ng-model="environmentRoleCtrl.roleData.allowed_random_entity_selection"/>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label class="col-sm-10 control-label">{{"REQUEST_OF_FRESH_DATA" | translate}}</label>
+                                    <div class="col-sm-2">
+                                        <input ng-disabled="environmentRoleCtrl.disableChange" type="checkbox" ng-model="environmentRoleCtrl.roleData.allowed_request_of_fresh_data"/>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label class="col-sm-10 control-label">{{"REFRESH_REFERENCE_DATA" | translate}}</label>
+                                    <div class="col-sm-2">
+                                        <input ng-disabled="environmentRoleCtrl.disableChange" type="checkbox" ng-model="environmentRoleCtrl.roleData.allowed_refresh_reference_data"/>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label class="col-sm-10 control-label">{{"TASK_SCHEDULING" | translate}}</label>
+                                    <div class="col-sm-2">
+                                        <input ng-disabled="environmentRoleCtrl.disableChange" type="checkbox" ng-model="environmentRoleCtrl.roleData.allowed_task_scheduling"/>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-4">
+                                    <label class="col-sm-10 control-label">{{"REPLACE_SEQUENCES" | translate}}</label>
+                                    <div class="col-sm-2">
+                                        <input ng-disabled="environmentRoleCtrl.disableChange" type="checkbox" ng-model="environmentRoleCtrl.roleData.allowed_replace_sequences"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button ng-disabled="environmentRoleCtrl.disableChange" role-handler role="1"  class="btn k2-primary-btn pull-right" type="submit">{{"SAVE_CHANGES" | translate}}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

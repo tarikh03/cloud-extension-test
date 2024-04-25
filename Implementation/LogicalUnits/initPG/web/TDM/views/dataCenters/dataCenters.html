@@ -1,0 +1,11 @@
+<div class="wrapper  animated fadeInRight" ng-controller="dataCentersCtrl as dataCenters">
+    <div class="row" ng-if="dataCenters.pageDisplay == 'dataCentersTable'">
+        <centers-data-table-directive content="dataCenters.dataCentersData"></centers-data-table-directive>
+    </div>
+    <div class="row" ng-if="dataCenters.pageDisplay == 'dataCenter'">
+        <center-data-directive content="dataCenters.dataCenterData"></center-data-directive>
+    </div>
+    <div class="row" ng-if="dataCenters.pageDisplay == 'newDataCenter'">
+        <new-data-center-directive content="dataCenters.newDataCenterData"></new-data-center-directive>
+    </div>
+</div>

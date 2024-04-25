@@ -1,0 +1,21 @@
+<div class="col-lg-12" ng-if="content.pageDisplay == 'taskSummary'" style=" margin-top: 25px;">
+    <div class="k2-card">
+        <div class="k2-header">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="k2-card-title">Task Executions Summary - {{taskSummaryCtrl.taskData.task_title}}</div>
+                </div>
+            </div>
+        </div>
+        <hr>
+            <div class="row k2-body">
+                <div class="col-lg-12">
+                    <table ng-if="taskSummaryCtrl.loadingTable === false" style="display: table; width: 100%" datatable="" dt-options="taskSummaryCtrl.dtOptions" dt-column-defs="taskSummaryCtrl.dtColumnDefs" dt-columns="taskSummaryCtrl.dtColumns"  dt-instance="taskSummaryCtrl.dtInstanceCallback" class="table tasksTableHistory table-striped table-bordered table-hover"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" ng-if="content.exec_id && content.pageDisplay == 'taskHistory'">
+    <task-history-directive content="content"></task-history-directive>
+</div>

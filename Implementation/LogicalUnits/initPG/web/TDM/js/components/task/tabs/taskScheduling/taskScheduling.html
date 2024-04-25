@@ -1,0 +1,122 @@
+<div class="k2-card" style="margin-top: 15px; border: 0;padding-bottom: 0">
+    <hr >
+    <div class="TaskSchedulingTab k2-body" style="min-height: calc(100vh - 377px);">
+        <div class="row" style="margin: 0px;">
+            <div class="col-lg-3 form-group">
+                <div class="row">
+                <div class="form-group">
+                    <label class="radio-button">
+                    <input
+                        ng-disabled="disableChange"
+                        ng-change="taskSchedulingCtrl.taskData.scheduler = 'immediate'"
+                        type="radio"
+                        ng-value="'immediate'"
+                        name="scheduleRadio"
+                        ng-model="taskSchedulingCtrl.selectSchedule"
+                        />
+                        <label class="radio-button-label">
+                        {{"IMMEDIATE_EXECUTION" | translate}}
+                        </label>
+                    </label>
+                </div>
+                </div>
+                <div class="row">
+                <div class="form-group">
+                    <label
+                        class="radio-button"
+                        style="{{userRole.allowed_task_scheduling == false ? 'padding-left : 25px' : ''}}"
+                        >
+                    <input
+                        ng-disabled="disableChange"
+                        ng-if="taskSchedulingCtrl.userRoleType === 'admin' || 
+                            sourceEnvOwner || targetEnvOwner ||
+                            userRole.allowed_task_scheduling == true"
+                        ng-change="taskSchedulingCtrl.taskData.scheduler = '0 0/1 * 1/1 * ? *'"
+                        type="radio"
+                        ng-value="'schedule'"
+                        name="scheduleRadio"
+                        ng-model="taskSchedulingCtrl.selectSchedule"
+                        />
+                    <label class="radio-button-label">
+                    {{"SCHEDULING_PARAMETERS" | translate}}
+                    </label>
+                    </label>
+                </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="form-group" ng-if="taskSchedulingCtrl.selectSchedule == 'schedule'">
+                <div>
+                    <cron-gen
+                        ng-model="taskSchedulingCtrl.taskData.scheduler"
+                        options="taskSchedulingCtrl.schedulerOptions"
+                        cron-format="quartz (Currently only compatible with 'quartz' and defaults to 'quartz')"
+                        >
+                    </cron-gen>
+                </div>
+                <p class="time-note" style="color: #ec4758">
+                    {{taskSchedulingCtrl.timeZoneMessage}}
+                </p>
+                <div class="row">
+                    <div class="col-lg-12" style="margin-top: 15px">
+                        <!-- taskSchedulingCtrl.taskData.scheduling_end_date -->
+                        <div>
+                            <label style="vertical-align: top; margin-top: 7px " class="option-button">
+                            <input
+                            type="radio"
+                            ng-value="'endBy'"
+                            name="scheduleEndRadio"
+                            ng-model="taskSchedulingCtrl.scheduleEndBy"
+                            />
+                            <label class="option-button-label">
+                            End By :
+                            </label>
+                            </label>
+                            <div
+                            ng-if="taskSchedulingCtrl.scheduleEndBy == 'endBy'"
+                            class="input-group date"
+                            style="display: inline-table; width: 300px; margin-left: 50px"
+                            >
+                            <span class="input-group-addon"
+                                ><i class="fa fa-calendar"></i
+                                ></span>
+                            <input
+                                type="datetime"
+                                class="form-control1"
+                                ng-model="taskSchedulingCtrl.taskData.scheduling_end_date"
+                                date-time
+                                format="DD MMM YYYY"
+                                view="date"
+                                auto-close="true"
+                                min-view="date"
+                                min-date="taskSchedulingCtrl.minDate"
+                                />
+                            </div>
+                        </div>
+                        <div style="margin-top: 7px" class="option-button">
+                            <label class="option-button" > 
+                            <input
+                            type="radio"
+                            ng-value="'noEndBy'"
+                            name="scheduleEndRadio"
+                            ng-model="taskSchedulingCtrl.scheduleEndBy"
+                            />
+                            <label class="option-button-label">
+                                No End Date
+                            </label>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-include="'js/components/task/tabs/taskWizardActionsFooter.html'" style="position: sticky;bottom: 56px" ></div>
+    <!-- <hr>    
+    <span style="display: flex;justify-content: space-between;">
+        <button type="button"  ng-click="back()" style="width:80px" class="btn k2-primary-btn">Back</button>
+        <div ng-include="'views/common/taskFooter.html'"></div>
+        <button type="submit" style="width:80px" ng-if="!disableChange" class="btn k2-primary-btn">Finish</button>
+    </span> -->
+</div>

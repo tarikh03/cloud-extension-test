@@ -1,0 +1,52 @@
+<div class="modal-header">
+    <button type="button" ng-click="logicalUnitCtrl.close();" class="close" data-dismiss="modal"><span
+            aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+    <h3 class="modal-title">{{logicalUnitCtrl.title | translate}}</h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <!-- <img ng-show="!logicalUnitCtrl.logicalUnitsData" src="img/ajax-loader.gif" class="ajax-loader"> -->
+        <div ng-show="!updateLogicalUnitsCtrl.logicalUnit"  class="ajax-loader">
+            <div class="k2-loader " ng-show="!updateLogicalUnitsCtrl.logicalUnit"></div>
+         </div>
+        <form role="form" ng-submit="logicalUnitCtrl.addLogicalUnit()" ng-show="logicalUnitCtrl.logicalUnitsData">
+            <div class="col-lg-12">
+                <div class="form-group row">
+                    <label class="col-sm-6 control-label">{{"LOGICAL_UNIT_NAME" | translate}} <span
+                            style="color: red">*</span></label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control1" ng-model="logicalUnitCtrl.logicalUnit.lu_name" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-6 control-label">{{"LOGICAL_UNIT_DESCRIPTION" | translate}}</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control1" ng-model="logicalUnitCtrl.logicalUnit.lu_description">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-6 control-label">{{"LOGICAL_UNIT_PARENT" | translate}}</label>
+                    <div class="col-sm-6">
+                        <select class="form-control1" ng-model="logicalUnitCtrl.logicalUnit.lu_parent"
+                                ng-options="option as option.lu_name for option in logicalUnitCtrl.parentLogicalUnitsData">
+                            <option value="" ng-if="false"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-10">
+                        <uib-alert ng-if="logicalUnitCtrl.logicalUnitAlert"
+                                   type="{{logicalUnitCtrl.logicalUnitAlert.type}}"
+                                   close="logicalUnitCtrl.closeAlert()">{{logicalUnitCtrl.logicalUnitAlert.msg}}
+                        </uib-alert>
+                    </div>
+                    <div class="col-lg-2">
+                        <button class="btn k2-primary-btn pull-right" type="submit">{{logicalUnitCtrl.saveButton |
+                            translate}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

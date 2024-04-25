@@ -1,0 +1,17 @@
+<div class="row">
+    <div class=col-lg-12>
+        <reference-task-table ng-if="taskData.refList" data="taskData.refList" get-versions="referenceTaskCtrl.getVersionsData"></reference-task-table>
+    </div>
+</div>
+<div class="row">
+    <div class=col-lg-12 >
+        <reference-versions-task-table ng-if="taskData.task_type == 'LOAD' && taskData.version_ind"
+            ng-if="referenceTaskCtrl.refVersions"
+            get-versions="referenceTaskCtrl.getVersionsData"
+            versions-list="referenceTaskCtrl.refVersions" 
+            loading="referenceTaskCtrl.loadingVersions"
+            time-range="referenceTaskCtrl.timeRange"
+            reload-versions-table="referenceTaskCtrl.reloadVersionsTable"
+            selected-version="taskData"></reference-versions-task-table>
+    </div>
+</div>

@@ -1,0 +1,147 @@
+<div class="ibox float-e-margins k2-card">
+    <div class="k2-header" style="border: none;">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="k2-card-title">{{ 'PRODUCT' | translate }} {{environmentCtrl.productData.product_name}}</div>
+                <h5 style="padding-left:1em;font-weight: 300;" ng-if="environmentCtrl.productData.status == 'Inactive'">{{ 'INACTIVE' | translate }}</h5>
+            </div>
+            <div class="col-lg-4 pull-right">
+                <a id="environment_product_delete" uib-tooltip="Remove System" tooltip-placement="left" type="button" role-handler role="1"
+                   ng-if="!environmentCtrl.disableChangeProduct && !environmentCtrl.productData.taskcount" class="pull-right"
+                   mwl-confirm message="Active tasks associated with the deleted System will be deleted. Are you sure you want to delete the System?"
+                   confirm-text="Yes <i class='glyphicon glyphicon-ok'></i>" cancel-text="No <i class='glyphicon glyphicon-remove'></i>" placement="left"
+                   on-confirm="environmentCtrl.deleteProduct()" on-cancel="cancelClicked = true" confirm-button-type="danger" cancel-button-type="default">
+                   <img src="icons/delete-icon-2.svg">
+                </a>
+                <a id="environment_product_delete" uib-tooltip="Remove System" tooltip-placement="left" type="button" role-handler role="1"
+                   ng-if="!environmentCtrl.disableChangeProduct && environmentCtrl.productData.taskcount > 0" class="pull-right"
+                   mwl-confirm message="Product {{environmentCtrl.productData.product_name}} is attached to active tasks. Are you sure you want to delete it ?"
+                   confirm-text="Yes <i class='glyphicon glyphicon-ok'></i>" cancel-text="No <i class='glyphicon glyphicon-remove'></i>" placement="left"
+                   on-confirm="environmentCtrl.deleteProduct()" on-cancel="cancelClicked = true" confirm-button-type="danger" cancel-button-type="default">
+                   <img src="icons/delete-icon-2.svg">
+                </a>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="k2-body">
+        <form role="form" name="environmentCtrl.productForm" ng-submit="environmentCtrl.saveProductChanges()">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group col-lg-12">
+                        <!--<label>{{"PRODUCT_NAME" | translate}}</label>-->
+                        <!--<input type="text" class="form-control1" ng-model="environmentCtrl.productData.product_name" disabled>-->
+                        <a ng-click="environmentCtrl.openProductFullView()">{{environmentCtrl.productData.product_name}}</a>
+                        <!-- </input> -->
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label>{{"DATA_CENTER_NAME" | translate}}</label>
+                        <select id="environment_product_data_center_name" class="form-control1" width="'100%'" ng-model="environmentCtrl.productData.data_center_name" ng-change="environmentCtrl.dataCenterChanged()" ng-options="option.dc as option.dc for option in environmentCtrl.dataCenters | orderBy:'dc'" ng-disabled="environmentCtrl.disableChangeProduct">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label>{{"PRODUCT_VERSION" | translate}}</label>
+                        <select id="environment_product_version" class="form-control1" ng-model="environmentCtrl.productData.product_version" ng-options="option as option for option in environmentCtrl.productData.product_versions.split(',')"
+                               ng-disabled="environmentCtrl.disableChangeProduct">
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-12" ng-hide="true" ng-if="environmentCtrl.environmentDataOrig.allow_write || environmentCtrl.adi_only">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label ng-show="!environmentCtrl.adi_only">{{"TARGET_INTERFACES" | translate}}</label>
+                                <label ng-show="environmentCtrl.adi_only">{{"INTERFACES" | translate}}</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <input id="environment_product_display_all_interfaces" style="width: 100%"  type="checkbox" ng-init="environmentCtrl.showAllInterfaces = false;" ng-model="environmentCtrl.showAllInterfaces"/>
+                                    <label class="control-label">Display Full Interface List</label>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="agile-list" style="padding-left: 0px" ng-init="environmentCtrl.dummyInput = 'dummy'">
+                            <li style="border-left: 3px solid {{interface.status ? '#51B3C3' : 'red'}};opacity: {{interface.deleted ? 1 : 1}};min-height: 50px;" 
+                            class="success-element" 
+                            ng-if="(interface.env_product_interface_status == 'Active' || interface.interface_status == 'Active') 
+                                    && (!interface.deleted) || environmentCtrl.showAllInterfaces" 
+                                    ng-repeat="interface in environmentCtrl.productData.interfaces">
+                                {{interface.interface_name}}&nbsp;&nbsp;&nbsp;&nbsp;Type: {{interface.interface_type}}
+                                <a tooltip-class="deleteIcon" 
+                                    id="environment_product_interface_delete_{{$index}}"
+                                    uib-tooltip="{{'DELETE_INTERFACE' | translate}}" 
+                                    style="margin-top: -2px;margin-left: 10px;"
+                                    ng-click="interface.deleted = true" 
+                                    ng-if="!environmentCtrl.disableChangeProduct && (environmentCtrl.productData.interfaces | atLeastOneInterface) && !interface.deleted || environmentCtrl.adi_only" 
+                                    class="pull-right ">
+                                    <!-- {{"DELETE" | translate}} -->
+                                    <img src="icons/delete-icon-2.svg">
+                                </a>
+                                <a id="environment_product_interface_edit_{{$index}}"
+                                    tooltip-class="editIcon" uib-tooltip="{{interface.status == false ? 'ADD_INTERFACE' : 'EDIT_INTERFACE' | translate}}" 
+                                ng-if="environmentCtrl.productData.status == 'Active' && 
+                                       (interface.interface_status == 'Active' || interface.env_product_interface_status == 'Active') && 
+                                       !environmentCtrl.disableChangeProduct"
+                                   ng-click="environmentCtrl.openEnvProductInterfaceEdit($index)" class="pull-right btn btn-xs k2-primary-btn btn-circle" style="width: 22px;height: 22px;padding: 1px 0;">
+                                    <!-- {{interface.status == false ? "UPDATE" : "EDIT" | translate}}    -->
+                                    <img src="icons/edit.svg" alt="edit">
+                                </a>
+                            
+                                <a  id="environment_product_interface_view_{{$index}}" ng-if="environmentCtrl.productData.status == 'Inactive' || interface.env_product_interface_status == 'Inactive' || environmentCtrl.disableChangeProduct"
+                                   ng-click="environmentCtrl.openEnvProductInterfaceEdit($index)" class="pull-right btn btn-xs {{interface.status == false ? 'btn-danger' : 'btn-success'}}">
+                                    View
+                                </a>
+                                <input ng-if="interface.status == false && !interface.deleted" ng-model="interface.myTest" class="form-control1" style="height:0px; padding: 0" ng-required="!environmentCtrl.adi_only">
+                                <input ng-if="interface.status == true && !interface.deleted" ng-model="environmentCtrl.dummyInput" class="form-control1" style="height:0px; padding: 0" ng-required="!environmentCtrl.adi_only">
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-12 form-buttons">
+                            <a ng-if="environmentCtrl.addProductWarning &&  !environmentCtrl.disableChangeProduct"
+                                    id="environment_product_save"
+                                    uib-tooltip="Edit System Editor"
+                                    tooltip-placement="left"
+                                    type="button"
+                                    role-handler
+                                    role="1"
+                                    ng-if="!environmentCtrl.disableChangeProduct"
+                                    class="pull-left"
+                                    mwl-confirm message="DC {{environmentCtrl.addProductWarning.dc_name}} is not equal to the DC name of logical unit {{environmentCtrl.addProductWarning.lu_name}}: {{environmentCtrl.addProductWarning.lu_dc_name}}. Are you sure? "
+                                    confirm-text="Yes <i class='glyphicon glyphicon-ok'></i>"
+                                    on-confirm="environmentCtrl.saveProductChanges()"
+                                    cancel-text="No <i class='glyphicon glyphicon-remove'></i>"
+                                    placement="left"
+                                    on-cancel="cancelClicked = true"
+                                    confirm-button-type="danger"
+                                    cancel-button-type="default">
+                                    <button class="btn k2-primary-btn pull-left"  type="submit" role-handler role="1">{{"SAVE_CHANGES" | translate}}</button>
+
+                                    </a>
+
+                            <button id="environment_product_save" class="btn k2-primary-btn pull-left" ng-if="!environmentCtrl.addProductWarning && !environmentCtrl.disableChangeProduct" type="submit" role-handler role="1">{{"SAVE_CHANGES" | translate}}</button>
+                            <a 	uib-tooltip="Close System Editor"
+                                id="environment_product_close"
+                                  tooltip-placement="left"
+                                  type="button"
+                                  role-handler
+                                  role="1"
+                                  ng-if="!environmentCtrl.disableChangeProduct"
+                                  class="pull-right"
+                                  mwl-confirm message="Are you sure you want to close?"
+                                  confirm-text="Yes <i class='glyphicon glyphicon-ok'></i>"
+                                  cancel-text="No <i class='glyphicon glyphicon-remove'></i>"
+                                  placement="left"
+                                  on-confirm="environmentCtrl.getSummaryData()"
+                                  on-cancel="cancelClicked = true"
+                                  confirm-button-type="danger"
+                                  cancel-button-type="default">
+
+                                <button class="btn k2-primary-btn pull-right" type="button">{{"CLOSE" | translate}}</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

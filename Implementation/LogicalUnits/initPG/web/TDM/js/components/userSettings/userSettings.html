@@ -1,0 +1,41 @@
+<link href="js/components/userSettings/userSettings.css" rel="stylesheet" /> 
+
+<div class="user-settings" style="position: absolute;" click-outside="close()">
+    <div class="title">
+        <span>User Settings</span>
+        <span id="add_environment_environments_owners_close_button" ng-click="close()" style="cursor: pointer"><img src="img/xclose.svg"/></span>
+    </div>
+    <div class="body">
+        <div class="field-container" ng-if="enableAllUsers">
+            <div class="option-button">
+                <label class="option-button-label" style="color: #ff0185">
+                    All Users
+                </label>
+                <input id="add_environment_environments_owners_all_users" type="checkbox" ng-model="userSettingsCtrl.allUsers">
+            </div>
+        </div>
+        <div class="field-container">
+            <div class="form-group">
+                <label style="color: #669933;">User ID</label>
+                <select id="add_environment_environments_owners_user_id_select" style="margin-bottom: 16px;" width="'100%'" class="form-control1" ng-model="userSettingsCtrl.user" ng-options="option as option.username for option in userSettingsCtrl.users track by option.user_id">
+                    <option value></option>
+                </select>
+                <input id="add_environment_environments_owners_user_id_input" placeholder="Type a user ID" type="text" class="form-control1" ng-model="userSettingsCtrl.customUser" ng-disabled="userSettingsCtrl.user">
+            </div>
+        </div>
+        <div class="field-container" style="border-bottom: 0;">
+            <div class="form-group">
+                <label style="color: #cc6633">Fabric Role</label>
+                <select id="add_environment_environments_owners_fabric_role" width="'100%'" class="form-control1" ng-model="userSettingsCtrl.userGroup"  ng-options="option as option for option in userSettingsCtrl.groups"></select>
+            </div>
+        </div>
+        <div class="buttons-container">
+            <span id="add_environment_environments_owners_close_button_2" class="cancel-button" ng-click="close()">
+                CANCEL
+            </span>
+            <span id="add_environment_environments_owners_add_button" class="add-button" ng-click="save(userSettingsCtrl.user, userSettingsCtrl.customUser, userSettingsCtrl.userGroup, userSettingsCtrl.allUsers)">
+                ADD
+            </span>
+        </div>
+    </div>
+</div>

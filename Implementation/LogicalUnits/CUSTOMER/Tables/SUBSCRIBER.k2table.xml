@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>SUBSCRIBER</Name>
+  <ID>tbl_SUBSCRIBER</ID>
+  <Columns>
+    <Column name="subscriber_id" id="subscriber_id" index="0" datatype="INTEGER" mandatory="true" />
+    <Column name="msisdn" id="msisdn" index="1" datatype="TEXT" />
+    <Column name="imsi" id="imsi" index="2" datatype="TEXT" />
+    <Column name="sim" id="sim" index="3" datatype="TEXT" />
+    <Column name="first_name" id="first_name" index="4" datatype="TEXT" />
+    <Column name="last_name" id="last_name" index="5" datatype="TEXT" />
+    <Column name="subscriber_type" id="subscriber_type" index="6" datatype="TEXT" />
+    <Column name="vip_status" id="vip_status" index="7" datatype="TEXT" />
+  </Columns>
+  <IndexesList>
+    <Index id="1" pk="true" unique="true" instanceOnly="true" columnsIdsList="subscriber_id" />
+  </IndexesList>
+  <EnrichmentList>
+  </EnrichmentList>
+  <LazyDataUpdate syncMethod="Inherited" performEvery="1.00:00:00">
+    <DecisionFunction></DecisionFunction>
+  </LazyDataUpdate>
+  <TriggersList>
+  </TriggersList>
+</TableObject>

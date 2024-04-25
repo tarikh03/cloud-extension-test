@@ -1,0 +1,58 @@
+<div class="modal-header">
+    <h3 class="modal-title">{{"DB_INTERFACE" | translate}} # {{dbInterfaceCtrl.dbInterfaceData.db_interface_name}}</h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <form role="form" name="envProductInterfaceForm" ng-submit="dbInterfaceCtrl.saveDBInterface()">
+        <div class="col-lg-12">
+            <div class="form-group">
+                <label>Interface Connection Input</label>
+                <select class="form-control1" ng-model="dbInterfaceCtrl.interfaceType">
+                    <option value="0">Connection String</option>
+                    <option value="1">Detailed Connection Input</option>
+                </select>
+            </div>
+
+            <div class="row" ng-if="dbInterfaceCtrl.interfaceType === 0">
+                <div class="col-lg-12">
+                    <div class="form-group"><label class="col-sm-2 control-label">{{"CONNECTION_STRING" | translate}}</label>
+                        <div class="col-sm-5"><input type="text" ng-model="dbInterfaceCtrl.dbInterfaceData.db_connection_string" class="form-control1"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-if="dbInterfaceCtrl.connectionType === true">
+                <div class="col-lg-12">
+                    <div class="form-group"><label class="col-sm-2 control-label">{{"HOST" | translate}}</label>
+                        <div class="col-sm-5"><input type="text" ng-model="dbInterfaceCtrl.dbInterfaceData.db_host" class="form-control1" required></div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="form-group"><label class="col-sm-2 control-label">{{"PORT" | translate}}</label>
+                        <div class="col-sm-5"><input type="number" min="1024" max="65535" ng-model="dbInterfaceCtrl.dbInterfaceData.db_port" name="port" class="form-control1" required></div>
+                    </div>
+                    <p ng-show="envProductInterfaceForm.port.$invalid && !envProductInterfaceForm.port.$pristine" style="color: red;" class="help-block">Port must be in range 1024-65535</p>
+                </div>
+                <div class="col-lg-12">
+                    <div class="form-group"><label class="col-sm-2 control-label">{{"USERNAME" | translate}}</label>
+                        <div class="col-sm-5"><input type="text" ng-model="dbInterfaceCtrl.dbInterfaceData.db_user" class="form-control1" required></div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="form-group"><label class="col-sm-2 control-label">{{"PASSWORD" | translate}}</label>
+                        <div class="col-sm-5"><input type="password" ng-model="dbInterfaceCtrl.dbInterfaceData.db_password" class="form-control1"  required></div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="form-group"><label class="col-sm-2 control-label">{{"SCHEMA" | translate}}</label>
+                        <div class="col-sm-5"><input type="text" ng-model="dbInterfaceCtrl.dbInterfaceData.db_schema" class="form-control1" required></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="center">
+            <button class="btn btn-success btn-w-m" type="button" ng-click="dbInterfaceCtrl.close()">{{"CANCEL" | translate}}</button>
+            <button class="btn btn-success btn-w-m" type="submit">{{"SAVE" | translate}}</button>
+        </div>
+        </form>
+    </div>
+</div>

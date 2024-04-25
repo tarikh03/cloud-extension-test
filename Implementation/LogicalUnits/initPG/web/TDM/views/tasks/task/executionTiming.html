@@ -1,0 +1,145 @@
+<div class="k2-card" style="margin-top: 50px">
+  <div class="k2-header">
+    <span class="k2-card-title" style="color: var(--secondary-text-color)">
+      {{"EXECUTION_TIMING" | translate}}
+    </span>
+  </div>
+  <hr />
+  <div class="k2-body">
+    <div class="row" style="margin: 0px;">
+      <div class="col-lg-3 form-group">
+        <div class="row">
+          <div class="form-group">
+            <label class="radio-button">
+              <input
+                ng-disabled="taskCtrl.disableChange"
+                type="radio"
+                ng-value="'immediate'"
+                name="scheduleRadio"
+                ng-model="taskCtrl.selectSchedule"
+              />
+              <label class="radio-button-label">
+                {{"IMMEDIATE_EXECUTION" | translate}}
+              </label>
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+            <label
+              class="radio-button"
+              style="{{taskCtrl.userRole.allowed_task_scheduling == false ? 'padding-left : 25px' : ''}}"
+            >
+              <input
+                ng-disabled="taskCtrl.disableChange"
+                ng-if="taskCtrl.userRole.allowed_task_scheduling == true"
+                type="radio"
+                ng-value="'schedule'"
+                name="scheduleRadio"
+                ng-model="taskCtrl.selectSchedule"
+              />
+              <label class="radio-button-label">
+                {{"SCHEDULING_PARAMETERS" | translate}}
+              </label>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="form-group" ng-if="taskCtrl.selectSchedule == 'schedule'">
+          {{taskCtrl.scheduleData}}
+          <div>
+            <cron-gen
+              ng-model="taskCtrl.scheduleData"
+              options="taskCtrl.schedulerOptions"
+              cron-format="quartz (Currently only compatible with 'quartz' and defaults to 'quartz')"
+            >
+            </cron-gen>
+          </div>
+          <p class="time-note" style="color: #ec4758">
+            {{taskCtrl.timeZoneMessage}}
+          </p>
+          <div class="row">
+            <div class="col-lg-12" style="margin-top: 15px">
+              <!-- taskCtrl.taskData.scheduling_end_date -->
+              <div>
+                <label style="vertical-align: top; margin-top: 7px " class="option-button">
+                  <input
+                    type="radio"
+                    ng-value="'endBy'"
+                    name="scheduleEndRadio"
+                    ng-model="taskCtrl.scheduleEndBy"
+                  />
+                  <label class="option-button-label">
+                    End By :
+                  </label>
+                
+                </label>
+                <div
+                  ng-if="taskCtrl.scheduleEndBy == 'endBy'"
+                  class="input-group date"
+                  style="display: inline-table; width: 300px; margin-left: 50px"
+                >
+                  <span class="input-group-addon"
+                    ><i class="fa fa-calendar"></i
+                  ></span>
+                  <input
+                    type="datetime"
+                    class="form-control1"
+                    ng-model="taskCtrl.taskData.scheduling_end_date"
+                    date-time
+                    format="DD MMM YYYY"
+                    view="date"
+                    auto-close="true"
+                    min-view="date"
+                    min-date="taskCtrl.minDate"
+                    ng-blur="taskCtrl.getVersionsForLoad()"
+                  />
+                </div>
+              </div>
+              <div style="margin-top: 7px" class="option-button">
+                <label class="option-button" > 
+                  <input
+                    type="radio"
+                    ng-value="'noEndBy'"
+                    name="scheduleEndRadio"
+                    ng-model="taskCtrl.scheduleEndBy"
+                  />
+                  <label class="option-button-label">
+                    No end date
+                  </label>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      <hr />
+      <div class="row" style="margin:0px">
+      <span
+        style="
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+        "
+      >
+        <button
+          type="button"
+          class="btn k2-primary-btn"
+          ng-click="taskCtrl.openStep(3,'back')"
+        >
+          Back
+        </button>
+        <button
+          type="submit"
+          class="btn k2-primary-btn"
+          ng-if="!taskCtrl.disableChange"
+        >
+          Finish
+        </button>
+      </span>
+      </div>
+    </div>
+  </div>
+</div>

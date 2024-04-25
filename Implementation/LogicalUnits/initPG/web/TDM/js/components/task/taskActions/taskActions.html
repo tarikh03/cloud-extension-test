@@ -1,0 +1,54 @@
+<div style="display: flex; gap: 15px;">
+    <div style="display: flex; align-items: center;"
+    ng-if="taskActionsCtrl.extract">
+        <input name="extractMode" type="checkbox"
+            ng-model="taskActionsCtrl.extract"
+            ng-disabled="true" />
+        <label style="margin-top: 5px;margin-left: 6px;position: relative;">
+            Extract
+            <!-- <span class="sub-label">(from source)</span> -->
+        </label>
+    </div>
+    <div style="display: flex; align-items: center;"
+    ng-if="taskActionsCtrl.generate">
+        <input name="extractMode" type="checkbox"
+            ng-model="taskActionsCtrl.generate"
+            ng-disabled="true" />
+        <label style="margin-top: 5px;margin-left: 6px;position: relative;">
+            Generate
+            <!-- <span class="sub-label">(from source)</span> -->
+        </label>
+    </div>
+    <div style="display: flex;
+                    align-items: center;"
+                    ng-if="taskActionsCtrl.load">
+        <input name="loadMode" type="checkbox"
+            ng-model="taskActionsCtrl.load"
+            ng-disabled="true" />
+        <label style="margin-top: 5px;margin-left: 6px;position: relative;">
+            Load
+            <!-- <span class="sub-label">(to target)</span> -->
+        </label>
+    </div>
+    <div style="display: flex;
+                    align-items: center;"
+                    ng-if="taskActionsCtrl.delete">
+        <input name="deleteMode" type="checkbox"
+            ng-model="taskActionsCtrl.delete"
+            ng-disabled="true" />
+        <label style="margin-top: 5px;margin-left: 6px;position: relative;">
+            Delete
+            <!-- <span class="sub-label">(from target)</span> -->
+        </label>
+    </div>
+    <div style="display: flex; align-items: center;"
+        ng-if="taskActionsCtrl.reserve">
+        <input name="reserveMode" type="checkbox"
+            ng-model="taskActionsCtrl.reserve"
+            ng-disabled="true" />
+        <label style="margin-top: 5px;margin-left: 6px;position: relative;">
+            Reserve
+            <!-- <span class="sub-label">(in target)</span> -->
+        </label>
+    </div>
+</div>

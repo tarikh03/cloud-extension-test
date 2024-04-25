@@ -1,0 +1,262 @@
+<div class="k2-card" style="margin-top: 50px">
+  <div class="k2-header">
+    <span class="k2-card-title" style="color: var(--secondary-text-color)">{{"REQUESTED_ENTITIES" | translate}}</span>
+  </div>
+  <div class="k2-body">
+    <div class="row">
+      <hr />
+      <div class="form-group col-lg-12" style="display: flex">
+        <div class="col-lg-6" style="padding-left: 0">
+          <div ng-if="!taskCtrl.taskData.selectAllEntites" class="form-group i-checks col-lg-12">
+            <label class="radio-button">
+              <input ng-disabled="taskCtrl.disableChange" type="radio" ng-value="'given'" name="connectionRadio"
+                ng-model="taskCtrl.selectFieldType" />
+              <label class="radio-button-label">
+                {{"ENTITIES_LIST" |translate}}
+              </label>
+            </label>
+          </div>
+          <div ng-if="taskCtrl.taskData.task_type == 'LOAD' && !taskCtrl.taskData.version_ind && !taskCtrl.adi_only"
+            class="form-group i-checks col-lg-12"
+            style="{{taskCtrl.userRole.allowed_random_entity_selection == false ? 'padding-left : 25px' : ''}}">
+            <label class="radio-button">
+              <input ng-disabled="taskCtrl.disableChange"
+                ng-if="taskCtrl.userRole.allowed_random_entity_selection == true" type="radio" ng-value="'random'"
+                name="connectionRadio" ng-model="taskCtrl.selectFieldType" />
+              <label class="radio-button-label">
+                {{"RANDOM_SELECTION" | translate}}
+              </label>
+              <small ng-show="!taskCtrl.userRole.allowed_random_entity_selection">(Not Allowed)</small>
+            </label>
+          </div>
+          <div ng-if="taskCtrl.taskData.task_type == 'LOAD' && !taskCtrl.taskData.version_ind"
+            class="form-group i-checks col-lg-12">
+            <label class="radio-button"
+              style="{{taskCtrl.userRole.allowed_creation_of_synthetic_data == false ? 'padding-left : 25px' : ''}}">
+              <input ng-disabled="taskCtrl.disableChange"
+                ng-if="taskCtrl.userRole.allowed_creation_of_synthetic_data == true" type="radio" ng-value="'synthetic'"
+                name="connectionRadio" ng-model="taskCtrl.selectFieldType" />
+              <label class="radio-button-label">
+                {{"CREATE_SYNTHETIC_ENTITIES" | translate}}
+              </label>
+              <small ng-show="!taskCtrl.userRole.allowed_creation_of_synthetic_data">(Not Allowed)</small>
+            </label>
+          </div>
+          <div ng-if="taskCtrl.taskData.task_type == 'LOAD' && !taskCtrl.taskData.version_ind && !taskCtrl.adi_only"
+            class="form-group i-checks col-lg-12">
+            <label class="radio-button">
+              <input ng-disabled="taskCtrl.disableChange" type="radio" ng-value="'parameters'" name="connectionRadio"
+                ng-model="taskCtrl.selectFieldType" />
+              <label class="radio-button-label">
+                {{"SELECT_PARAMETERS" | translate}}
+              </label>
+            </label>
+          </div>
+          <div ng-if="taskCtrl.taskData.task_type == 'LOAD' && !taskCtrl.taskData.version_ind"
+            class="form-group col-lg-12" style="padding-left: 0px; min-height: 160px">
+            <label>{{"EXCLUSION_LIST" | translate}}</label>
+            <textarea ng-pattern="taskCtrl.excultionPattern" rows="5" name="excultionEntitiesList" class="col-lg-12"
+              ng-model="taskCtrl.taskData.entity_exclusion_list">
+            </textarea>
+            <div class="m-t-xs"
+              ng-show="taskCtrl.requestedEntitiesForm.excultionEntitiesList.$invalid && requestedEntitiesForm.submitted">
+              <small ng-if="taskCtrl.requestedEntitiesForm.excultionEntitiesList.$error.pattern"
+                class="text-dark">Please Enter Entity IDs, separated by a comma
+              </small>
+            </div>
+            <div class="m-t-xs"
+              ng-show="taskCtrl.requestedEntities.entities_list && taskCtrl.taskData.entity_exclusion_list == taskCtrl.requestedEntities.entities_list">
+              <small class="text-dark">Entities list is identical to exclusion list. Please fix
+                exclusion list.
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group col-lg-6"
+          ng-if="taskCtrl.selectFieldType == 'given' && !taskCtrl.taskData.selectAllEntites">
+          <div class="m-t-xs">
+            <small class="text-danger">Please Enter Entity IDs, separated by a comma
+              <span style="color: red">*</span>
+            </small>
+          </div>
+          <textarea ng-disabled="taskCtrl.disableChange" required rows="5" name="entitiesList" class="col-lg-12"
+            ng-change="taskCtrl.entitiesListChange()" ng-model="taskCtrl.requestedEntities.entities_list"
+            style="height: 83%">
+          </textarea>
+          <span ng-if="taskCtrl.taskData.task_type == 'LOAD' && !taskCtrl.taskData.version_ind">
+            <span
+              ng-if="taskCtrl.taskData.number_of_entities_to_copy && taskCtrl.requestedEntities.entities_list && requestedEntitiesForm.entitiesList.$invalid == false"
+              style="margin-top: 2px"
+              class="badge pull-right">{{taskCtrl.requestedEntities.entities_list.split(',').length}}/{{taskCtrl.taskData.number_of_entities_to_copy}}
+            </span>
+            <span
+              ng-if="taskCtrl.taskData.number_of_entities_to_copy && requestedEntitiesForm.entitiesList.$error.required == true"
+              style="margin-top: 2px" class="badge pull-right">0/{{taskCtrl.taskData.number_of_entities_to_copy}}
+            </span>
+            <span
+              ng-if="taskCtrl.taskData.number_of_entities_to_copy && requestedEntitiesForm.entitiesList.$error.pattern == true"
+              style="margin-top: 2px"
+              class="badge pull-right">{{requestedEntitiesForm.entitiesList.$viewValue.split(',').length}}/{{taskCtrl.taskData.number_of_entities_to_copy}}
+            </span>
+          </span>
+          <span ng-if="!(taskCtrl.taskData.task_type == 'LOAD' && !taskCtrl.taskData.version_ind)">
+            <span
+              ng-if="taskCtrl.requestedEntities.entities_list && requestedEntitiesForm.entitiesList.$invalid == false"
+              style="margin-top: 2px"
+              class="badge pull-right">{{taskCtrl.requestedEntities.entities_list.split(',').length}}/{{taskCtrl.maxToCopy}}
+            </span>
+            <span ng-if="requestedEntitiesForm.entitiesList.$error.required == true" style="margin-top: 2px"
+              class="badge pull-right">0/{{taskCtrl.maxToCopy}}
+            </span>
+            <span ng-if="requestedEntitiesForm.entitiesList.$error.pattern == true" style="margin-top: 2px"
+              class="badge pull-right">{{requestedEntitiesForm.entitiesList.$viewValue.split(',').length}}/{{taskCtrl.maxToCopy}}
+            </span>
+          </span>
+
+          <div class="m-t-xs"
+            ng-show="taskCtrl.enititesListFailedPatternTest && (taskCtrl.taskData.number_of_entities_to_copy || taskCtrl.maxToCopy)">
+            <small class="text-danger" ng-show="requestedEntitiesForm.entitiesList.$viewValue.split(',').length != 
+            (taskCtrl.taskData.number_of_entities_to_copy ||
+            taskCtrl.maxToCopy)">
+              Number of entities in the entities list does not match number of
+              entities in the General tab. Maximum entities for the task is:
+              {{taskCtrl.taskData.number_of_entities_to_copy ||
+              taskCtrl.maxToCopy}}
+            </small>
+            <small class="text-danger" ng-show="requestedEntitiesForm.entitiesList.$viewValue.split(',').length == 
+            (taskCtrl.taskData.number_of_entities_to_copy ||
+            taskCtrl.maxToCopy)">The Entity ID must consist of letters, numbers or a dash only. Other characters are not supported.
+            </small>
+          </div>
+          <div class="m-t-xs" ng-show="taskCtrl.enititesListNotPassedExclusionList">
+            <small class="text-danger">The following entities
+              {{taskCtrl.existingEntitiesInExclusionListMembers }} are included
+              in the exclusion lists for this environment and business entity.
+              Therefore, those entities cannot be copied into your environment.
+              Please remove them from your list.
+            </small>
+          </div>
+        </div>
+        <div class="form-group col-lg-8" ng-if="taskCtrl.selectFieldType == 'random'"></div>
+        <div class="form-group col-lg-8" ng-if="taskCtrl.selectFieldType == 'synthetic'">
+          <div class="m-t-xs">
+            <small class="text-danger">Please Enter Entity ID for duplication<span style="color: red">*</span>
+            </small>
+          </div>
+          <input name="synthetic" ng-disabled="taskCtrl.disableChange" required type="text" class="form-control1"
+            ng-model="taskCtrl.requestedEntities.synthetic" ng-pattern="taskCtrl.syntheticPattern" />
+
+          <div class="m-t-xs"
+            ng-show="taskCtrl.requestedEntitiesForm.synthetic.$invalid && requestedEntitiesForm.submitted">
+            <small ng-if="taskCtrl.requestedEntitiesForm.synthetic.$error.pattern" class="text-danger">Entity ID cannot
+              have comma or spaces<span style="color: red">*</span></small>
+          </div>
+          <div class="m-t-xs" ng-show="taskCtrl.enititesListNotPassedExclusionList">
+            <small class="text-danger">The following entity is included in the exclusion lists for this
+              environment and business entity. Therefore, this entity cannot be
+              copied into your environment. Please use another entity.
+            </small>
+          </div>
+        </div>
+        <div class="form-group col-lg-8" ng-if="taskCtrl.selectFieldType == 'parameters'">
+          <div class="col-lg-12">
+            <div class="col-lg-12" style="padding: 0px;">
+              <label class="option-button">
+                <input id="checkbox2" type="checkbox" ng-model="taskCtrl.parametersRandom" />
+                <label for="checkbox2" class="option-button-label">
+                  Use Parameters with Random selection
+                </label>
+              </label>
+            </div>
+          </div>
+          <div class="form-group col-lg-12">
+            <div class="row">
+              <div class="col-lg-12" style="display: flex">
+                <a ng-click="getEntitesCount(true)">
+                  <img src="icons/refresh.svg"></img>
+                </a>
+                <label style="padding-left: 6px; font-weight: 600">{{"PARAMETERS_COUNT" | translate}} =
+                  <span ng-show="taskCtrl.parametersCount == 'inprogress'">
+                    <img src="img/loading.gif" />
+                  </span>
+                  <span ng-show="taskCtrl.parametersCount !== 'inprogress'">{{taskCtrl.parametersCount}}</span>
+                </label>
+              </div>
+              <div class="col-lg-12" style="padding: 10px">
+                <query-builder form="requestedEntitiesForm" disablechange="taskCtrl.disableChange"
+                  group="taskCtrl.filter.group" params="taskCtrl.parameters"></query-builder>
+                <div class="m-t-xs" ng-show="taskCtrl.parametersError == true">
+                  <small class="text-danger">Please Choose Parameters <span style="color: red">*</span>
+                  </small>
+                </div>
+                <p>{{taskCtrl.requestedEntities.query_parameters}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-12"
+        ng-if="taskCtrl.taskData.task_type == 'LOAD' && taskCtrl.taskData.version_ind && taskCtrl.step == 2">
+        <div class="row">
+          <div class="col-lg-3">
+            <label>Select Version for Load</label>
+          </div>
+          <div class="col-lg-3">
+            <div style="display: inline-flex; vertical-align: top; margin-top: 7px">
+              From Date:
+            </div>
+            <div class="input-group date" style="display: inline-table; width: calc(100% - 100px)">
+              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+              <input type="datetime" class="form-control1" ng-model="taskCtrl.versionForLoadFrom" date-time
+                format="DD MMM YYYY" view="date" auto-close="true" min-view="date"
+                ng-blur="taskCtrl.getVersionsForLoad()" />
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div style="display: inline-flex; vertical-align: top; margin-top: 7px">
+              To Date:
+            </div>
+            <div class="input-group date" style="display: inline-table; width: calc(100% - 100px)">
+              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+              <input type="datetime" class="form-control1" ng-model="taskCtrl.versionForLoadTo" min-view="date"
+                ng-min="from" date-time format="DD MMM YYYY" view="date" auto-close="true"
+                ng-blur="taskCtrl.getVersionsForLoad()" />
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div ng-init="taskCtrl.getVersionsForLoad()" style="display: flex">
+              <a ng-show="!taskCtrl.loadingTableVersions" ng-click="taskCtrl.getVersionsForLoad()">
+                <img src="icons/refresh.svg"></img>
+              </a>
+              <span ng-show="taskCtrl.loadingTableVersions">
+                <img src="img/loading.gif" />
+              </span>
+            </div>
+            <table class="versions-for-load" style="display: table; width: 100%" datatable="" dt-options="taskCtrl.dtOptionsVersions"
+              dt-columns="taskCtrl.dtColumnsVersions" dt-instance="taskCtrl.dtInstanceVersions"
+              class="table table-striped table-bordered table-hover"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr />
+    <span style="display: flex; flex-direction: row; justify-content: space-between">
+      <button style="width: 80px" type="button" class="btn k2-primary-btn" ng-click="taskCtrl.openStep(1,'back')">
+        Back
+      </button>
+      <button style="width: 80px" type="submit" class="btn k2-primary-btn">
+        Next
+      </button>
+    </span>
+
+    <div class="m-t-xs" ng-show="requestedEntitiesForm.$invalid">
+      <small ng-if="requestedEntitiesForm.$error.missingParent" class="text-danger">
+        Logical units '&#60;' <span ng-repeat="missingParent in LUsMissingParent">{{missingParent}}</span>'&#62;' are missing
+          their parent logical units. Please change the selection
+          method to “Entities List” or “Random Selection” or add the missing
+          parent logical units to the tasks.
+      </small>
+    </div>
+  </div>
+</div>

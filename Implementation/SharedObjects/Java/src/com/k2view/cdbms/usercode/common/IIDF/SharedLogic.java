@@ -22,6 +22,8 @@ import com.k2view.cdbms.shared.utils.UserCodeDescribe.type;
 import com.k2view.cdbms.sync.SyncMode;
 import com.k2view.cdbms.usercode.common.IIDFProducerSingleton;
 import com.k2view.fabric.common.Util;
+import com.k2view.fabric.common.mtable.MTable;
+import com.k2view.fabric.common.mtable.MTables;
 import com.k2view.fabric.common.stats.CustomStats;
 
 
@@ -765,7 +767,7 @@ public class SharedLogic {
 
                 setThreadGlobals("fnIIDFExecTableCustomCode", "After");
                 fnIIDFExecTableCustomCode(dataChange, true);//Check if user added any specific activity for data change table after the LUDB sql execution
-
+                
                 long ttldcProcess = Duration.between(dcProcess, Instant.now()).toMillis();
                 if (ttldcProcess > Long.parseLong(DEBUG_LOG_THRESHOLD)) {
                     fnIIDFCheckProcessTime(debugTiming, ttldcProcess, IID, dataChange);
@@ -773,11 +775,11 @@ public class SharedLogic {
             }
             paramsStats.add((Duration.between(start, Instant.now()).toMillis()));//execute_deltas Time
         }
-
+        
         if ("true".equalsIgnoreCase(STATS_ACTIVE)) {
             fnIIDFUpdateStats(statsMap);//Updating IIDF_STATISTICS table with all data changes received for instance
         }
-
+        
         start = Instant.now();
         for (DataChange repDC : replicateRequests) {//Execute all REPLICATE data change
             fnIIDFFetchInstanceData(repDC.getTargetTableName(), repDC.getKeys(), null, repDC.getTargetIid(), repDC.getBeforeValues().keySet(), repDC.getPos(), repDC.getOpTimestamp(), repDC.getCurrentTimestamp());
@@ -981,13 +983,18 @@ public class SharedLogic {
         String tableName = dataChange.getTargetTableName();
         //Check if table name exists in translaion
         Map<String, Long> debugTiming = (Map<String, Long>) getThreadGlobals("DEBUG_TIMING_MAP");
-        Map<String, String> translationOutput = getTranslationValues("trnExecUserActivity", new Object[]{getLuType().luName, tableName, post_exec});
-        if (!translationOutput.isEmpty()) {
+        Map<String, Object> keys = new HashMap<>();
+        keys.put("lu_name", getLuType().luName);
+        keys.put("table_name", tableName);
+        keys.put("post_exec", post_exec + "");
+        MTable mtable = MTables.get("mtExecUserActivity");
+        Map<String, Object> translationOutput = mtable.mapByKey(keys, MTable.Feature.caseInsensitive);
+        if (translationOutput != null && !translationOutput.isEmpty()) {
             //If global name is not null set table global
             if (translationOutput.get("global_name") != null) {
-                String[] gloVals = translationOutput.get("global_value").split(",");
+                String[] gloVals = ("" + translationOutput.get("global_value")).split("\\|");
                 int i = 0;
-                for (String gloName : translationOutput.get("global_name").split(",")) {
+                for (String gloName : ("" + translationOutput.get("global_name")).split("\\|")) {
                     if (gloName == null || "null".equalsIgnoreCase(gloName) || "".equals(gloName)) continue;
                     setThreadGlobals(gloName, gloVals[i]);
                     i++;
@@ -995,7 +1002,7 @@ public class SharedLogic {
             }
             //If function name is not null execute function
             if (translationOutput.get("function_name") != null) {
-                String[] userMethodsLst = translationOutput.get("function_name").split(",");
+                String[] userMethodsLst = ("" + translationOutput.get("function_name")).split("\\|");
                 for (String userMethod : userMethodsLst) {
                     if (userMethod == null || "null".equalsIgnoreCase(userMethod) || "".equals(userMethod)) continue;
                     Instant startTime = Instant.now();

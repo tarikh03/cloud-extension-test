@@ -1,0 +1,46 @@
+<link href="js/components/task/taskVariableModal/taskVariableModal.css" rel="stylesheet" /> 
+
+<div class="task-variable-modal" style="position: absolute;" click-outside="close()">
+    <div class="title">
+        <span>Set Variable</span>
+        <span ng-click="close()" style="cursor: pointer"><img src="img/xclose.svg"/></span>
+    </div>
+    <div class="body">
+        <form name="setVariableForm" ng-submit="taskVariableModalCtrl.saveData()">
+            <div class="field-container">
+                <div class="form-group">
+                    <label>Variable Name</label>
+                    <select style="margin-bottom: 16px;" width="'100%'" class="form-control1" 
+                        name="variable_name"
+                        ng-disabled="taskVariableModalCtrl.edit"
+                        ng-change="taskVariableModalCtrl.globalNameChange()"
+                        ng-model="taskVariableModalCtrl.global" 
+                        required
+                        ng-options="option as option.globalName for option in taskVariableModalCtrl.allGlobals">
+                        <option value></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Logical Unit</label>
+                    <select name="logical_unit" style="margin-bottom: 16px;" width="'100%'" class="form-control1" ng-model="taskVariableModalCtrl.logicalUnit" ng-change="taskVariableModalCtrl.globalValue = taskVariableModalCtrl.logicalUnit.defaultValue"
+                        ng-options="option as option.luName for option in taskVariableModalCtrl.filteredlogicalUnits">
+                        <option value></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label >Variable Value</label>
+                    <input name="variable_value" type="text" ng-model="taskVariableModalCtrl.globalValue"  required class="form-control1">
+                </div>
+            </div>
+    
+            <div class="buttons-container">
+                <span class="k2-card-ok-cancel-btn custom-hover" ng-click="close()">
+                    CANCEL
+                </span>
+                <button class="k2-card-ok-cancel-btn custom-hover" ng-submit="taskVariableModalCtrl.saveData()">
+                    SAVE
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

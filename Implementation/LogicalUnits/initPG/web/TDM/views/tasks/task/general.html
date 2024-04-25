@@ -1,0 +1,228 @@
+<div class=" k2-card"   style="margin-top: 50px;">
+    <div class="k2-header">
+        <span class="k2-card-title" style="color:var(--secondary-text-color)">General</span>
+
+    </div>
+    <hr >
+    <div style="min-height: 95px" class="row k2-body">
+        <div class="form-group"
+                ng-class="{'col-lg-6' : !taskCtrl.isFluxMode,'col-lg-3' : taskCtrl.isFluxMode}">
+            <label>{{"TASK_TITLE" |  translate}} <span style="color: red">*</span></label>
+            <input tabindex="1" type="text" ng-disabled="!taskCtrl.copyTask" name="taskTitle" class="form-control1" ng-model="taskCtrl.taskData.task_title" required ng-pattern="taskCtrl.taskTitlePattern">
+            <div class="m-t-xs" ng-show="generalForm.taskTitle.$invalid && generalForm.submitted">
+                <small class="text-danger" ng-show="generalForm.taskTitle.$error.required">Please input a Task Title</small>
+                <small class="text-danger" ng-show="generalForm.taskTitle.$error.pattern">Task Title must not contain ‘_’</small>
+            </div>
+        </div>
+        <div class="form-group col-lg-3" ng-if="taskCtrl.isFluxMode">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label>Task Type</label>
+                    <div style="display: flex;
+                                   align-items: center;
+                                   min-width: 86.5px;">
+                        <input ng-value="'LOAD'" ng-change="taskCtrl.taskModeChange(false,true)" name="operationMode" type="radio"
+                            ng-model="taskCtrl.taskData.task_type" />
+                        <label style="margin-top: 5px;margin-left: 6px; ">Load</label>
+                    </div>
+                    <div style="display: flex;
+                                   align-items: center;
+                                    min-width: 86.5px;">
+                        <input ng-value="'EXTRACT'" ng-change="taskCtrl.taskModeChange(false,true)" name="operationMode" type="radio"
+                            ng-model="taskCtrl.taskData.task_type" />
+                        <label style="margin-top: 5px;margin-left: 6px;">Extract</label>
+                    </div>
+                </div>
+                <div class="form-group col-lg-4">
+                    <label style="max-width: 72px;">Entity Versioning</label>
+                    <div>
+                        <input ng-disabled="!(taskCtrl.userRoleType == 'admin' || taskCtrl.sourceEnvOwner && taskCtrl.targetEnvOwner) && 
+                        !taskCtrl.allowed_entity_versioning" ng-change="taskCtrl.taskModeChange()"   type="checkbox" 
+                        ng-model="taskCtrl.taskData.version_ind"/>
+                    </div>
+                </div>   
+                <div class="form-group col-lg-4">
+                    <label>Set Global Variables</label>
+                    <div>
+                        <input   type="checkbox" ng-model="taskCtrl.taskData.task_globals"/>
+                    </div>
+                </div>     
+            </div>
+        </div>
+    
+        <div class="form-group col-lg-2" ng-if="!taskCtrl.adi_only"> 
+            <label>Reference</label>
+            <select width="'100%'" name="refernce" class="form-control1" 
+            ng-disabled="taskCtrl.userRoleType != 'admin' &&
+                        (taskCtrl.taskData.task_type == 'LOAD' && !taskCtrl.userRole.allowed_refresh_reference_data || 
+                        taskCtrl.taskData.task_type != 'LOAD' && !taskCtrl.sourceUserRole.allowed_refresh_reference_data)"
+                        ng-model="taskCtrl.taskData.reference" ng-size="4"
+                        ng-change="taskCtrl.referenceChange()"
+                        ng-options="ref.value as ref.text for ref in taskCtrl.referenceDropDown">
+            </select>
+        </div>
+        <div ng-show="taskCtrl.userRoleType == 'admin' || taskCtrl.sourceEnvOwner && taskCtrl.targetEnvOwner" class="form-group col-lg-1" ng-if="!(taskCtrl.taskData.task_type == 'LOAD' && !taskCtrl.taskData.version_ind)"> 
+            <label style="max-width: 72px;"> Select All Entities</label>
+            <div>   
+                <input ng-disabled="taskCtrl.taskData.reference == 'refernceOnly'"  type="checkbox"class="form-control1" ng-model="taskCtrl.taskData.selectAllEntites">
+            </div>
+        </div>
+        <div class="form-group" 
+            ng-class="{'col-lg-4' : !taskCtrl.adi_only, 'col-lg-6' : taskCtrl.adi_only}" 
+            ng-if="taskCtrl.taskData.task_type == 'LOAD' && !taskCtrl.taskData.version_ind && taskCtrl.taskData.reference !== 'refernceOnly'">
+            <label>{{"NUMBER_OF_ENTITIES" |  translate}} <span style="color: red">*</span></label>
+            <input min="1"  max="{{taskCtrl.maxToCopy}}" tabindex="2" name="numberOfEntities" ng-blur="taskCtrl.updateEntitiesPattern();"  required type="number" class="form-control1" 
+                   ng-disabled="taskCtrl.disableChange"  ng-model="taskCtrl.taskData.number_of_entities_to_copy">
+            <div class="m-t-xs" ng-show="generalForm.numberOfEntities.$invalid && generalForm.submitted">
+                <small class="text-danger" ng-show="generalForm.numberOfEntities.$error.required">Please input Number of entities</small>
+                <small class="text-danger" ng-show="generalForm.numberOfEntities.$error.max">Maximum Entites to Copy is {{taskCtrl.maxToCopy}}</small>
+                <small class="text-danger" ng-show="generalForm.numberOfEntities.$error.min">Minimum Entites to Copy is 1</small>
+            </div>
+        </div>
+    </div>
+    <div  style="min-height: 95px" class="row" ng-if="taskCtrl.taskData.task_type != 'EXTRACT'">
+        <div class="form-group col-lg-6">
+            <label>Source Environment Name <span style="color: red">*</span></label>
+            <select tabindex="3" width="'100%'" name="taskSourceEnv" required class="form-control1" chosen
+                    ng-change="taskCtrl.taskModeChange();taskCtrl.sourceEnvironmentChange(true)"
+                    ng-model="taskCtrl.taskData.source_environment_id" ng-disabled="taskCtrl.disableChange"
+                    ng-options="env.environment_id as env.environment_name for env in taskCtrl.allSourceEnvironments | orderBy:'environment_name'">
+                <option></option>
+            </select>
+            <div class="m-t-xs" ng-show="generalForm.taskSourceEnv.$invalid && generalForm.submitted">
+                <small class="text-danger" ng-show="generalForm.taskSourceEnv.$error.required">Please Choose Source Environment</small>
+            </div>
+        </div>
+        <div class="form-group col-lg-6">
+            <label>Target Environment Name <span style="color: red">*</span></label>
+            <select tabindex="4" width="'100%'" name="taskEnv" required class="form-control1" chosen 
+            ng-change="taskCtrl.environmentChange();taskCtrl.taskModeChange()"
+                    ng-model="taskCtrl.taskData.environment_id" ng-disabled="taskCtrl.disableChange"
+                    ng-options="env.environment_id as env.environment_name for env in taskCtrl.allEnvironments | orderBy:'environment_name'">
+                <option></option>
+            </select>
+            <div class="m-t-xs" ng-show="generalForm.taskEnv.$invalid && generalForm.submitted">
+                <small class="text-danger" ng-show="generalForm.taskEnv.$error.required">Please Choose Target Environment</small>
+            </div>
+        </div>
+    </div>
+    <div class="row taskGeneral" style="min-height: 95px" ng-if="taskCtrl.taskData.task_type == 'EXTRACT'">
+        <div class="form-group col-lg-6">
+            <label>Environment Name <span style="color: red">*</span></label>
+            <select tabindex="3" width="'100%'" name="sourceTaskEnv" required class="form-control1" chosen
+                    ng-change="taskCtrl.taskModeChange();
+                                taskCtrl.sourceEnvironmentChange(true);"
+                    ng-model="taskCtrl.taskData.source_environment_id" ng-size="4"
+                    ng-options="env.environment_id as env.environment_name for env in taskCtrl.allSourceEnvironments | orderBy:'environment_name'">
+                <option></option>
+            </select>
+            <div class="m-t-xs" ng-show="generalForm.sourceTaskEnv.$invalid && generalForm.submitted">
+                <small class="text-danger" ng-show="generalForm.sourceTaskEnv.$error.required">Please Choose Source Environment</small>
+            </div>
+        </div>
+        <div class="form-group col-lg-6">
+            <label>Retention Period<span style="color: red">*</span></label>
+            <div class="row">
+                <div class="col-lg-6">
+                    <select tabindex="4" width="'200px'" name="RETENTION_PERIOD_TYPE" required class="form-control1" chosen
+                            ng-model="taskCtrl.retention_period_type" ng-size="4" ng-change="taskCtrl.retentionPeriodTypeChanged()"
+                            ng-options="period as period.name for period in taskCtrl.retentionPeriod.availableOptions">
+                        <option></option>
+                    </select>
+                    <div class="m-t-xs" ng-show="generalForm.submitted">
+                        <small class="text-danger" ng-show="generalForm.RETENTION_PERIOD_TYPE.$error.required">Please Choose Retention Period Type</small>
+                        </small>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <input tabindex="2" style="width: 200px" name="RETENTION_PERIOD_VALUE" ng-required="taskCtrl.taskData.version_ind" type="number" 
+                        class="form-control1" ng-min="taskCtrl.taskData.version_ind ? 1 : 0" ng-max="taskCtrl.retentionPeriod.maxRetentionPeriod / taskCtrl.retention_period_type.units" ng-model="taskCtrl.taskData.retention_period_value">
+                    <div class="m-t-xs" ng-show="generalForm.submitted">
+                        <small class="text-danger" ng-show="generalForm.RETENTION_PERIOD_VALUE.$error.required">Please input Retention Period Value</small>
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <div class="m-t-xs" 
+                ng-show="generalForm.submitted">
+                <small class="text-danger" 
+                    ng-show="generalForm.RETENTION_PERIOD_VALUE.$error.max">
+                    Selected retention period ({{taskCtrl.retention_period_type.units * generalForm.RETENTION_PERIOD_VALUE.$viewValue}}) cannot exceed {{taskCtrl.retentionPeriod.maxRetentionPeriod}} days
+                </small>
+                <small class="text-danger" 
+                    ng-show="generalForm.RETENTION_PERIOD_VALUE.$error.min">
+                    The retention period must be bigger than zero when the Entity Versioning is checked
+                </small>
+            </div>
+        </div>
+
+    </div>
+    <div style="min-height: 95px" class="row">
+        <div class="form-group col-lg-6" ng-if="(taskCtrl.taskData.task_type == 'EXTRACT' && taskCtrl.isFluxMode) || (taskCtrl.taskData.task_type == 'LOAD' && (!taskCtrl.taskData.version_ind || (taskCtrl.taskData.version_ind && taskCtrl.isFluxMode)))">
+            <label>Business Entity <span style="color: red">*</span></label>
+            <select tabindex="5"
+                    width="'100%'"
+                    name="taskBE"
+                    required
+                    class="form-control1"
+                    chosen
+                    ng-change="taskCtrl.businessEntityChange()"
+                    ng-model="taskCtrl.taskData.be_id" ng-disabled="taskCtrl.disableChange"
+                    ng-options="be.be_id as be.be_name for be in taskCtrl.businessEntities | orderBy:'be_name'">
+                <option></option>
+            </select>
+            <div class="m-t-xs" ng-show="generalForm.taskBE.$invalid && generalForm.submitted">
+                <small class="text-danger" ng-show="generalForm.taskBE.$error.required">Please Choose Business Entity</small>
+            </div>
+        </div>
+        <div class="form-group col-lg-6">
+            <div style="display: flex; justify-content: space-between;">
+                <label>Logical Units <span style="color: red">*</span></label>
+                <span>
+                    <a ng-if="(taskCtrl.taskData.task_type == 'EXTRACT' && taskCtrl.isFluxMode) || (taskCtrl.taskData.task_type == 'LOAD' && (!taskCtrl.taskData.version_ind || (taskCtrl.taskData.version_ind && taskCtrl.isFluxMode)))"
+                        style="margin-left: 10px" ng-click="taskCtrl.logicalUnits = taskCtrl.allLogicalUnits">Add all</a>
+                    <a ng-if="(taskCtrl.taskData.task_type == 'EXTRACT' && taskCtrl.isFluxMode) || (taskCtrl.taskData.task_type == 'LOAD' && (!taskCtrl.taskData.version_ind || (taskCtrl.taskData.version_ind && taskCtrl.isFluxMode)))"
+                        style="margin-left: 10px" ng-click="taskCtrl.logicalUnits = []">Clear all</a>
+                </span>
+            </div>
+            <select ng-if="(taskCtrl.taskData.task_type == 'EXTRACT' && taskCtrl.isFluxMode) || (taskCtrl.taskData.task_type == 'LOAD' && (!taskCtrl.taskData.version_ind || (taskCtrl.taskData.version_ind && taskCtrl.isFluxMode)))"
+                    tabindex="6" width="'100%'" name="taskLogicalUnit" ng-required="true" chosen multiple class="chosen-select form-control1" tabindex="4"
+                    ng-model="taskCtrl.logicalUnits"
+                    ng-options="logicalUnit as logicalUnit.lu_name for logicalUnit in taskCtrl.allLogicalUnits | orderBy:'lu_name'">
+            </select>
+            <select ng-if="!((taskCtrl.taskData.task_type == 'EXTRACT' && taskCtrl.isFluxMode) || (taskCtrl.taskData.task_type == 'LOAD' && (!taskCtrl.taskData.version_ind || (taskCtrl.taskData.version_ind && taskCtrl.isFluxMode))))" tabindex="6" width="'100%'" name="taskLogicalUnit" ng-required="true" chosen  class="chosen-select form-control1" tabindex="4"
+                    ng-model="taskCtrl.logicalUnit"
+                    ng-options="logicalUnit as logicalUnit.lu_name for logicalUnit in taskCtrl.allSingleLogicalUnits | orderBy:'lu_name'">
+                    <option></option>
+            </select>
+            <div class="m-t-xs" ng-show="generalForm.taskLogicalUnit.$invalid && generalForm.submitted">
+                <small class="text-danger" ng-show="generalForm.taskLogicalUnit.$error.required">Please choose at least one logical unit</small>
+            </div>
+            <div class="m-t-xs" ng-show="taskCtrl.logicalUnits.length && generalForm.taskLogicalUnit.$invalid && generalForm.taskLogicalUnit.$error.gap">
+                <small class="text-danger">There is a gap in the LU hierarchy. <br>Add <strong>{{taskCtrl.missingUnitInGap}}</strong> to complete the gap.</small>
+            </div>
+            <div class="m-t-xs" ng-show="taskCtrl.logicalUnits.length && generalForm.taskLogicalUnit.$invalid && generalForm.taskLogicalUnit.$error.missingParent">
+                <small class="text-danger">Root LU missing, Please add  <strong ng-repeat="missing in taskCtrl.missingRootLU">{{missing}}{{$last  ? '' : ', '}}</strong>.</small>
+            </div>
+        </div>
+        <div class="form-group col-lg-6">
+            <div style="display: flex; justify-content: space-between;">
+                <label>Post Execution Processes</label>
+                <span>
+                    <a style="margin-left: 10px"
+                        ng-click="taskCtrl.postExecutionProcesses = taskCtrl.allPostExecutionProcessIds">Add all</a>
+                    <a style="margin-left: 10px" ng-click="taskCtrl.postExecutionProcesses = []">Clear all</a>
+                </span>
+            </div>
+            <select tabindex="6" width="'100%'" name="taskPostExecutionProcess" chosen multiple class="chosen-select form-control1" tabindex="4"
+                    ng-model="taskCtrl.postExecutionProcesses"
+                    ng-options="postExecutionProcess.process_id as postExecutionProcess.process_name for postExecutionProcess in taskCtrl.allPostExecutionProcess | orderBy:'process_name'">
+                    <option></option>
+            </select>
+        </div>
+    </div>
+    <hr>    
+    <span style="display: flex; flex-direction: row-reverse;">
+        <button type="submit" style="width:80px" class="btn k2-primary-btn">Next</button>
+    </span>
+</div>

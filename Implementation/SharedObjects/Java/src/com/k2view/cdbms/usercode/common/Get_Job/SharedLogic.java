@@ -195,5 +195,11 @@ public class SharedLogic {
 		}
 	}
 
+    @desc("Get Resource File of LU")
+	@out(name = "result", type = Object.class, desc = "")
+	public static Object loadFromLUResource(String path) throws Exception {
+		return loadResource(path);
+	}
+
 
 }

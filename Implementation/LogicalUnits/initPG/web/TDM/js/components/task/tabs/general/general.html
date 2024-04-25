@@ -1,0 +1,231 @@
+<link href="js/components/task/tabs/general/general.css" rel="stylesheet" /> 
+
+<div class="k2-card" style="margin-top: 15px;border: 0">
+    <!-- <div class="k2-header">
+        <span class="k2-card-title" style="color:var(--secondary-text-color)">General</span>
+
+    </div> -->
+    <hr >
+    <div class="generalTab">
+        <div class="fields-row" style="margin-top:0;">
+            <div>
+                <label>{{"TASK_TITLE" |  translate}} <span style="color: red">*</span></label>
+                <input tabindex="1" type="text" ng-disabled="generalTabCtrl.editMode && !copyTask"
+                    ng-change="generalTabCtrl.taskTitleChange()"
+                    name="taskTitle" class="form-control1" 
+                    ng-model="generalTabCtrl.taskData.task_title" required ng-pattern="generalTabCtrl.taskTitlePattern">
+                <div class="m-t-xs" ng-show="generalForm.taskTitle.$invalid && generalForm.submitted">
+                    <small class="text-danger" ng-show="generalForm.taskTitle.$error.required">Please input a Task Title</small>
+                    <small class="text-danger" ng-show="generalForm.taskTitle.$error.pattern">Task Title must not contain ‘_’</small>
+                    <small class="text-danger" ng-show="generalForm.taskTitle.$error.alreadyExist">Task # {{generalTabCtrl.taskData.task_title}} Already Exists</small>
+                </div>
+            </div>
+        </div>
+        <div class="fields-row" style="position: relative">
+            <div>
+                <label>Task Actions <span style="color: red">*</span></label>
+                <div style="display: flex; gap: 45px;">
+                    <div style="display: flex; align-items: center;">
+                        <input name="extractMode" type="checkbox"
+                            ng-change="generalTabCtrl.taskTypeChange()"
+                            ng-model="generalTabCtrl.extract"
+                            ng-disabled="(generalTabCtrl.delete || generalTabCtrl.reserve) && !generalTabCtrl.load || generalTabCtrl.generate" />
+                        <label style="margin-top: 5px;margin-left: 6px;position: relative;">
+                            Extract
+                            <span class="sub-label">(from source)</span>
+                        </label>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <input name="extractMode" type="checkbox"
+                            ng-change="generalTabCtrl.taskTypeChange()"
+                            ng-model="generalTabCtrl.generate"
+                            ng-disabled="generalTabCtrl.extract || generalTabCtrl.delete || (!generalTabCtrl.load && generalTabCtrl.reserve)" />
+                        <label style="margin-top: 5px;margin-left: 6px;position: relative;">
+                            Generate
+                            <span class="sub-label">(synthetic entities)</span>
+                        </label>
+                    </div>
+                    <div style="display: flex;
+                                    align-items: center;">
+                        <input name="loadMode" type="checkbox"
+                            ng-model="generalTabCtrl.load"
+                            ng-change="generalTabCtrl.reserve = (generalTabCtrl.load || generalTabCtrl.reserve);generalTabCtrl.taskTypeChange();"
+                            ng-disabled="generalTabCtrl.extract && generalTabCtrl.load && (generalTabCtrl.delete || generalTabCtrl.reserve) || 
+                            (generalTabCtrl.load && generalTabCtrl.delete && generalTabCtrl.reserve) || 
+                            (generalTabCtrl.load && generalTabCtrl.generate && generalTabCtrl.reserve)" />
+                        <label style="margin-top: 5px;margin-left: 6px;position: relative;">
+                            Load
+                            <span class="sub-label">(to target)</span>
+                        </label>
+                    </div>
+                    <div style="display: flex;
+                                    align-items: center;">
+                        <input name="deleteMode" type="checkbox"
+                            ng-model="generalTabCtrl.delete"
+                            ng-change="generalTabCtrl.taskTypeChange()"
+                            ng-disabled="generalTabCtrl.extract && !generalTabCtrl.load ||
+                            !generalTabCtrl.extract && !generalTabCtrl.load && generalTabCtrl.reserve || generalTabCtrl.generate" />
+                        <label style="margin-top: 5px;margin-left: 6px;position: relative;">
+                            Delete
+                            <span class="sub-label">(from target)</span>
+                        </label>
+                    </div>
+                    <div style="display: flex;
+                                    align-items: center;">
+                        <input name="reserveMode" type="checkbox"
+                            ng-model="generalTabCtrl.reserve"
+                            ng-change="generalTabCtrl.taskTypeChange()"
+                            ng-disabled="generalTabCtrl.extract && !generalTabCtrl.load || 
+                            generalTabCtrl.generate && !generalTabCtrl.load || 
+                            !generalTabCtrl.extract && !generalTabCtrl.load && generalTabCtrl.delete" />
+                        <label style="margin-top: 5px;margin-left: 6px;position: relative;">
+                            Reserve
+                            <span class="sub-label">(in target)</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="task-type-hints" ng-show="generalTabCtrl.TaskTypeHints['' + generalTabCtrl.extract* 1 +generalTabCtrl.generate* 1 + generalTabCtrl.load* 1 +generalTabCtrl.delete* 1 +generalTabCtrl.reserve* 1]">
+                <ul >
+                    <li
+                        ng-repeat="taskTypeHint in generalTabCtrl.TaskTypeHints['' + generalTabCtrl.extract* 1 +generalTabCtrl.generate* 1 + generalTabCtrl.load* 1 +generalTabCtrl.delete* 1 +generalTabCtrl.reserve* 1]">
+                            {{taskTypeHint}}
+                            
+                    </li>
+                    <li ng-if="generalTabCtrl.targetIsSynthetic">
+                            Load the synthetic entities to the target environment
+                    </li>
+                </ul>
+            </div>
+            <input name="taskType" style="display: none" ng-model="generalTabCtrl.taskData.task_type" required>
+            <div style="margin-top: 10px;" class="m-t-xs" ng-show="generalForm.taskType.$invalid && generalForm.submitted">
+                <small class="text-danger" ng-show="generalForm.taskType.$error.required">Please Choose Task Type</small>
+            </div>
+        </div>
+        <div class="fields-row" ng-if="generalTabCtrl.businessEnttites">
+            <div>
+                <label>Business Entity <span style="color: red">*</span></label>
+                <select tabindex="5"
+                        width="'100%'"
+                        name="taskBE"
+                        required
+                        class="form-control1"
+                        chosen
+                        ng-change="generalTabCtrl.businessEntityChange()"
+                        ng-model="generalTabCtrl.taskData.be_id" 
+                        ng-disabled="generalTabCtrl.disabled || 
+                        !generalTabCtrl.extract &&
+                        !generalTabCtrl.load &&
+                        !generalTabCtrl.delete &&
+                        !generalTabCtrl.reserve && 
+                        !generalTabCtrl.generate"
+                        ng-options="be.be_id as be.be_name for be in generalTabCtrl.businessEnttites | orderBy:'be_name'">
+                    <option></option>
+                </select>
+                <div class="m-t-xs" ng-show="generalForm.taskBE.$invalid && generalForm.submitted">
+                    <small class="text-danger" ng-show="generalForm.taskBE.$error.required">Please Choose Business Entity</small>
+                </div>
+            </div>
+        </div>
+        <div class="fields-row" style="display: flex;justify-content: space-between;gap: 30px;" ng-if="!(!generalTabCtrl.load && generalTabCtrl.generate)">
+            <div class="form-group" style="width: 100%;" ng-if="(generalTabCtrl.taskData.task_type === 'EXTRACT' || generalTabCtrl.load ) && !generalTabCtrl.generate && generalTabCtrl.sourceEnvironments">
+                <label>{{generalTabCtrl.load ? 'Extract from' : generalTabCtrl.sourceEnvType}} Environment <span style="color: red">*</span></label>
+                <select tabindex="4" width="'100%'" name="taskEnv" required class="form-control1" chosen 
+                    ng-change="generalTabCtrl.environmentChange(null,'src');"
+                        ng-model="generalTabCtrl.taskData.source_environment_id"
+                        ng-disabled="generalTabCtrl.disabled || 
+                        !generalTabCtrl.extract &&
+                        !generalTabCtrl.load &&
+                        !generalTabCtrl.delete &&
+                        !generalTabCtrl.reserve"
+                        ng-options="env.environment_id as env.environment_name for env in generalTabCtrl.sourceEnvironments | filterEnvs:generalTabCtrl:'source'  | orderBy:'environment_name'">
+                    <option></option>
+                </select>
+                <div class="m-t-xs" ng-show="generalForm.taskEnv.$invalid && generalForm.submitted">
+                    <small class="text-danger" ng-show="generalForm.taskEnv.$error.required">Please Choose Environment</small>
+                </div>
+                <div class="m-t-xs" ng-show="generalTabCtrl.srcEnvChanged">
+                    <small class="text-danger">Note that changing the environment resets the Advanced Business Entity Options setting.</small>
+                </div>
+            </div>
+            <div class="form-group" ng-if="generalTabCtrl.taskData.task_type !== 'EXTRACT' && generalTabCtrl.targetEnvironments" style="width: 100%;">
+                <label>{{generalTabCtrl.sourceEnvType}} Environment <span style="color: red">*</span></label>
+                <select tabindex="4" width="'100%'" name="taskEnvProvision" required class="form-control1" chosen 
+                        ng-change="generalTabCtrl.environmentChange(null,'target');"
+                        ng-model="generalTabCtrl.taskData.environment_id"
+                        ng-disabled="generalTabCtrl.disabled || 
+                        !generalTabCtrl.extract &&
+                        !generalTabCtrl.load &&
+                        !generalTabCtrl.delete &&
+                        !generalTabCtrl.reserve"
+                        ng-options="env.environment_id as env.environment_name for env in (generalTabCtrl.targetEnvironments | filterEnvs:generalTabCtrl.taskData:'target') | orderBy:'environment_name'">
+                    <option></option>
+                </select>
+                <div class="m-t-xs" ng-show="generalForm.taskEnvProvision.$invalid && generalForm.submitted">
+                    <small class="text-danger" ng-show="generalForm.taskEnvProvision.$error.required">Please Choose Environment</small>
+                </div>
+                <div class="m-t-xs" ng-show="!generalTabCtrl.srcEnvChanged && generalTabCtrl.targetEnvChanged">
+                    <small class="text-danger">Note that changing the environment resets the Advanced Business Entity Options setting.</small>
+                </div>
+            </div>
+        </div>
+        <div class="advancedOptions" ng-class="{
+            disabled: generalTabCtrl.disabled || 
+            (
+                !generalTabCtrl.extract &&
+                !generalTabCtrl.load &&
+                !generalTabCtrl.delete &&
+                !generalTabCtrl.reserve && 
+                !generalTabCtrl.generate
+            ) ||
+            !generalTabCtrl.taskData.be_id ||
+            (
+                generalTabCtrl.load && 
+                (!generalTabCtrl.taskData.environment_id || 
+                !generalTabCtrl.taskData.source_environment_id)) ||
+            (
+                !generalTabCtrl.load && generalTabCtrl.taskData.task_type !== 'EXTRACT' && !generalTabCtrl.taskData.environment_id && !generalTabCtrl.generate
+            ) ||
+            (
+               generalTabCtrl.taskData.task_type === 'EXTRACT' && !generalTabCtrl.taskData.source_environment_id 
+            )
+
+        }">
+            <span ng-click="generalTabCtrl.toggleAdvanedOptions()">
+                    Advanced Business Entity Options
+            </span>
+            <select style="display: none;" name="taskLogicalUnit" ng-required="true" multiple
+                    ng-model="generalTabCtrl.taskData.selectedLogicalUnits"
+                    ng-options="logicalUnit as logicalUnit.lu_name for logicalUnit in generalTabCtrl.taskData.selectedLogicalUnits | orderBy:'lu_name'">
+            </select>
+            <advanced-business-options
+                save="generalTabCtrl.updateLogicalUnits"
+                selected="generalTabCtrl.taskData.selectedLogicalUnits"
+                logical-units="generalTabCtrl.taskData.allLogicalUnits"
+                close="generalTabCtrl.closeAdvanedOptions" 
+                ng-if="generalTabCtrl.advancedOptionsToggle"></advanced-business-options>
+            <div class="m-t-xs" ng-show="generalForm.submitted">
+                <small class="text-danger" ng-show="generalForm.taskLogicalUnit.$error.required">Please choose at least one logical unit</small>
+            </div>
+            <div class="m-t-xs" ng-show="generalTabCtrl.taskData.selectedLogicalUnits.length > 0 && generalForm.taskLogicalUnit.$invalid && generalForm.taskLogicalUnit.$error.gap">
+                <small class="text-danger">There is a gap in the LU hierarchy. <br>Add <strong>{{taskCtrl.missingUnitInGap}}</strong> to complete the gap.</small>
+            </div>
+            <div class="m-t-xs" ng-show="generalTabCtrl.taskData.selectedLogicalUnits.length > 0 && generalForm.taskLogicalUnit.$invalid && generalForm.taskLogicalUnit.$error.missingParent">
+                <small class="text-danger">Root LU missing, Please add  <strong ng-repeat="missing in generalTabCtrl.taskData.missingRootLU">{{missing}}{{$last  ? '' : ', '}}</strong>.</small>
+            </div>
+        </div>
+    </div>
+    <!-- <div> -->
+        <div ng-include="'js/components/task/tabs/taskWizardActionsFooter.html'" style="position: sticky;bottom: 56px" ></div>
+    <!-- </div> -->
+    <!-- <div style="    
+    bottom: 15px;
+    width: 100%;
+    left: 0px;">
+        <hr>    
+        <span style="display: flex; flex-direction: row-reverse;">
+            <div ng-include="'views/common/taskFooter.html'"></div>
+            <button type="submit" style="width:80px" class="btn k2-primary-btn">Next</button>
+        </span>
+    </div> -->
+</div>

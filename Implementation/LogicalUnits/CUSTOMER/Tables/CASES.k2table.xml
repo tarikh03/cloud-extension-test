@@ -5,14 +5,14 @@
   <ColumnsCollation>BINARY</ColumnsCollation>
   <FullTextSearch>false</FullTextSearch>
   <Columns>
-    <Column name="ACTIVITY_ID" id="ACTIVITY_ID" index="0" datatype="integer" />
-    <Column name="CASE_ID" id="CASE_ID" index="1" datatype="integer" mandatory="true" />
-    <Column name="CASE_DATE" id="CASE_DATE" index="2" datatype="Text" />
-    <Column name="CASE_TYPE" id="CASE_TYPE" index="3" datatype="Text" />
-    <Column name="STATUS" id="STATUS" index="4" datatype="Text" />
+    <Column name="activity_id" id="activity_id" index="0" datatype="integer" />
+    <Column name="case_id" id="case_id" index="1" datatype="integer" mandatory="true" />
+    <Column name="case_date" id="case_date" index="2" datatype="Text" />
+    <Column name="case_type" id="case_type" index="3" datatype="Text" />
+    <Column name="status" id="status" index="4" datatype="Text" />
   </Columns>
   <IndexesList>
-    <Index id="1" pk="true" unique="true" instanceOnly="true" columnsIdsList="CASE_ID" />
+    <Index id="1" pk="true" unique="true" instanceOnly="true" columnsIdsList="case_id" />
   </IndexesList>
   <EnrichmentList>
   </EnrichmentList>

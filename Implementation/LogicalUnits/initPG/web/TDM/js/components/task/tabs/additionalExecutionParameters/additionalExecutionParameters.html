@@ -1,0 +1,314 @@
+<link href="js/components/task/tabs/additionalExecutionParameters/additionalExecutionParameters.css" rel="stylesheet" /> 
+
+
+<div class="k2-card" style="margin-top: 15px;border: 0;">
+    <!-- <div class="k2-header" style="display: flex; justify-content: space-between;">
+        <span class="k2-card-title" style="color:var(--secondary-text-color)">Additional Execution Parameters</span>
+    </div> -->
+    <hr >
+    <div class="additionalExecutionParametersTab">
+        <div class="fields-container" ng-if="additionalExecutionParametersCtrl.taskData.task_type === 'EXTRACT' || 
+        (additionalExecutionParametersCtrl.taskData.task_type === 'LOAD' && 
+            additionalExecutionParametersCtrl.taskData.load_entity) && !additionalExecutionParametersCtrl.taskData.generateTask && 
+            !additionalExecutionParametersCtrl.taskData.source_synthetic">
+            <div class="fields-row" style="position: relative">
+                <div style="display: flex;
+                                align-items: center;">
+                    <input
+                        ng-change="additionalExecutionParametersCtrl.versioningChange()" 
+                        ng-disabled="
+                        !(additionalExecutionParametersCtrl.userRoleType === 'admin' || 
+                        (additionalExecutionParametersCtrl.taskData.task_type === 'EXTRACT' && (sourceEnvOwner || allowedRoleDataSource.allowed_entity_versioning)) || 
+                        (additionalExecutionParametersCtrl.taskData.task_type !== 'EXTRACT' && (targetEnvOwner || allowedRoleData.allowed_entity_versioning)))" type="checkbox" 
+                        ng-model="additionalExecutionParametersCtrl.taskData.version_ind"/>
+                    <label style="margin-top: 5px;margin-left: 6px;position: relative;">
+                        Data Versioning
+                        <small ng-show="
+                            !(additionalExecutionParametersCtrl.userRoleType === 'admin' || 
+                            (additionalExecutionParametersCtrl.taskData.task_type === 'EXTRACT' && (sourceEnvOwner || allowedRoleDataSource.allowed_entity_versioning)) || 
+                            (additionalExecutionParametersCtrl.taskData.task_type !== 'EXTRACT' && (targetEnvOwner || allowedRoleData.allowed_entity_versioning)))">
+                            (Not Allowed)
+                        </small>&nbsp;&nbsp;
+                    </label>
+                </div>
+                <div class="seperator"></div>
+            </div>
+        </div>
+        <div class="fields-container">
+            <div class="fields-row" style="position: relative">
+                <div>
+                    <label>Data Type <span style="color: red">*</span></label>
+                    <div style="display: flex; gap: 45px;">
+                        <div style="display: flex; align-items: center;">
+                            <input type="checkbox"
+                                ng-change="additionalExecutionParametersCtrl.dataTypeChange()"
+                                ng-model="additionalExecutionParametersCtrl.entities" />
+                            <label style="margin-top: 5px;margin-left: 6px;position: relative;">
+                                Entities
+                            </label>
+                        </div>
+                        <div ng-if="additionalExecutionParametersCtrl.taskData.task_type === 'EXTRACT' || 
+                            (additionalExecutionParametersCtrl.taskData.task_type === 'LOAD' && 
+                            additionalExecutionParametersCtrl.taskData.load_entity) && !additionalExecutionParametersCtrl.taskData.generateTask &&
+                            !additionalExecutionParametersCtrl.taskData.source_synthetic"
+                            style="display: flex; align-items: center;">
+                            <input type="checkbox"
+                                ng-disabled="additionalExecutionParametersCtrl.userRoleType != 'admin' &&
+                                (additionalExecutionParametersCtrl.taskData.task_type == 'LOAD' && !allowedRoleData.allowed_refresh_reference_data || 
+                                additionalExecutionParametersCtrl.taskData.task_type != 'LOAD' && !allowedRoleDataSource.allowed_refresh_reference_data)"
+                                ng-change="additionalExecutionParametersCtrl.dataTypeChange()"
+                                ng-model="additionalExecutionParametersCtrl.reference" />
+                            <label style="margin-top: 5px;margin-left: 6px;position: relative;">
+                                Reference
+                                <small ng-show="additionalExecutionParametersCtrl.userRoleType != 'admin' &&
+                                (additionalExecutionParametersCtrl.taskData.task_type == 'LOAD' && !allowedRoleData.allowed_refresh_reference_data || 
+                                additionalExecutionParametersCtrl.taskData.task_type != 'LOAD' && !allowedRoleDataSource.allowed_refresh_reference_data)">(Not Allowed)</small>&nbsp;&nbsp;
+                            </label>
+                        </div>
+                    </div>
+                    <input required style="display: none"
+                        ng-model="additionalExecutionParametersCtrl.valid" name="DATA_TYPE" >
+                    <div class="m-t-xs"ng-show="form.submitted && form.DATA_TYPE.$error.required">
+                        <small class="text-danger" ng-show="!additionalExecutionParametersCtrl.taskData.reserve_ind">
+                            Select a Data Type
+                        </small>
+                        <small class="text-danger" ng-show="additionalExecutionParametersCtrl.taskData.reserve_ind">
+                            Clear the Reserve Task Type or check the Entities
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fields-container" ng-if="
+        additionalExecutionParametersCtrl.taskData.reference !== 'refernceOnly' &&
+        !additionalExecutionParametersCtrl.taskData.generateTask && 
+        !additionalExecutionParametersCtrl.taskData.source_synthetic && 
+        ((additionalExecutionParametersCtrl.taskData.task_type === 'EXTRACT' && 
+            !additionalExecutionParametersCtrl.taskData.version_ind) || 
+        (additionalExecutionParametersCtrl.taskData.task_type === 'LOAD' && 
+            additionalExecutionParametersCtrl.taskData.load_entity && 
+            !additionalExecutionParametersCtrl.taskData.version_ind))">
+            <div class="fields-row" style="position: relative">
+                <div>
+                    <label>Set Sync Policy</label>
+                    <div style="display: flex; gap: 45px;">
+                        <div style="display: flex; align-items: center;">
+                            <input type="radio"
+                                ng-value="null" name="syncModeRadio"
+                                ng-model="additionalExecutionParametersCtrl.taskData.sync_mode" />
+                            <label style="margin-top: 5px;margin-left: 6px;position: relative;">
+                                Sync New Data
+                            </label>
+                        </div>
+                        <div ng-if="additionalExecutionParametersCtrl.taskData.task_type !== 'EXTRACT'" 
+                            style="display: flex; align-items: center;">
+                            <input type="radio"
+                                ng-value="'OFF'" name="syncModeRadio"
+                                ng-model="additionalExecutionParametersCtrl.taskData.sync_mode" />
+                            <label style="margin-top: 5px;margin-left: 6px;position: relative;">
+                                Do Not Sync From Source Data
+                            </label>
+                        </div>
+                        <div style="display: flex;
+                                        align-items: center;">
+                            <input type="radio"
+                                ng-disabled="
+                                (additionalExecutionParametersCtrl.userRoleType !== 'admin' && !sourceEnvOwner && !targetEnvOwner) &&
+                                (additionalExecutionParametersCtrl.taskData.task_type === 'EXTRACT' && !allowedRoleDataSource.allowed_request_of_fresh_data || 
+                                additionalExecutionParametersCtrl.taskData.task_type !== 'EXTRACT' && !allowedRoleData.allowed_request_of_fresh_data)"
+                                ng-value="'FORCE'" name="syncModeRadio"
+                                ng-model="additionalExecutionParametersCtrl.taskData.sync_mode" />
+                            <label style="margin-top: 5px;margin-left: 6px;position: relative;">
+                                    Always Refresh Data from Source
+                                <small ng-show="
+                                (additionalExecutionParametersCtrl.userRoleType !== 'admin' && !sourceEnvOwner && !targetEnvOwner) &&
+                                    (additionalExecutionParametersCtrl.taskData.task_type === 'EXTRACT' && !allowedRoleDataSource.allowed_request_of_fresh_data || 
+                                    additionalExecutionParametersCtrl.taskData.task_type !== 'EXTRACT' && !allowedRoleData.allowed_request_of_fresh_data)">(Not Allowed)</small>&nbsp;&nbsp;
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fields-container" ng-if="
+        !((additionalExecutionParametersCtrl.taskData.task_type === 'LOAD' && !additionalExecutionParametersCtrl.taskData.load_entity && additionalExecutionParametersCtrl.taskData.delete_before_load) ||
+          additionalExecutionParametersCtrl.taskData.task_type === 'RESERVE' || 
+         (additionalExecutionParametersCtrl.taskData.task_type === 'LOAD' && additionalExecutionParametersCtrl.taskData.sync_mode === 'OFF'))">
+            <div class="fields-row" >
+                <div>
+                    <label>Retention Period <span style="color: red">*</span></label>
+                    <div style="display: flex;justify-content: space-between;gap: 30px;">
+                        <div style="width:100%">
+                            <select tabindex="4" style="width: -webkit-fill-available;" name="RETENTION_PERIOD_TYPE" class="form-control1" chosen
+                                ng-model="additionalExecutionParametersCtrl.retention_period_type" ng-size="4" ng-change="additionalExecutionParametersCtrl.retentionPeriodTypeChanged()"
+                                >
+                                <option></option>
+                                <option ng-show="
+                                    additionalExecutionParametersCtrl.taskData.version_ind &&
+                                    period.name !== 'Do Not Delete' && period.name !== 'Do Not Retain' || 
+                                    !additionalExecutionParametersCtrl.taskData.version_ind" 
+                                ng-repeat="period in additionalExecutionParametersCtrl.retentionPeriod.periodTypes" ng-value="period">{{period.name}}</option>
+                            </select>
+                            <div class="m-t-xs" ng-show="form.submitted">
+                                <small class="text-danger" ng-show="form.RETENTION_PERIOD_TYPE.$error.required">Please Choose Retention Period Type</small>
+                                </small>
+                            </div>
+                        </div>
+                        <div style="width: 100%">
+                            <input ng-if="additionalExecutionParametersCtrl.retention_period_type.name !== 'Do Not Delete' &&
+                            additionalExecutionParametersCtrl.retention_period_type.name !== 'Do Not Retain'" 
+                            tabindex="2" style="width: -webkit-fill-available;" name="RETENTION_PERIOD_VALUE" ng-required="true" type="number" 
+                                class="form-control1" ng-min="1" 
+                                    ng-max="!(additionalExecutionParametersCtrl.userRoleType == 'admin' || sourceEnvOwner && targetEnvOwner) ? ((additionalExecutionParametersCtrl.retentionPeriod.maxRetentionPeriod.value | number) / additionalExecutionParametersCtrl.retention_period_type.units) : null" 
+                                    ng-model="additionalExecutionParametersCtrl.taskData.retention_period_value">
+                            <div class="m-t-xs" ng-show="form.submitted">
+                                <small class="text-danger" ng-show="form.RETENTION_PERIOD_VALUE.$error.required">Please input Retention Period Value</small>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-t-xs" 
+                        ng-show="form.submitted">
+                        <small class="text-danger" 
+                            ng-show="form.RETENTION_PERIOD_VALUE.$error.max">
+                            Selected retention period ({{additionalExecutionParametersCtrl.retention_period_type.units * form.RETENTION_PERIOD_VALUE.$viewValue}}) cannot exceed {{additionalExecutionParametersCtrl.retentionPeriod.maxRetentionPeriod.value}} days
+                        </small>
+                        <small class="text-danger" 
+                            ng-show="form.RETENTION_PERIOD_VALUE.$error.min">
+                            The retention period must be bigger than zero
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fields-container" ng-if="additionalExecutionParametersCtrl.taskData.task_type === 'RESERVE' ||
+        additionalExecutionParametersCtrl.taskData.reserve_ind">
+            <div class="fields-row" >
+                <div>
+                    <label>Reservation Period <span style="color: red">*</span></label>
+                    <div style="display: flex;justify-content: space-between;gap: 30px;">
+                        <div style="width:100%">
+                            <select tabindex="4" style="width: -webkit-fill-available;" name="RESERVE_RETENTION_PERIOD_TYPE" class="form-control1" chosen
+                                ng-model="additionalExecutionParametersCtrl.reserve_retention_period_type" ng-size="4" ng-change="additionalExecutionParametersCtrl.retentionPeriodTypeReserveChanged()"
+                                ng-options="period as period.name for period in additionalExecutionParametersCtrl.retentionPeriodReserve.periodTypes">
+                            <option></option>
+                            </select>
+                            <div class="m-t-xs" ng-show="form.submitted">
+                                <small class="text-danger" ng-show="form.RESERVE_RETENTION_PERIOD_TYPE.$error.required">Please Choose Reservation Period Type</small>
+                                </small>
+                            </div>
+                        </div>
+                        <div style="width: 100%">
+                            <input tabindex="2" style="width: -webkit-fill-available;" name="RESERVE_RETENTION_PERIOD_VALUE" ng-required="additionalExecutionParametersCtrl.taskData.version_ind" type="number" 
+                                class="form-control1" ng-min="additionalExecutionParametersCtrl.taskData.version_ind ? 1 : 0" 
+                                    ng-max="!(additionalExecutionParametersCtrl.userRoleType == 'admin' || sourceEnvOwner && targetEnvOwner)  ? ((additionalExecutionParametersCtrl.retentionPeriodReserve.maxReservationPeriod.value) / additionalExecutionParametersCtrl.reserve_retention_period_type.units) : null" 
+                                    ng-model="additionalExecutionParametersCtrl.taskData.reserve_retention_period_value">
+                            <div class="m-t-xs" ng-show="form.submitted">
+                                <small class="text-danger" ng-show="form.RESERVE_RETENTION_PERIOD_VALUE.$error.required">Please input Retention Period Value</small>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-t-xs" 
+                        ng-show="form.submitted">
+                        <small class="text-danger" 
+                            ng-show="form.RESERVE_RETENTION_PERIOD_VALUE.$error.max">
+                            Selected retention period ({{additionalExecutionParametersCtrl.reserve_retention_period_type.units * form.RESERVE_RETENTION_PERIOD_VALUE.$viewValue}}) cannot exceed {{additionalExecutionParametersCtrl.retentionPeriodReserve.maxReservationPeriod.value}} days
+                        </small>
+                        <small class="text-danger" 
+                            ng-show="form.RESERVE_RETENTION_PERIOD_VALUE.$error.min">
+                            The retention period must be bigger than zero
+                        </small>
+                    </div>
+                </div>
+                <div style="margin-top: 20px;">
+                    <label>Reservation Note</label>
+                    <div>
+                        <input tabindex="2" style="width: -webkit-fill-available;" name="RESERVE_RETENTION_NOTE" type="text" 
+                            class="form-control1"
+                            ng-model="additionalExecutionParametersCtrl.taskData.reserve_note">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fields-container">
+            <div class="fields-row" style="position: relative">
+                <div>
+                    <label>Additional Execution Parameters</label>
+                    <div>
+                        <div style="display: flex; align-items: center;">
+                            <input type="checkbox"
+                                ng-model="additionalExecutionParametersCtrl.taskData.task_globals" />
+                            <label style="margin-top: 5px;margin-left: 6px;position: relative;">
+                                Set Task Variables
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <span style="display: none" 
+                            ng-if="!(
+                                additionalExecutionParametersCtrl.taskData.reference !== 'refernceOnly' && 
+                                additionalExecutionParametersCtrl.taskData.task_type === 'LOAD' && 
+                                additionalExecutionParametersCtrl.taskData.load_entity && 
+                                allowedRoleData.allowed_replace_sequences == true && 
+                                !additionalExecutionParametersCtrl.taskData.version_ind) && 
+                                !additionalExecutionParametersCtrl.taskData.task_id" 
+                            ng-init="additionalExecutionParametersCtrl.taskData.replace_sequences = false"></span>
+                        <div ng-if="(
+                            !additionalExecutionParametersCtrl.taskData.generateTask &&
+                            additionalExecutionParametersCtrl.taskData.reference !== 'refernceOnly' && 
+                            additionalExecutionParametersCtrl.taskData.task_type === 'LOAD' && 
+                            additionalExecutionParametersCtrl.taskData.load_entity && 
+                            allowedRoleData.allowed_replace_sequences == true && 
+                            !additionalExecutionParametersCtrl.taskData.version_ind)" 
+                            style="display: flex; align-items: center;">
+                            <input type="checkbox"
+                                ng-disabled="disabled"
+                                ng-model="additionalExecutionParametersCtrl.taskData.replace_sequences" />
+                            <label style="margin-top: 5px;margin-left: 6px;position: relative;">
+                                Replace Sequence
+                                <small ng-show="allowedRoleData.allowed_replace_sequences != true">(Not Allowed)</small>&nbsp;&nbsp;
+                            </label>
+                        </div>
+                    </div>
+                    <div ng-if="!(additionalExecutionParametersCtrl.taskData.task_type === 'RESERVE' || 
+                        (additionalExecutionParametersCtrl.taskData.delete_before_load && !additionalExecutionParametersCtrl.taskData.load_entity) || 
+                        (additionalExecutionParametersCtrl.taskData.task_type === 'LOAD' && additionalExecutionParametersCtrl.taskData.sync_mode === 'OFF'))">
+                        <div style="display: flex; align-items: center;">
+                            <input type="checkbox"
+                                ng-disabled="additionalExecutionParametersCtrl.taskData.env_mask_data"
+                                ng-model="additionalExecutionParametersCtrl.taskData.mask_sensitive_data" />
+                            <label style="margin-top: 5px;margin-left: 6px;position: relative;">
+                                    Mask Sensitive Data
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fields-container">
+            <div class="fields-row" style="position: relative">
+                <div style="display: flex; justify-content: space-between;">
+                    <label>Post Execution Processes</label>
+                    <span>
+                        <a style="margin-left: 10px"
+                            ng-click="additionalExecutionParametersCtrl.taskData.postExecutionProcesses = additionalExecutionParametersCtrl.allPostExecutionProcessIds">Add all</a>
+                        <a style="margin-left: 10px" ng-click="additionalExecutionParametersCtrl.taskData.postExecutionProcesses = []">Clear all</a>
+                    </span>
+                </div>
+                <select tabindex="6" width="'100%'" name="taskPostExecutionProcess" chosen multiple class="chosen-select form-control1" tabindex="4"
+                        ng-model="additionalExecutionParametersCtrl.taskData.postExecutionProcesses"
+                        ng-options="postExecutionProcess.process_id as postExecutionProcess.process_name for postExecutionProcess in additionalExecutionParametersCtrl.taskData.allPostExecutionProcess | orderBy:'process_name'">
+                        <option></option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div ng-include="'js/components/task/tabs/taskWizardActionsFooter.html'" style="position: sticky;bottom: 56px" ></div>
+    <!-- <hr>    
+    <span style="display: flex;justify-content: space-between;">
+        <button type="button"  ng-click="back()" style="width:80px" class="btn k2-primary-btn">Back</button>
+        <div ng-include="'views/common/taskFooter.html'"></div>
+        <button type="submit" style="width:80px" class="btn k2-primary-btn">Next</button>
+    </span> -->
+</div>

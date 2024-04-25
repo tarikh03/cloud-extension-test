@@ -1,0 +1,304 @@
+<div class="col-sm-8" style="margin-bottom: 45px;">
+    <div class="k2-card">
+    <div class="k2-header">
+        <div class="row">
+            <div class="col-lg-10">
+                <span class="k2-card-title">{{ 'ENVIRONMENT' | translate }} {{environmentCtrl.environmentData.environment_name}}</span>
+                    <h5 style="padding-left:1em;font-weight: 300;"
+                        ng-if="environmentCtrl.environmentData.environment_status == 'Inactive'">{{ 'INACTIVE' |
+                        translate }}</h5>
+            </div>
+                <div class="col-lg-2 pull-right">
+                    <a id="environment_delete" uib-tooltip="Delete Environment" tooltip-placement="left" type="button" role-handler role="0"
+                       ng-if="!environmentCtrl.disableChange" class="pull-right"
+                       mwl-confirm message="{{environmentCtrl.tasksCount == true ? 'Environment is attached to Active tasks. Active tasks may be set to Inactive. ' : ''}} Are you sure you want to delete Environment?"
+                       confirm-text="Yes <i class='glyphicon glyphicon-ok'></i>" cancel-text="No <i class='glyphicon glyphicon-remove'></i>" placement="left"
+                       on-confirm="environmentCtrl.deleteEnvironment()" on-cancel="cancelClicked = true" confirm-button-type="danger" cancel-button-type="default"><img src="icons/delete-icon-2.svg"></a>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="k2-body">
+            <div class="row">
+                <form role="form" ng-submit="environmentCtrl.saveChanges()">
+                    <div class="col-lg-6 b-r" >
+                        <div class="form-group col-lg-12">
+                            <label >{{"ENVIRONMENT_NAME" | translate}}</label>
+                            <input id="environment_name" type="text" class="form-control1" ng-model="environmentCtrl.environmentData.environment_name" disabled>
+                        </div>
+                        <div class="form-group col-lg-12">
+                            <label>{{"DESCRIPTION" | translate}}</label>
+                            <input id="environment_description" type="text" class="form-control1" ng-model="environmentCtrl.environmentData.environment_description" ng-disabled="environmentCtrl.disableChange">
+                        </div>
+                        <div class="form-group col-lg-12">
+                            <label>{{"ENVIRONMENT_OWNERS" | translate}}</label>
+                            <div style="display: flex">
+                                <select id="environment_environments_owners" width="'100%'" ng-disabled="environmentCtrl.disableOwnersChange" chosen multiple 
+                                    class="form-control1 chosen-select" 
+                                    ng-model="environmentCtrl.environmentData.owners" 
+                                    ng-options="option as option.username for option in environmentCtrl.allOwners track by option.user_id">
+                                </select>
+                                <div off-click="environmentCtrl.isOpen = false" off-click-activator="environmentCtrl.isOpen">
+                                    <button id="environment_add_environments_owners" role-handler role="0"  uib-tooltip="Add Owner" tooltip-placement="top" popover-placement="left"
+                                        ng-click="environmentCtrl.initAddNewOwnerPopup()" type="button"
+                                        class="btn k2-primary-btn">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    <user-settings 
+                                        class="owners"
+                                        
+                                        ng-if="environmentCtrl.isOpen"
+                                        enable-all-users="false"
+                                        selected-users="environmentCtrl.environmentData.owners"
+                                        users="environmentCtrl.allOwners" 
+                                        close="environmentCtrl.closeAddOwnerModal"
+                                        save="environmentCtrl.saveUsersAndGroups"
+                                        groups="environmentCtrl.ownerFabricRoles">
+                                    </user-settings>
+                                    <script type="text/ng-template" id="addNewEnvOwner.html">
+                                        <!-- <div>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="form-group">
+                                                        <label>Please type in new owner:</label>
+                                                        <input type="text" ng-model="environmentCtrl.ownerToAdd"
+                                                                class="form-control1" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="color: #ec4758"
+                                                    ng-show="environmentCtrl.addOwnerError == true">
+                                                <div class="col-lg-12">
+                                                    <div class="form-group">
+                                                        <label>Owner exist, Please type in new owner</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <button type="button"  class="btn k2-primary-btn"
+                                                            ng-click="environmentCtrl.addOwner(environmentCtrl.ownerToAdd)">
+                                                        Add
+                                                    </button>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <button type="button" class="btn k2-primary-btn"
+                                                            ng-click="environmentCtrl.isOpen = false">Cancel
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div> -->
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-lg-12">
+                            <label>{{"ENV_TYPE" | translate}}</label>
+                            <select 
+                                    id="environment_type"
+                                    width="'100%'" class="form-control1"
+                                    required
+                                    ng-model="environmentCtrl.envType"
+                                    ng-change="environmentCtrl.envTypeChanged()"
+                                    ng-disabled="environmentCtrl.disableChange"
+                                    ng-options="env as env for env in environmentCtrl.envTypes">
+                                    <option value=""></option>
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-12" ng-if="['Source','Both'].indexOf(environmentCtrl.envType) >= 0">
+                            <label>Override Sync Mode</label>
+                            <select id="environment_override_sync_mode" width="'100%'" class="form-control1"
+                                    ng-disabled="environmentCtrl.disableChange"
+                                    ng-model="environmentCtrl.environmentData.sync_mode"
+                                    ng-options="env.value as env.text for env in environmentCtrl.syncModes">
+                                    <option value=""></option>
+                            </select>
+                        </div>
+                        <div style="display: flex;align-items: flex-end;" class="form-group col-lg-12" ng-if="['Source','Both'].indexOf(environmentCtrl.envType) >= 0">
+                            <input id="environment_mask_sensitive_data" type="checkbox"
+                                ng-disabled="environmentCtrl.disableChange"
+                                ng-model="environmentCtrl.environmentData.mask_sensitive_data"/>
+                            <label style="margin-top: 5px;margin-left: 6px;position: relative;">
+                                    Mask Sensitive Data</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-6" style="padding-right: 0;">
+                        <div class="form-group col-lg-6">
+                            <label >{{"FIRST_NAME" | translate}}</label>
+                            <input id="environment_first_name" type="text" class="form-control1" ng-model="environmentCtrl.environmentData.environment_point_of_contact_first_name" ng-disabled="environmentCtrl.disableChange">
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label>{{"LAST_NAME" | translate}}</label>
+                            <input id="environment_last_name" type="text" class="form-control1" ng-model="environmentCtrl.environmentData.environment_point_of_contact_last_name" ng-disabled="environmentCtrl.disableChange">
+                        </div>
+                        <div class="form-group col-lg-12">
+                            <label>{{"EMAIL" | translate}}</label>
+                            <input id="environment_email" type="email" class="form-control1" ng-model="environmentCtrl.environmentData.environment_point_of_contact_email" ng-disabled="environmentCtrl.disableChange">
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label>{{"PHONE_1" | translate}}</label>
+                            <input id="environment_phone1" type="tel" class="form-control1" data-mask="(?999) 999-9999"
+                                   ng-model="environmentCtrl.environmentData.environment_point_of_contact_phone1" ng-disabled="environmentCtrl.disableChange">
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label>{{"PHONE_2" | translate}}</label>
+                            <input id="environment_phone2" type="tel" class="form-control1" data-mask="(?999) 999-9999"
+                                   ng-model="environmentCtrl.environmentData.environment_point_of_contact_phone2" ng-disabled="environmentCtrl.disableChange">
+                        </div>
+                        <div class="form-group col-lg-12">
+                            <button id="environment_save" role-handler role="1" ng-if="!environmentCtrl.disableChange"
+                                    class="btn k2-primary-btn  pull-right" type="submit">{{ "SAVE_CHANGES" | translate}}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="nav nav-pills" style=" display: block;">
+                        <span  ng-show="tab == 1" class="pull-right">
+                            <button id="environment_new_permission_sets" role-handler role="1"  ng-if="!environmentCtrl.disableChange" class="btn k2-secondary-btn  pull-right" type="button" ng-click="environmentCtrl.openNewRole()"><span class="bold">{{ "NEW_ROLE" | translate}} &nbsp;&nbsp; <i class="fa fa-plus"></i> </span></button>
+                        </span>
+                        <span  ng-show="tab == 2" class="pull-right">
+                            <button id="environment_new_systems" role-handler role="1"  ng-if="!environmentCtrl.disableChange" class="btn k2-secondary-btn  pull-right" type="button" ng-click="environmentCtrl.openNewProduct()"><span class="bold">{{ "NEW_PRODUCT" | translate}} &nbsp;&nbsp; <i class="fa fa-plus"></i> </span></button>
+                        </span>
+						<span  ng-show="tab == 3" class="pull-right">
+                            <button id="environment_set_environment_variables" role-handler role="1"  ng-if="!environmentCtrl.disableChange" class="btn k2-secondary-btn  pull-right" type="button" ng-click="environmentCtrl.openNewGlobal()"><span class="bold">{{ "NEW_GLOBAL" | translate}} &nbsp;&nbsp; <i class="fa fa-plus"></i></span></button>
+                        </span>
+                        <span  ng-show="tab == 4" class="pull-right">
+                            <button  role-handler role="1"  ng-if="!environmentCtrl.disableChange" class="btn k2-secondary-btn  pull-right" type="button" ng-click="environmentCtrl.openNewExclusionList()"><span class="bold">{{ "NEW_EXCLUSION_LIST" | translate}} &nbsp;&nbsp; <i class="fa fa-plus"></i> </span></button>
+                        </span>
+                        <li ng-class="{'active' : tab == 1}">
+							<a id="environment_permission_sets_table" ng-click="tab = (environmentCtrl.tabClicked(1) || environmentCtrl.newTab)" ng-init="tab = 1">
+                                <span ng-class="{'tab-title' : tab == 1}">
+                                    <i class="fa fa-user"></i>
+                                    Permission Sets
+                                    </span>
+								
+							</a>
+						</li>
+                        <li ng-class="{'active' : tab == 2}">
+							<a id="environment_systems_table" ng-click="tab = (environmentCtrl.tabClicked(2) || environmentCtrl.newTab)">
+                                <span ng-class="{'tab-title' : tab == 2}">
+                                    <i class="fa fa-briefcase"></i>
+                                    Systems
+                                    </span>
+								
+							</a>
+						</li>
+                        <li ng-class="{'active' : tab == 3}">
+							<a id="environment_environment_variables_table" ng-click="tab = (environmentCtrl.tabClicked(3) || environmentCtrl.newTab)">
+                                <span ng-class="{'tab-title' : tab == 3}">
+                                    <i class="fa fa-list"></i>
+                                    Environment Variables
+                                    </span>
+							</a>
+						</li>
+                        <!-- <li ng-class="{'active' : tab == 4}">
+                            <a ng-click="tab = (environmentCtrl.tabClicked(4) || environmentCtrl.newTab);environmentCtrl.refreshBusnisEntities();">
+                                <span ng-class="{'tab-title' : tab == 4}">
+                                    <i class="fa fa-list-alt"></i>
+                                    Exclusion Lists
+                                    </span>
+                                
+                            </a>
+                        </li> -->
+                    </ul>
+                    <div class="tab-content">
+                        <div id="tab-1" class="tab-pane active" ng-show="tab == 1">
+                            <table 
+								ng-if="environmentCtrl.loadingTableRoles === false" 
+								style="margin-top: 0px !important;display: table; width: 100%" 
+								datatable="" 
+								dt-options="environmentCtrl.dtOptionsRoles" 
+								dt-columns="environmentCtrl.dtColumnsRoles"  
+								dt-instance="environmentCtrl.dtInstanceCallbackRoles" 
+								class="table table-striped table-bordered table-hover">
+                            </table>
+                        </div>
+                        <div id="tab-2" class="tab-pane active" ng-show="tab == 2">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <table 
+										ng-if="environmentCtrl.loadingTableProducts === false && environmentCtrl.dtOptionsProducts" 
+										style="margin-top: 0px !important;display: table; width: 100%" 
+										datatable="" 
+										dt-options="environmentCtrl.dtOptionsProducts" 
+										dt-columns="environmentCtrl.dtColumnsProducts"  
+										dt-instance="environmentCtrl.dtInstanceCallbackProducts" 
+										class="table table-striped table-bordered table-hover">
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+						<div id="tab-3" class="tab-pane active" ng-show="tab == 3">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <table 
+										ng-if="environmentCtrl.loadingTableGlobals === false" 
+										style="margin-top: 0px !important;display: table; width: 100%" 
+										datatable="" 
+										dt-options="environmentCtrl.dtOptionsGlobals" 
+										dt-columns="environmentCtrl.dtColumnsGlobals" 
+										dt-instance="environmentCtrl.dtInstanceCallbackGlobals" 
+										class="table table-striped table-bordered table-hover">
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div id="tab-4" class="tab-pane active" ng-show="tab == 4">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <table
+                                            ng-if="environmentCtrl.loadingTableGlobals === false"
+                                            style="margin-top: 0px !important;display: table; width: 100%"
+                                            datatable=""
+                                            dt-options="environmentCtrl.dtOptionsExclusionLists"
+                                            dt-columns="environmentCtrl.dtColumnsExclusionLists"
+                                            dt-instance="environmentCtrl.dtInstanceCallbackExclusionLists"
+                                            class="table table-striped table-bordered table-hover">
+                                    </table>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-sm-4" style="margin-bottom: 45px;">
+    <div ng-switch="environmentCtrl.activityPanel">
+        <div ng-switch-when="empty">
+
+        </div>
+        <div ng-switch-when="Role">
+            <div ng-include="'views/environments/environmentRole.html'"></div>
+        </div>
+        <div ng-switch-when="newRole">
+            <div ng-include="'views/environments/environmentNewRole.html'"></div>
+        </div>
+        <div ng-switch-when="Product">
+            <div ng-include="'views/environments/environmentProduct.html'"></div>
+        </div>
+        <div ng-switch-when="newProduct">
+            <div ng-include="'views/environments/environmentNewProduct.html'"></div>
+        </div>
+		<div ng-switch-when="Global">
+            <div ng-include="'views/environments/environmentGlobal.html'"></div>
+        </div>
+		<div ng-switch-when="newGlobal">
+            <div ng-include="'views/environments/environmentNewGlobal.html'"></div>
+        </div>
+        <div ng-switch-when="ExclusionList">
+            <div ng-include="'views/environments/environmentExclusionList.html'"></div>
+        </div>
+        <div ng-switch-when="newExclusionList">
+            <div ng-include="'views/environments/environmentNewExclusionList.html'"></div>
+        </div>
+        <div ng-switch-default>
+            <div ng-include="'views/environments/environmentSummary.html'"></div>
+        </div>
+    </div>
+</div>

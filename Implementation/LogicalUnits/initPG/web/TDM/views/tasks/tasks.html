@@ -1,0 +1,15 @@
+<div class="wrapper  animated" ng-controller="tasksCtrl as tasks">
+    <div class="row" ng-show="tasks.pageDisplay == 'tasksTable'" ng-if="!loadingTable">
+        <tasks-table-directive content="tasks.tasksData"></tasks-table-directive>
+    </div>
+    <div class="row" ng-if="tasks.pageDisplay == 'task' || tasks.pageDisplay == 'newTask'">
+        <react-task-main content="tasks.taskData"></react-task-main>
+        <!-- <task-main content="tasks.taskData"></task-main> -->
+    </div>
+    <div class="row" ng-if="tasks.pageDisplay == 'taskSummary'">
+        <task-summary-directive content="tasks.taskData"></task-summary-directive>
+    </div>
+    <div class="row" ng-if="tasks.pageDisplay == 'taskStats'">
+        <task-stats-directive content="tasks.taskData"></task-stats-directive>
+    </div>
+</div>

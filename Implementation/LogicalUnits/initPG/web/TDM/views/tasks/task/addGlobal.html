@@ -1,0 +1,29 @@
+<div class="k2-card" style="margin-top: 50px">
+  <div class="k2-header">
+    <span class="k2-card-title" style="color: var(--secondary-text-color)">
+      {{"TASK_GLOBALS" | translate}}
+    </span>
+  </div>
+  <hr />
+  <div class="k2-body">
+    <div class="row">
+      <div class="form-group col-lg-12" ng-if="taskCtrl.logicalUnits">
+        <task-globals data="taskCtrl.taskData.globals" logical-units="taskCtrl.logicalUnits"></task-globals>
+      </div>
+    </div>
+
+    <hr />
+    <span
+      style="display: flex; flex-direction: row; justify-content: space-between"
+    >
+      <button
+        type="button"
+        class="btn k2-primary-btn"
+        ng-click="taskCtrl.openStep(2,'back')"
+      >
+        Back
+      </button>
+      <button type="submit" class="btn k2-primary-btn">Next</button>
+    </span>
+  </div>
+</div>

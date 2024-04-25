@@ -30,11 +30,12 @@
     "java.project.outputPath": ".studioWeb/java/bin",
     "java.project.sourcePaths": [
 		"Implementation/SharedObjects/Java/src",	
-		"Implementation/LogicalUnits/IIDF_LU/Java/src",	
-		"Implementation/LogicalUnits/k2_ref/Java/src",	
 		"Implementation/LogicalUnits/CUSTOMER/Java/src",	
+		"Implementation/LogicalUnits/GG_Simulator/Java/src",	
+		"Implementation/LogicalUnits/k2_ref/Java/src",	
 		"Implementation/LogicalUnits/k2_ws/Java/src",	
-		"Implementation/LogicalUnits/GG_Simulator/Java/src"	
+		"Implementation/LogicalUnits/initPG/Java/src",	
+		"Implementation/LogicalUnits/IIDF_LU/Java/src"	
 	],
 	"java.project.resourceFilters": [
         "node_modules",

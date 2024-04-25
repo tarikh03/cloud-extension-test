@@ -1,0 +1,70 @@
+
+<div class="">
+
+    <div class="k2-header">
+        <div class="row">
+            <div class="col-lg-4 taskExecTitle" style="text-align:left">
+                <div class="k2-card-title">{{"LOGICAL_UNITS_HIERARCHY" | translate}}</div>
+            </div>
+            <div class="col-lg-8 taskExecTitle" style="text-align:left">
+                <div class="row">
+                    <div class="col-lg-10 taskExecTitle" style="text-align:left">
+                        <div class="k2-card-title">{{"DETAILED_STATISTICS_FOR_LU_TASK_EXECUTION" | translate}}</div>
+                    </div>
+                    <button type="button" style="margin-right: 15px;" ng-click="close();" class="close" data-dismiss="modal"><span
+                        aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="k2-body" style="margin:0;min-height: 550px;">
+        <div class="row" style="padding-top: 10px">
+            <div class="col-lg-4">
+                <div class="row" style="padding-left: 5px;">
+                    <tree content="luTreeMenu" 
+                        update-table="taskStatsModalCtrl.updateTDMStats"
+                        selected-lu="taskStatsModalCtrl.selectedLU"></tree>
+                </div>
+            </div>
+            <div class="col-lg-8" ng-if="!taskStatsModalCtrl.loadingTables && taskStatsModalCtrl.selectedLU">
+                <div class="row">
+                    <div class="col-lg-12 panel-body" style="padding-bottom:0">
+                        <ul class="nav nav-tabs stats" style="background-color:white;padding-bottom: 0;border-bottom: 0">
+                            <li ng-class="{'active' : taskStatsModalCtrl.tab == 1}">
+                                <a ng-click="taskStatsModalCtrl.openTab(1)">
+                                    <i class=""></i>
+                                    {{taskStatsModalCtrl.cEntitiesTitle}}
+                                    <div class="taskExecutionStatsTitles">{{taskStatsModalCtrl.totalCopiedEntities || 0}}</div>
+                                </a>
+                            </li>
+                            <li ng-class="{'active' : taskStatsModalCtrl.tab == 2}">
+                                <a ng-click="taskStatsModalCtrl.openTab(2)">
+                                    <i class=""></i>
+                                    {{taskStatsModalCtrl.fEntitiesTitle}}
+                                    <div class="taskExecutionStatsTitles">{{taskStatsModalCtrl.totalFailedEntities || 0}}</div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tab-content" style="margin-top: 0px;padding: 3px;
+                                                border: 1px solid #ddd;">
+                    <div id="tab-1" class="tab-pane active" ng-if="taskStatsModalCtrl.tab == 1">
+                        <div ng-include="'views/tasks/executionStats/copiedEntitiesInPopup.html'"></div>
+                    </div>
+                    <div id="tab-2" class="tab-pane active" ng-if="taskStatsModalCtrl.tab == 2">
+                        <div ng-include="'views/tasks/executionStats/failedEntitiesInPopup.html'"></div>
+                    </div>
+
+                </div>
+                <div style="margin-top: 10px;font-weight: 600;font-size: 15px;color: red;word-break: break-word;"
+                    ng-show="taskStatsModalCtrl.errorFailedReason && taskStatsModalCtrl.errorFailedReason.length > 0 && taskStatsModalCtrl.tab == 2">
+                    Failure Reasons: 
+                        <div ng-repeat="failReason in taskStatsModalCtrl.errorFailedReason track by $index">{{failReason}}</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>

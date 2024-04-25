@@ -1,0 +1,241 @@
+<link href="js/components/task/taskMain/taskMain.css" rel="stylesheet" /> 
+
+<div class="col-lg-12 mainWrapper task">
+    <div class="ibox float-e-margins k2-card" style="min-height: calc(100vh - 66px);position: relative;">
+      <div class="k2-header">
+        <div class="row" style="display: flex;">
+          <div class="col-lg-6"  style="display: flex;justify-content: flex-start;gap: 15px;align-items: center">
+            <div class="k2-card-title" ng-show="taskMainCtrl.editTask">{{ 'TASK' | translate }} {{taskMainCtrl.taskData.task_title}} <span style="color: var(--secondary-text-color);"> / {{taskMainCtrl.stepsNames[taskMainCtrl.step] | translate}}</span></div>
+            <div class="k2-card-title" ng-show="!taskMainCtrl.editTask">{{ 'NEW_TASK' | translate }} <span style="color: var(--secondary-text-color);"> / {{taskMainCtrl.stepsNames[taskMainCtrl.step] | translate}}</span></div>
+            <h5 ng-show="taskMainCtrl.editTask" style="padding-left: 1em; font-weight: 300" ng-if="taskMainCtrl.taskData.task_status == 'Inactive'">
+              {{ 'INACTIVE' | translate }}
+            </h5>
+          </div>
+          <div class="col-lg-6 pull-right" style="display: flex;justify-content: flex-end;gap: 15px;align-items: center">
+            <div ng-if="taskMainCtrl.step !== 1" task-actions task-data="taskMainCtrl.taskData"></div>
+            <span ng-show="taskMainCtrl.step !== 1"
+              style="border-top: 30px solid #EAEAEA; border-left: 3px solid #EAEAEA"></span>
+            <a ng-if="taskMainCtrl.editTask" uib-tooltip="Delete Task" tooltip-placement="left" role-handler role="0" ng-if="!taskMainCtrl.disableChange"
+              class="pull-right" mwl-confirm message="Are you sure you want to delete Task?"
+              confirm-text="Yes <i class='glyphicon glyphicon-ok'></i>"
+              cancel-text="No <i class='glyphicon glyphicon-remove'></i>" placement="left"
+              on-confirm="taskMainCtrl.deleteTask()" on-cancel="cancelClicked = true" confirm-button-type="danger"
+              cancel-button-type="default">
+                <img src="icons/delete-icon-2.svg">
+              </a>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="k2-body" style="min-height: calc(100vh - 187px);">
+        <div class="wizard">
+          <div class="steps clearfix custom-ul">
+            <span style="display: none">
+                {{taskMainCtrl.viewSteps = taskMainCtrl.getStepsArray() }}
+            </span>
+            <ul class="ul-wizard" style="display: flex; gap: 200px; justify-content: space-between">
+              <li style="position: relative" class="pull-left" ng-class="{current : taskMainCtrl.step == 1}">
+                <hr class="wizard-hr" />
+                <a class="btn-default"  ng-click="taskMainCtrl.submitForm(taskMainCtrl.step,1)"
+                  ng-class="{
+                    activestep: taskMainCtrl.step == 1 ,
+                     finishedstep:  generalForm.$valid  &&  taskMainCtrl.step !== 1  ,
+                      disabledstep: generalForm.$invalid && taskMainCtrl.step !== 1 }"
+                      ><span
+                    class="wizard-step">{{taskMainCtrl.viewSteps.indexOf(1) + 1}}</span>
+                </a>
+                <span class="step-title" ng-class="{
+                  activesteptitle:taskMainCtrl.step == 1 ,
+                  finishedsteptitle:  generalForm.$valid  &&  taskMainCtrl.step !== 1  ,
+                  disabledsteptitle: generalForm.$invalid && taskMainCtrl.step !== 1 }">
+                  {{"GENERAL" | translate}}
+                </span>
+              </li>
+              <li style="position: relative" class="pull-left" ng-class="{current : taskMainCtrl.step == 2}">
+                  <hr class="wizard-hr" />
+                <a class="btn-default" ng-click="taskMainCtrl.submitForm(taskMainCtrl.step,2)"
+                  ng-class="{
+                    activestep: taskMainCtrl.step == 2 ,
+                     finishedstep:  additionalExecutionParametersForm.$valid  &&  taskMainCtrl.step !== 2  ,
+                      disabledstep: additionalExecutionParametersForm.$invalid && taskMainCtrl.step !== 2 }"
+                      ><span
+                    class="wizard-step">{{taskMainCtrl.viewSteps.indexOf(2) + 1}}</span>
+                </a>
+                <span 
+                  style="position: absolute;width: 200px;left: -72px;"
+                  class="step-title" ng-class="{
+                  activesteptitle:taskMainCtrl.step == 2 ,
+                  finishedsteptitle:  additionalExecutionParametersForm.$valid  &&  taskMainCtrl.step !== 2  ,
+                  disabledsteptitle: additionalExecutionParametersForm.$invalid && taskMainCtrl.step !== 2 }">
+                  Additional Execution Parameters
+                </span>
+              </li>
+              <li style="position: relative" class="pull-left" ng-if="taskMainCtrl.taskData.reference !== 'refernceOnly'"
+                ng-class="{current : taskMainCtrl.step == 3}">
+                <hr class="wizard-hr" />
+                <a class="btn-default" ng-click="taskMainCtrl.submitForm(taskMainCtrl.step,3)"
+                  ng-class="{
+                    activestep: taskMainCtrl.step == 3,
+                     finishedstep: requestedEntitiesForm.$valid  &&  taskMainCtrl.step !== 3  ,
+                      disabledstep: requestedEntitiesForm.$invalid && taskMainCtrl.step !== 3 }" 
+                    ><span
+                    class="wizard-step">{{taskMainCtrl.viewSteps.indexOf(3) + 1}}
+                  </span>
+                </a>
+                <span
+                  style="position: absolute;width: 200px;left: -72px;" 
+                  class="step-title" ng-class="{
+                    activesteptitle: taskMainCtrl.step == 3 ,
+                    finishedsteptitle: requestedEntitiesForm.$valid  &&  taskMainCtrl.step !== 3  ,
+                    disabledsteptitle: requestedEntitiesForm.$invalid && taskMainCtrl.step !== 3 }" 
+                 >{{"REQUESTED_ENTITIES" | translate}}
+                </span>
+              </li>
+              <li style="position: relative" class="pull-left" ng-if="taskMainCtrl.taskData.task_globals" ng-class="{current : taskMainCtrl.step == 4}">
+                  <hr class="wizard-hr" />
+                <a class="btn-default" ng-click="taskMainCtrl.submitForm(taskMainCtrl.step,4)"
+                  ng-class="{
+                    activestep:taskMainCtrl.step == 4 ,
+                      finishedstep: AddGlobalForm.$valid  &&  taskMainCtrl.step !== 4  ,
+                      disabledstep: AddGlobalForm.$invalid  &&  taskMainCtrl.step !== 4  
+                    }"><span
+                    class="wizard-step">{{taskMainCtrl.viewSteps.indexOf(4) + 1}}
+                  </span>
+                </a>
+                <span style="position: absolute;width: 200px;left: -72px;"
+                    class="step-title" ng-class="{
+                    activesteptitle:taskMainCtrl.step == 4 ,
+                    finishedsteptitle: AddGlobalForm.$valid  &&  taskMainCtrl.step !== 4  ,
+                    disabledsteptitle:  !AddGlobalForm.$valid  &&  taskMainCtrl.step !== 4 
+                  }">
+                  Task Variables
+                </span>
+              </li>
+              <li style="position: relative" class="pull-left" ng-if="taskMainCtrl.taskData.reference != null" ng-class="{current : taskMainCtrl.step == 5}">
+                  <hr class="wizard-hr" />
+                <a class="btn-default"  ng-click="taskMainCtrl.submitForm(taskMainCtrl.step,5)"
+                  ng-class="{
+                    activestep:taskMainCtrl.step == 5 ,
+                     finishedstep:   ReferenceForm.$valid  &&  taskMainCtrl.step !== 5  ,
+                     disabledstep:   ReferenceForm.$invalid && taskMainCtrl.step !== 5 }"
+                     ><span
+                    class="wizard-step">{{taskMainCtrl.viewSteps.indexOf(5) + 1}}</span> </span></a>
+                <span class="step-title" ng-class="{
+                  activesteptitle:taskMainCtrl.step == 5 ,
+                 finishedsteptitle: ReferenceForm.$valid && taskMainCtrl.step !== 5  ,
+                 disabledsteptitle: ReferenceForm.$invalid && taskMainCtrl.step !== 5 }">
+                  Reference
+                </span>
+              </li>
+              <li style="position: relative" class="pull-left" ng-class="{current : taskMainCtrl.step == 6}">
+                <a class="btn-default" ng-click="taskMainCtrl.submitForm(taskMainCtrl.step,6)"
+                  ng-class="{
+                    activestep: taskMainCtrl.step == 6 ,
+                     finishedstep: TaskSchedulingForm.$valid  &&  taskMainCtrl.step !== 6  ,
+                      disabledstep: TaskSchedulingForm.$invalid && taskMainCtrl.step !== 6 
+                     }">
+                  <span class="wizard-step">{{taskMainCtrl.viewSteps.indexOf(6) + 1}}
+                  </span>
+                </a>
+                <span style="position: absolute;width: 200px;left: -72px;" 
+                    class="step-title" ng-class="{
+                    activesteptitle: taskMainCtrl.step == 6 ,
+                    finishedsteptitle: TaskSchedulingForm.$valid  &&  taskMainCtrl.step !== 6  ,
+                    disabledsteptitle: TaskSchedulingForm.$invalid  && taskMainCtrl.step !== 6 
+                    }">
+                  Task Scheduling
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div class="wizard">
+            <div class="content" ng-show="taskMainCtrl.step == 1">
+                <form name="generalForm" role="form" novalidate ng-submit="taskMainCtrl.generalNext(generalForm)">
+                    <general-tab 
+                        ng-if="taskMainCtrl.step === 1" 
+                        disabled="taskMainCtrl.disableChange" 
+                        content="taskMainCtrl.taskData"
+                        copy-task="taskMainCtrl.copyTask"
+                        general-form="generalForm">
+                    </general-tab>
+              </form>
+            </div>
+            <div class="content" ng-show="taskMainCtrl.step == 2">
+              <form name="additionalExecutionParametersForm" role="form" novalidate
+                ng-submit="taskMainCtrl.additionalExecutionParametersNext(additionalExecutionParametersForm)">
+                <additional-execution-parameters 
+                    ng-if="taskMainCtrl.step === 2" 
+                    disabled="taskMainCtrl.disableChange" 
+                    content="taskMainCtrl.taskData" 
+                    form="additionalExecutionParametersForm"
+                    source-env-owner="taskMainCtrl.sourceEnvOwner"
+                    target-env-owner="taskMainCtrl.targetEnvOwner"
+                    allowed-entity-versioning="taskMainCtrl.allowed_entity_versioning"
+                    back="taskMainCtrl.back"
+                    get-sub-title="taskMainCtrl.getTabSubtitle"
+                    allowed-role-data="taskMainCtrl.userRole"
+                    allowed-role-data-source="taskMainCtrl.sourceUserRole"
+                ></additional-execution-parameters>
+              </form>
+            </div>
+            <div class="content" ng-show="taskMainCtrl.step == 3">
+              <form name="requestedEntitiesForm" role="form" novalidate
+                ng-submit="taskMainCtrl.requestedEntitiesNext(requestedEntitiesForm)">
+                <requested-entities 
+                    ng-if="taskMainCtrl.step === 3" 
+                    disabled="taskMainCtrl.disableChange" 
+                    content="taskMainCtrl.taskData"
+                    source-env-owner="taskMainCtrl.sourceEnvOwner"
+                    target-env-owner="taskMainCtrl.targetEnvOwner"
+                    form="requestedEntitiesForm"
+                    back="taskMainCtrl.back"
+                    user-role="taskMainCtrl.taskData.task_type === 'EXTRACT' ?  taskMainCtrl.sourceUserRole : taskMainCtrl.userRole"
+                    get-sub-title="taskMainCtrl.getTabSubtitle"
+                    max-to-copy="taskMainCtrl.maxToCopy"
+                    widget-ref-content="taskMainCtrl.widgetRefContent"
+                ></requested-entities>
+              </form>  
+            </div>
+            <div class="content" ng-show="taskMainCtrl.step === 4">
+              <form name="AddGlobalForm" role="form" novalidate ng-submit="taskMainCtrl.globalsNext(AddGlobalForm)">
+                <task-variables 
+                  ng-if="taskMainCtrl.step === 4" 
+                  disabled="taskMainCtrl.disableChange" 
+                  content="taskMainCtrl.taskData"
+                  form="AddGlobalForm"
+                  back="taskMainCtrl.back"
+                ></task-variables>
+              </form>
+            </div> 
+            <div class="content" ng-show="taskMainCtrl.step == 5">
+              <form name="ReferenceForm" role="form" novalidate ng-submit="taskMainCtrl.referenceNext(ReferenceForm)">
+                <reference 
+                  ng-if="taskMainCtrl.step === 5" 
+                  disabled="taskMainCtrl.disableChange" 
+                  content="taskMainCtrl.taskData"
+                  form="ReferenceForm"
+                  back="taskMainCtrl.back"
+                ></reference>
+              </form>
+            </div>
+            <div class="content" ng-show="taskMainCtrl.step == 6">
+              <form name="TaskSchedulingForm" role="form" novalidate  
+                ng-submit="taskMainCtrl.TaskSchedulingNext(TaskSchedulingForm)">
+                <task-scheduling 
+                    ng-if="taskMainCtrl.step === 6" 
+                    disable-change="taskMainCtrl.disableChange" 
+                    content="taskMainCtrl.taskData"
+                    source-env-owner="taskMainCtrl.sourceEnvOwner"
+                    target-env-owner="taskMainCtrl.targetEnvOwner"
+                    user-role="taskMainCtrl.taskData.task_type === 'EXTRACT' ?  taskMainCtrl.sourceUserRole : taskMainCtrl.userRole"
+                    form="TaskSchedulingForm"allowedRoleData
+                    back="taskMainCtrl.back"
+                  >
+                </task-scheduling>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

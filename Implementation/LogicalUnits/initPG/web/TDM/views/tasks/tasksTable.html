@@ -1,0 +1,30 @@
+<div class="col-lg-12" style="margin-bottom: 45px;">
+    <div class="k2-card">
+        <div class="k2-header">
+            <div class="row">
+                <div class="col-lg-3">
+                    <span class="k2-card-title">{{ 'TASKS' | translate }}</span>
+                </div>
+                <div class="col-lg-3 pull-right" style="margin-right: 7px;">
+                    <button class="k2-secondary-btn pull-right new-object-title"
+                    type="button" 
+                    ng-click="tasksTableCtrl.openNewTask()">
+
+                    <span class="bold">{{ "NEW_TASK" | translate}}</span>
+                    &nbsp;&nbsp;
+                    <i class="fa fa-plus"></i>
+                    </button>                
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="k2-body">
+            <div class="row">
+                <div class="col-lg-12">
+                    <table ng-if="tasksTableCtrl.loadingTable === false" style="display: table; width: 100%" datatable="" dt-options="tasksTableCtrl.dtOptions" dt-column-defs="tasksTableCtrl.dtColumnDefs" dt-columns="tasksTableCtrl.dtColumns"  dt-instance="tasksTableCtrl.dtInstanceCallback" class="tasksTable table table-striped table-bordered table-hover">
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

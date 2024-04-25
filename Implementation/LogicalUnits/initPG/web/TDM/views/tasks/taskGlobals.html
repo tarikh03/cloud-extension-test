@@ -1,0 +1,12 @@
+<div class="row">
+    <div class="col-lg-12">
+        <button type="button" class="btn k2-primary-btn pull-right" >
+            Set Task Variable
+            <task-variable-modal style="position: relative;"></task-variable-modal>
+        </button>
+    </div>
+    <div class="col-lg-12" ng-if="taskGlobals.globals">
+        <table style="display: table; width: 100%" datatable="" dt-options="taskGlobals.dtOptions" dt-columns="taskGlobals.dtColumns"  dt-instance="taskGlobals.dtInstance" class="table table-striped table-bordered table-hover">
+        </table>
+    </div>
+</div>

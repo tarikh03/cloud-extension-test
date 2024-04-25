@@ -1,0 +1,11 @@
+<div class="wrapper animated" ng-controller="productsCtrl as products">
+    <div class="row" ng-if="products.pageDisplay == 'productsTable'">
+        <products-table-directive content="products.productsData"></products-table-directive>
+    </div>
+    <div class="row" ng-if="products.pageDisplay == 'product'">
+        <product-directive content="products.productData"></product-directive>
+    </div>
+    <div class="row" ng-if="products.pageDisplay == 'newProduct'">
+        <new-product-directive content="products.newProductData"></new-product-directive>
+    </div>
+</div>

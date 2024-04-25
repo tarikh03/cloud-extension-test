@@ -1,0 +1,199 @@
+<div>
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins k2-card"
+        ng-show="taskHistoryTableCtrl.executionIds.length > 0 &&
+            taskHistoryTableCtrl.executionData &&
+            taskHistoryTableCtrl.taskData.selection_method != 'TABLES'">
+            <div class="k2-header">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="col-lg-6">
+                            <div class="k2-card-title">{{'RUNNING_EXECUTION' | translate}}</div>
+                        </div>
+                        <div class="col-lg-6" style="display:flex;justify-content: flex-end" ng-if="taskHistoryTableCtrl.executionData.length > 0 && taskHistoryTableCtrl.enableStopExecution == true">
+                            <!-- <div style="display:flex; justify-content: space-around;width: 150px;">
+                                <div class="k2-secondary-icon-btn button-disabled" style="border: 1px solid;"
+                                    ng-click="taskHistoryTableCtrl.openBatchMonitor()">і</div> -->
+                                <span ng-click="taskHistoryTableCtrl.stopExecution()" title="Stop execution">
+                                    <img src="icons/stop-circle.svg" 
+                                        style="width:25px; height:25px"
+                                        
+                                         />
+                                </span>
+                            <!-- </div> -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="k2-body" ng-repeat="luExecution in taskHistoryTableCtrl.executionData">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="project-list">
+                            <div>
+                                <div class="row">
+                                    <!-- <div class="col-lg-12">
+                                        Migrate Id : {{luExecution.migrateID}}
+                                    </div> -->
+                                    <div class="col-lg-1">
+                                            <div style="margin-top: 10px;white-space: nowrap">
+                                                    <span ng-click="taskHistoryTableCtrl.openBatchMonitor(luExecution.migrateID)">
+                                                            <i style="font-size: 17px; cursor: pointer;
+                                                            color: #1483f3;" title="Open batch monitor" class="fa fa-info-circle"></i>
+                                                     </span> {{luExecution.post_process_name || luExecution.pre_process_name|| luExecution.name}} 
+                                                </div>
+
+                                        <div style="margin-top: 25px;" ng-show="luExecution.added > 0 || luExecution.failed > 0 || luExecution.processed > 0">
+                                            <div style="display: flex; flex-direction: column;">
+                                                <div class="running-execution-row"  ng-show="taskHistoryTableCtrl.taskType === 'EXTRACT'">
+                                                    Updated : {{luExecution.Updated}} 
+                                                </div>
+                                                <div  class="running-execution-row"  ng-show="taskHistoryTableCtrl.taskType === 'EXTRACT'">
+                                                    Unchanged : {{luExecution.Unchanged}} 
+                                                </div>
+                                                <div class="running-execution-row" >Added : {{luExecution.added}}  </div>
+                                                <div  class="running-execution-row" >Failed : {{luExecution.failed}}  </div>
+                                                <div class="running-execution-row" style="border-bottom: 1px solid var(--light-border-color);" >
+                                                    <b>Processed : {{luExecution.processed}}  </b></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-11"  
+                                        ng-show="luExecution.added > 0 || luExecution.failed > 0 || luExecution.processed > 0"
+                                        style="height: 250px; display: flex; flex-direction: column; justify-content:center" >
+                                        <uib-progressbar class="progress-striped active"
+                                        value="luExecution.percentageOfCompleted || 0" type="success">
+                                            ({{luExecution.percentageOfCompleted || 0}}%)
+                                        </uib-progressbar>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ibox float-e-margins k2-card" ng-if="taskHistoryTableCtrl.executionIds.length > 0 && 
+            (taskHistoryTableCtrl.taskData.selection_method == 'TABLES'  || taskHistoryTableCtrl.taskData.refcount > 0)">
+            <div class="k2-header">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="col-lg-6 k2-card-title">Tables Process</div>
+                    <div class="col-lg-6" style="display:flex;justify-content: flex-end" ng-if="taskHistoryTableCtrl.taskData.selection_method === 'TABLES'">
+                        <span style="cursor: pointer;" ng-click="taskHistoryTableCtrl.stopExecution()" title="Stop execution">
+                            <img src="icons/stop-circle.svg" 
+                                style="width:25px; height:25px"
+                                
+                                    />
+                        </span>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+
+            <hr>
+            <div class="k2-body" ng-repeat="lu in taskHistoryTableCtrl.executionRefData"
+                style="margin-bottom: 10px;">
+                <div class="row">
+                    <div class="col-lg-12">
+                        {{lu.lu_name}}
+                        <div class="project-list">
+                            <div>
+                                <div class="row">
+
+                                    <div class="col-lg-1">
+                                        <div style="margin-top: 25px;">
+                                            <div class="running-execution-row" style="border: none;" >
+                                            Copied : {{lu.numOfCopiedRefTables}} 
+                                            </div>
+                                            <div class="running-execution-row" 
+                                                ng-click="taskHistoryTableCtrl.startExtractRefStatsDetailed('failed', lu.lu_name)"
+                                                style="cursor: pointer">+</span> Failed : {{lu.numOfFailedRefTables}} 
+                                            </div>
+                                            <div class="running-execution-row" 
+                                                ng-click="taskHistoryTableCtrl.startExtractRefStatsDetailed('in process', lu.lu_name)"
+                                                style="cursor: pointer">+</span> In Process :
+                                            {{lu.numOfProcessingRefTables}} 
+                                            </div> 
+                                            <div class="running-execution-row" >
+                                            Not Started : {{lu.numberOfNotStartedRefTables}} 
+                                            </div>
+                                            <div class="running-execution-row" style="border-bottom: 1px solid var(--light-border-color);" >
+                                            <b>Processed : {{lu.numOfProcessedRefTables}} </b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-lg-11"  style="height: 200px; display: flex; flex-direction: column; justify-content:center" >
+                                        <uib-progressbar class="progress-striped active"
+                                            value="lu.percentageOfCompleted || 0" type="success">
+                                            {{lu.percentageOfCompleted || 0}}%
+                                        </uib-progressbar>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ibox float-e-margins k2-card">
+            <div class="k2-header">
+                <div class="row">
+                    <div class="col-lg-12" style="display: flex;justify-content: space-between">
+                        <div class="k2-card-title">Execution ID {{content.exec_id}} - Execution Summary</div>
+                        <div ng-show="!taskHistoryTableCtrl.adi_only">
+                            <a style="margin-left: 3px;border-color: transparent;background-color: transparent; color: black;"
+                                type="button" title="List of entities"
+                                ng-style="taskHistoryTableCtrl.disableAccessingStatistics && {'cursor':'not-allowed'}"
+                                ng-click="taskHistoryTableCtrl.openEntitiesExecStats(content.exec_id)"><i
+                                    class="fa fa-bars"></i> </a>
+                        </div>
+                        <!-- <div class="reload_wrap"> -->
+                        <!-- <p> Reload interval: </p> -->
+                        <!-- <div class="btn-group"> -->
+
+                        <!-- <button class="btn btn-default btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
+                        <!-- {{ taskHistoryTableCtrl.reload_interval / 1000 }} seconds<span class="caret"></span> -->
+                        <!-- </button> -->
+
+                        <!-- <ul class="dropdown-menu"> -->
+                        <!-- <li ng-click="taskHistoryTableCtrl.setReloadInterval(5)"> -->
+                        <!-- <a href="">5 seconds</a> -->
+                        <!-- </li> -->
+                        <!-- <li ng-click="taskHistoryTableCtrl.setReloadInterval(10)"> -->
+                        <!-- <a href="">10 seconds</a> -->
+                        <!-- </li> -->
+                        <!-- <li ng-click="taskHistoryTableCtrl.setReloadInterval(30)"> -->
+                        <!-- <a href="">30 seconds</a> -->
+                        <!-- </li> -->
+                        <!-- <li ng-click="taskHistoryTableCtrl.setReloadInterval(60)"> -->
+                        <!-- <a href="">60 seconds</a> -->
+                        <!-- </li> -->
+                        <!-- </ul> -->
+
+                        <!-- </div> -->
+                        <!-- </div> -->
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="k2-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table style="display: table; width: 100%"
+                            datatable="" dt-options="taskHistoryTableCtrl.dtOptions"
+                            dt-column-defs="taskHistoryTableCtrl.dtColumnDefs"
+                            dt-columns="taskHistoryTableCtrl.dtColumns"
+                            dt-instance="taskHistoryTableCtrl.dtInstanceCallback"
+                            class="table tasksTableHistory table-striped table-bordered table-hover"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+<ul style="list-style: none;padding: 0;position: relative;">
+    <li ng-repeat="item in content track by $index" style="padding-bottom: 10px">
+        <div style="cursor: pointer;padding-top:5px" 
+            ng-style="
+                    {
+                        'background-color': item == selectedLu && 'rgba(208, 235, 255, 0.7)',
+                        'margin-left' : item.hasChildren ? '10px' : '15px',
+                    }">
+            <i ng-if="item.isRoot && item.status === 'child failed'" 
+                style="
+                color: red;
+                position: absolute;
+                left: 0;
+                margin-top: 2px;"
+                class="fa fa-exclamation-circle"></i>
+            <i ng-click="treeCtrl.collapse(item)" style="margin-left:5px;" class="fa" 
+                ng-class="{'fa-caret-right' : item.collapsed ,'fa-caret-down' : !item.collapsed}" ng-if="item.hasChildren"></i>
+            <span ng-click="treeCtrl.updateTable(item)" 
+                ng-style="{
+                    'color': item.lu_status === 'failed' && 'red'
+                }">{{item.lu_name}} 
+                <span ng-show="(item.sourceId || item.targetId) && (!item.brothers || item.brothers.length <= 1)">
+                    : Source={{item.sourceId}}, Target ID={{item.targetId}}
+                    </span>
+                </span>
+                
+        </div>
+        <div style="margin-left: 15px;margin-top:5px;" ng-if="!item.collapsed && item.children.length > 0">
+            <tree content="item.children"
+                collapse="collapse"
+                update-table="updateTable"
+                selected-lu="selectedLu"></tree>
+        </div>
+    </li>
+</ul>

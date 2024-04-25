@@ -1,0 +1,44 @@
+<div>
+    <div class="k2-card-title">{{ 'NEW_GLOBAL' | translate }}</div>
+    <hr />
+    <div class="k2-body">
+        <div class="row">
+            <form role="form" ng-submit="addGlobalCtrl.addNewGlobal()">
+                <div class="col-lg-12" style="display: flex; flex-direction: column;">
+                    <div>
+                        <div class="form-group col-lg-6">
+                            <label>Global Name</label>
+                            <select ng-disabled="addGlobalCtrl.edit" name="global_name" class="form-control1"
+                                width="'100%'" chosen ng-model="addGlobalCtrl.data.global_name"
+                                ng-options="o.globalName as o.globalName for o in addGlobalCtrl.globals" required>
+                                <option></option>
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label>Global Value</label>
+                            <input name="global_value" type="text" class="form-control1"
+                                ng-model="addGlobalCtrl.data.global_value" required />
+                        </div>
+                    </div>
+                    <div style="
+                            display: flex;
+                            flex-direction: row;
+                            justify-content: flex-end;
+                            ">
+                        <button ng-click="addGlobalCtrl.close()" class="k2-card-ok-cancel-btn custom-hover"
+                            type="button">
+                            {{"CLOSE" | translate}}
+                        </button>
+                        <button ng-if="!addGlobalCtrl.edit" class="k2-card-ok-cancel-btn custom-hover" type="submit">
+                            {{"ADD" | translate}}
+                        </button>
+                        <button ng-if="addGlobalCtrl.edit" class="k2-card-ok-cancel-btn custom-hover" type="submit">
+                            {{"SAVE" | translate}}
+                        </button>
+                    </div>
+                </div>
+        </div>
+        </form>
+    </div>
+</div>
+</div>

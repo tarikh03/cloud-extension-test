@@ -18,6 +18,7 @@ import com.google.common.cache.LoadingCache;
 import com.k2view.cdbms.finder.refactor.IidfProcessorUtils;
 import com.k2view.cdbms.finder.refactor.IidfTablesUtils;
 import com.k2view.cdbms.shared.*;
+import com.k2view.cdbms.shared.user.UserCode;
 import com.k2view.cdbms.shared.utils.UserCodeDescribe.*;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
@@ -63,7 +64,7 @@ public class SharedLogic {
         });
 
         stats.insertStats("Stopped");
-        yield(null);
+        UserCode.yield(null);
     }
 
 
@@ -84,7 +85,7 @@ public class SharedLogic {
         });
 
         stats.insertStats("Stopped");
-        yield(null);
+        UserCode.yield(null);
     }
 
     private static void handleMsg(String iid, long timestamp, Stats stats, boolean isPriority) throws InterruptedException, SQLException {

@@ -1,0 +1,373 @@
+{
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Input",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "PopulationArgs",
+                            "actorType": {
+                                "parentType": "PopulationArgs",
+                                "readOnly": true,
+                                "inputs": [
+                                    {
+                                        "name": "subscriber_id",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "msisdn",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "imsi",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "sim",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "first_name",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "last_name",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "subscriber_type",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "vip_status",
+                                        "schema": {}
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "SyncDeleteMode",
+                            "actorType": {
+                                "parentType": "SyncDeleteMode",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "table",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Source",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Query",
+                            "actorType": {
+                                "parentType": "SourceDbQuery",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "BILLING_DB"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": "select * from public.subscriber"
+                                    },
+                                    {
+                                        "name": "use_mbd_finder",
+                                        "const": true
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "subscriber_id": {
+                                                    "type": {}
+                                                },
+                                                "msisdn": {
+                                                    "type": {}
+                                                },
+                                                "imsi": {
+                                                    "type": {}
+                                                },
+                                                "sim": {
+                                                    "type": {}
+                                                },
+                                                "first_name": {
+                                                    "type": {}
+                                                },
+                                                "last_name": {
+                                                    "type": {}
+                                                },
+                                                "subscriber_type": {
+                                                    "type": {}
+                                                },
+                                                "vip_status": {
+                                                    "type": {}
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 1",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "LU Table",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "actors": [
+                        {
+                            "name": "SUBSCRIBER",
+                            "actorType": {
+                                "parentType": "DbLoad",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "fabric"
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "table",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "fields",
+                                        "const": [
+                                            "subscriber_id",
+                                            "msisdn",
+                                            "imsi",
+                                            "sim",
+                                            "first_name",
+                                            "last_name",
+                                            "subscriber_type",
+                                            "vip_status"
+                                        ]
+                                    },
+                                    {
+                                        "name": "dialect",
+                                        "const": "sqlite"
+                                    },
+                                    {
+                                        "name": "subscriber_id",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "msisdn",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "imsi",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "sim",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "first_name",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "last_name",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "subscriber_type",
+                                        "schema": {}
+                                    },
+                                    {
+                                        "name": "vip_status",
+                                        "schema": {}
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Post Load",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": []
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "PopulationArgs",
+                "name": "parent_rows"
+            },
+            "rightPort": {
+                "actor": "Query",
+                "name": "parent_rows"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Query",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "SUBSCRIBER",
+                "name": "params"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "subscriber_id"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "subscriber_id"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "msisdn"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "msisdn"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "imsi"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "imsi"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "sim"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "sim"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "first_name"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "first_name"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "last_name"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "last_name"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "subscriber_type"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "subscriber_type"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "vip_status"
+            },
+            "rightPort": {
+                "actor": "PopulationArgs",
+                "name": "vip_status"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "table"
+            },
+            "rightPort": {
+                "actor": "SyncDeleteMode",
+                "name": "table"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "schema"
+            },
+            "rightPort": {
+                "actor": "SUBSCRIBER",
+                "name": "schema"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "table"
+            },
+            "rightPort": {
+                "actor": "SUBSCRIBER",
+                "name": "table"
+            }
+        }
+    ]
+}

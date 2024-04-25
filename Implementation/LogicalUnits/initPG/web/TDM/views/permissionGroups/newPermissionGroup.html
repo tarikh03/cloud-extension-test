@@ -1,0 +1,64 @@
+<div>
+    <div class="k2-card-title">
+        Map a Role to a Permission Group
+    </div>
+    <hr>
+    <div class="k2-body">
+        <div class="row">
+            <form role="form" name="attachRoleToPermissionGroupForm"
+                ng-submit="newPermisionGroupCtrl.attachRoleToPermissionGroup()">
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <label>Permission Group</label>
+                        <select id="pg_permission_group"
+                            required class="form-control1" style="text-transform: capitalize" ng-model="newPermisionGroupCtrl.permissionGroup"
+                            name="permission_group"
+                            ng-options="o.value as o.name for o in newPermisionGroupCtrl.permissionGroups">
+                            <option value=""></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Role</label>
+                        <select 
+                            id="pg_role" required class="form-control1" ng-model="newPermisionGroupCtrl.fabricRole"
+                            name="fabric_role" ng-options="o as o for o in newPermisionGroupCtrl.fabricRoles">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input  
+                            id="pg_description"
+                            type="text" ng-model="newPermisionGroupCtrl.description" class="form-control1">
+                    </div>
+                    <div style="display: flex;flex-direction: row;justify-content: flex-end;">
+                        <button id="pg_cancel"
+                             class="k2-card-ok-cancel-btn custom-hover" type="button" ng-click="newPermisionGroupCtrl.close()">{{"CANCEL" |
+                            translate}}</button>
+                        <button 
+                            id="pg_save" class="k2-card-ok-cancel-btn custom-hover" 
+                            ng-if="!attachRoleToPermissionGroupForm.$valid ||
+                             !newPermisionGroupCtrl.edit || newPermisionGroupCtrl.oldPermissionGroup === newPermisionGroupCtrl.permissionGroup" 
+                            type="submit">{{"SAVE" | translate}}</button>
+                        <button id="pg_save" 
+                            class="k2-card-ok-cancel-btn custom-hover" 
+                            ng-if="attachRoleToPermissionGroupForm.$valid && newPermisionGroupCtrl.edit && newPermisionGroupCtrl.oldPermissionGroup !== newPermisionGroupCtrl.permissionGroup" 
+                                type="button"
+                                mwl-confirm="" 
+                                message="The users of {{newPermisionGroupCtrl.oldfabricRole}} will be removed from their environments and will no longer be owners of TDM environments. Are you sure you want to change the permissions group?" 
+                                confirm-text="Yes <i class='glyphicon glyphicon-ok'</i>" 
+                                cancel-text="No <i class='glyphicon glyphicon-remove'></i>" 
+                                placement="top" 
+                                on-confirm="newPermisionGroupCtrl.attachRoleToPermissionGroup()" 
+                                on-cancel="cancelClicked = true" 
+                                confirm-button-type="danger" 
+                                cancel-button-type="default" 
+                            >{{"SAVE" | translate}}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+</div>
+</div>

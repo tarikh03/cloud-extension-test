@@ -1,0 +1,30 @@
+<div>
+    <hr style="position: relative;z-index: 1000;">    
+    <div style="
+        background-color: white;
+        width: 100%;
+        height: 79px;
+        position: absolute;
+        top: 0;"></div>
+    <span style="display: flex;justify-content: space-between;" ng-style="{
+        justifyContent : blockBackButton ? 'flex-end' : 'space-between'
+    }">
+        <button type="button" ng-if="!blockBackButton"  ng-click="back()" style="width:80px;z-index: 100;" class="btn k2-primary-btn">Back</button>
+        <!-- <div ng-include="'views/common/taskFooter.html'"></div> -->
+        <button type="submit" style="width:80px;z-index: 100" class="btn k2-primary-btn">{{lastStep ? 'Finish' : 'Next'}}</button>
+    </span>
+    <div style=" width: calc(100vw - 57px);
+    background-color: #f2f2f2;
+    position: absolute;
+    bottom: -56px;
+    height: 32px;
+    left: -50px;">
+        <div style="    background-color: white;
+        height: 10px;
+        border-left: 1px solid #ebebeb;
+        border-right: 1px solid #ebebeb;
+        border-radius: 0px 0px 9px 9px;">
+
+        </div>
+        </div>
+</div>

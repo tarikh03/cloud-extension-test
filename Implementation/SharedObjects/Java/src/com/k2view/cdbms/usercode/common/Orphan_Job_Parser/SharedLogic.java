@@ -9,6 +9,7 @@ import com.k2view.cdbms.finder.LuDaoFactory;
 import com.k2view.cdbms.finder.LuDaoInterface;
 import com.k2view.cdbms.finder.TriggeredMessage;
 import com.k2view.cdbms.finder.api.IidFinderApi;
+import com.k2view.cdbms.shared.user.UserCode;
 import com.k2view.cdbms.shared.utils.UserCodeDescribe.*;
 import static com.k2view.cdbms.shared.user.UserCode.*;
 import static com.k2view.cdbms.shared.utils.UserCodeDescribe.FunctionType.*;
@@ -30,7 +31,7 @@ public class SharedLogic {
 			return true;
 		});
 		
-		yield(null);
+		UserCode.yield(null);
 	}
 	
 	private static void handleMsgOrphan(String iid, String msg) {

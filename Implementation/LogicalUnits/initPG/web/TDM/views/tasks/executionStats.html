@@ -1,0 +1,93 @@
+
+<div class="col-lg-12" style="min-height: 590px;display:flex; padding-top: 30px; background: white">
+
+    <div class="ibox float-e-margins col-lg-3" ng-if="!taskStatesCtrl.hideLogicalUnit">
+        <div class="row">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="k2-card-title">{{"LOGICAL_UNITS_HIERARCHY" | translate}}</div>
+
+                </div>
+            </div>
+            <hr />
+        </div>
+        <div class="k2-body" style="margin:0">
+            <div class="row">
+                <tree content="luTreeMenu"
+                 collapse="taskStatesCtrl.collapseNode"
+                update-table="taskStatesCtrl.updateTDMStats"
+                 selected-lu="taskStatesCtrl.selectedLU"></tree>
+            </div>
+        </div>
+    </div>
+
+    <div class="ibox float-e-margins col-lg-9" ng-class="{'col-lg-9' : !taskStatesCtrl.hideLogicalUnit, 'col-lg-12': taskStatesCtrl.hideLogicalUnit}">
+        <div class="">
+            <div class="row">
+                <div class="col-lg-12 taskExecTitle" style="text-align:left">
+                    <div class="k2-card-title">{{"DETAILED_STATISTICS_FOR_TASK_EXECUTION" | translate}}</div>
+                </div>
+            </div>
+            <hr>
+        </div>
+
+        <div class="k2-body">
+            <div class="row">
+                <div class="col-lg-12 panel-body"
+                    style="padding-bottom:0;     border-bottom: 1px solid var(--light-border-color);">
+                    <ul class="nav-pills stats" class="nav-stats"
+                        style="background-color:white;padding-bottom: 0;border-bottom: 0">
+                        <li ng-class="{'active' : taskStatesCtrl.tab == 1}" ng-if="!taskStatesCtrl.hideLogicalUnit"
+                            style="border-right: 1px solid var(--light-border-color);">
+                            <a ng-click="taskStatesCtrl.openTab(1)">
+                                <i class=""></i>
+                                {{taskStatesCtrl.cEntitiesTitle}}
+                                <div class="taskExecutionStatsTitles">{{taskStatesCtrl.totalCopiedEntities }} </div>
+                            </a>
+                        </li>
+                        <li ng-class="{'active' : taskStatesCtrl.tab == 2}" ng-if="!taskStatesCtrl.hideLogicalUnit"
+                            style="border-right: 1px solid var(--light-border-color);">
+                            <a ng-click="taskStatesCtrl.openTab(2)">
+                                <i class=""></i>
+                                {{taskStatesCtrl.fEntitiesTitle}} 
+                                <div class="taskExecutionStatsTitles">{{taskStatesCtrl.totalFailedEntities }}</div>
+                            </a>
+                        </li>
+                        <li ng-class="{'active' : taskStatesCtrl.tab == 3}"
+                            style="border-right: 1px solid var(--light-border-color);">
+                            <a ng-click="taskStatesCtrl.openTab(3)">
+                                <i class=""></i>
+                                {{taskStatesCtrl.cReferencesTitle}} 
+                                <div class="taskExecutionStatsTitles">{{taskStatesCtrl.totalCopiedReference}}</div>
+                            </a>
+                        </li>
+                        <li ng-class="{'active' : taskStatesCtrl.tab == 4}"
+                            style="border-right: 1px solid var(--light-border-color);">
+                                <a ng-click="taskStatesCtrl.openTab(4)">
+                                    <i class=""></i>
+                                    {{taskStatesCtrl.fReferencesTitle}}
+                                    <div class="taskExecutionStatsTitles">{{taskStatesCtrl.totalFailedReference}}
+                                    </div>
+                                </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tab-content" ng-if="!taskStatesCtrl.loadingTablesData">
+                <div id="tab-1" class="tab-pane active" ng-if="taskStatesCtrl.tab==1">
+                    <div ng-include="'views/tasks/executionStats/copiedEntities.html'"></div>
+                </div>
+                <div id="tab-2" class="tab-pane active" ng-if="taskStatesCtrl.tab==2">
+                    <div ng-include="'views/tasks/executionStats/failedEntities.html'"></div>
+                </div>
+                <div id="tab-3" class="tab-pane active" ng-if="taskStatesCtrl.tab==3">
+                    <div ng-include="'views/tasks/executionStats/copiedTables.html'"></div>
+                </div>
+                <div id="tab-4" class="tab-pane active" ng-if="taskStatesCtrl.tab==4">
+                    <div ng-include="'views/tasks/executionStats/failedTables.html'"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

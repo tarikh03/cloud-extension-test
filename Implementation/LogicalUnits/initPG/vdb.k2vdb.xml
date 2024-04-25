@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VirtualDB xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" version="">
+  <Name>vdb</Name>
+  <RootView>TASK_EXECUTION</RootView>
+  <CacheLocationType>Default</CacheLocationType>
+  <LuLazyDataUpdate syncMethod="None" performEvery="1.00:00:00" syncTimeout="0">
+  	<DecisionFunction></DecisionFunction>
+  </LuLazyDataUpdate>
+  <EventsList>
+  </EventsList>
+  <IidFinderProp>
+    <NumberOfPartitions>100</NumberOfPartitions>
+    <NumberOfJobs>50</NumberOfJobs>
+  </IidFinderProp>
+  <Tables>
+	 <Table>task_exe_error_detailed</Table>
+	 <Table>task_exe_stats_detailed</Table>
+	 <Table>task_exe_stats_summary</Table>
+	 <Table>TASK_EXECUTION</Table>
+	 <Table>task_execution_entities</Table>
+	 <Table>TASK_EXECUTION_LINK_ENTITIES</Table>
+	 <Table>task_execution_list</Table>
+	 <Table>task_execution_override_attrs</Table>
+	 <Table>task_ref_exe_stats</Table>
+	 <Table>tasks</Table>
+	 <Table>tdm_generate_task_field_mappings</Table>
+	 <Table>tdm_lu_type_rel_tar_eid</Table>
+	 <Table>tdm_lu_type_relation_eid</Table>
+	 <Table>TDM_SEQ_MAPPING</Table>
+  </Tables>
+  <TablesProperties>
+	 <TableProperties name="task_exe_error_detailed">
+      <Populations>
+        <Population name="populationTaskExeErrorDetailed.flow" order="3" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="task_exe_stats_detailed">
+      <Populations>
+        <Population name="populationTaskExeStatsDetailed.flow" order="2" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="task_exe_stats_summary">
+      <Populations>
+        <Population name="populationTaskExeStatsSummary.flow" order="2" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="TASK_EXECUTION">
+      <Populations>
+        <Population name="populationJMX.flow" order="999" disabled="false" populationType="Flow" />
+        <Population name="populationTaskExecution.flow" order="1" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="task_execution_entities">
+      <Populations>
+        <Population name="populationTaskExecutionEntities.flow" order="2" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="TASK_EXECUTION_LINK_ENTITIES">
+      <Populations>
+        <Population name="populationTaskExecutionLinkEntities.flow" order="4" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="task_execution_list">
+      <Populations>
+        <Population name="populationTaskExecutionList.flow" order="2" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="task_execution_override_attrs">
+      <Populations>
+        <Population name="populationExecutionOverrideAttrs.flow" order="3" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="task_ref_exe_stats">
+      <Populations>
+        <Population name="populationTaskRefExeStats.flow" order="3" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="tasks">
+      <Populations>
+        <Population name="populationTasks.flow" order="2" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="tdm_generate_task_field_mappings">
+      <Populations>
+        <Population name="population.flow" order="3" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="tdm_lu_type_rel_tar_eid">
+      <Populations>
+        <Population name="populationTdmLuTypeRelTarEidForDeleteOnlyTask.flow" order="3" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="tdm_lu_type_relation_eid">
+      <Populations>
+        <Population name="populationTdmLuTypeRelationTarEid.flow" order="3" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+	 <TableProperties name="TDM_SEQ_MAPPING">
+      <Populations>
+        <Population name="populationTdmSeqMapping.flow" order="2" disabled="false" populationType="Flow" />
+      </Populations>
+    </TableProperties>
+  </TablesProperties>
+  <EnrichmentsOrderList>
+	  <Item order="1" active="true" name="tdm_lu_type_relation_eid" columnName="fnEnrParentChildLink" type="Table" />
+	  <Item order="2" active="true" name="TASK_EXECUTION_LINK_ENTITIES" columnName="fnEncTaskExecutionLinkEntities" type="Table" />
+	  <Item order="3" active="true" name="TASK_EXECUTION" columnName="fnUpdateTaskSyncStatus" type="Table" />
+	  <Item order="4" active="true" name="TASK_EXECUTION_LINK_ENTITIES" columnName="fnEnrSetRootEntSts" type="Table" />
+	  <Item order="5" active="true" name="TASK_EXECUTION" columnName="fnUpdateTaskSummaryTable" type="Table" />
+  </EnrichmentsOrderList>
+  <ReferencesList>
+  </ReferencesList>
+  <Relations />
+  <DatabaseRelations>
+	  <Relation>
+        <From tableType="TableObject" table="TASK_EXECUTION" column="TASK_EXECUTION_ID" columnId="tblCol_e38506569e27408688f8e7f46f3c3eaf" />
+        <To tableType="TableObject" table="tasks" populationObjectName="populationTasks.flow" column="task_execution_id" columnId="tblCol_fe1c717cdb8443928dfd0b701c836250" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="TASK_EXECUTION" column="TASK_EXECUTION_ID" columnId="tblCol_e38506569e27408688f8e7f46f3c3eaf" />
+        <To tableType="TableObject" table="task_exe_stats_detailed" populationObjectName="populationTaskExeStatsDetailed.flow" column="task_execution_id" columnId="tblCol_61ada4a4d80a451992114103b8ad30e1" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="TASK_EXECUTION" column="TASK_EXECUTION_ID" columnId="tblCol_e38506569e27408688f8e7f46f3c3eaf" />
+        <To tableType="TableObject" table="task_exe_stats_summary" populationObjectName="populationTaskExeStatsSummary.flow" column="task_execution_id" columnId="tblCol_61ada4a4d80a451992114103b8ad30e1" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="tasks" column="task_execution_id" columnId="tblCol_fe1c717cdb8443928dfd0b701c836250" />
+        <To tableType="TableObject" table="task_execution_override_attrs" populationObjectName="populationExecutionOverrideAttrs.flow" column="task_execution_id" columnId="tblCol_73f0849e37a340bb94c530f08f7f3266" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="tasks" column="task_execution_id" columnId="tblCol_fe1c717cdb8443928dfd0b701c836250" />
+        <To tableType="TableObject" table="task_exe_error_detailed" populationObjectName="populationTaskExeErrorDetailed.flow" column="task_execution_id" columnId="tblCol_d513dfe8417547ce95874e3e9a6c6997" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="TASK_EXECUTION" column="TASK_EXECUTION_ID" columnId="tblCol_e38506569e27408688f8e7f46f3c3eaf" />
+        <To tableType="TableObject" table="task_execution_entities" populationObjectName="populationTaskExecutionEntities.flow" column="task_execution_id" columnId="tblCol_f65095098e244813b9ede85c264c9fcc" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="tasks" column="load_entity" columnId="tblCol_3b615090db0a48dfb7a9f8473b7a729b" />
+        <To tableType="TableObject" table="tdm_lu_type_rel_tar_eid" populationObjectName="populationTdmLuTypeRelTarEidForDeleteOnlyTask.flow" column="load_entity" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="tasks" column="delete_before_load" columnId="tblCol_60d4253f32284f95b99335e48ba11d18" />
+        <To tableType="TableObject" table="tdm_lu_type_rel_tar_eid" populationObjectName="populationTdmLuTypeRelTarEidForDeleteOnlyTask.flow" column="delete_before_load" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="tasks" column="task_execution_id" columnId="tblCol_fe1c717cdb8443928dfd0b701c836250" />
+        <To tableType="TableObject" table="tdm_lu_type_rel_tar_eid" populationObjectName="populationTdmLuTypeRelTarEidForDeleteOnlyTask.flow" column="task_execution_id" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="TASK_EXECUTION" column="TASK_EXECUTION_ID" columnId="tblCol_e38506569e27408688f8e7f46f3c3eaf" />
+        <To tableType="TableObject" table="task_execution_list" populationObjectName="populationTaskExecutionList.flow" column="task_execution_id" columnId="tblCol_516f51bbc0ec4c7eafca8ee74b48578e" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="task_execution_entities" column="lu_name" columnId="tblCol_459fafe389134000bd83d175fa47e334" />
+        <To tableType="TableObject" table="tdm_lu_type_relation_eid" populationObjectName="populationTdmLuTypeRelationTarEid.flow" column="lu_name" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="task_execution_entities" column="entity_id" columnId="tblCol_212eaafa09144124bb6ef9badf2ae750" />
+        <To tableType="TableObject" table="tdm_lu_type_relation_eid" populationObjectName="populationTdmLuTypeRelationTarEid.flow" column="lu_eid" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="task_execution_entities" column="source_env" columnId="tblCol_7b83a92ade9c4d07be74e5ef768bb64e" />
+        <To tableType="TableObject" table="tdm_lu_type_relation_eid" populationObjectName="populationTdmLuTypeRelationTarEid.flow" column="source_env_name" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="task_execution_entities" column="id_type" columnId="tblCol_3f0f319c4894419288952cfffb9b789c" />
+        <To tableType="TableObject" table="TASK_EXECUTION_LINK_ENTITIES" populationObjectName="populationTaskExecutionLinkEntities.flow" column="ID_TYPE" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="task_execution_entities" column="lu_name" columnId="tblCol_459fafe389134000bd83d175fa47e334" />
+        <To tableType="TableObject" table="TASK_EXECUTION_LINK_ENTITIES" populationObjectName="populationTaskExecutionLinkEntities.flow" column="LU_NAME" columnId="tblCol_96d37bfc6cf44834b400791ed4a05534" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="task_execution_entities" column="target_entity_id" columnId="tblCol_650a9fadfe0c4467a21b7d92ad4a22b7" />
+        <To tableType="TableObject" table="TASK_EXECUTION_LINK_ENTITIES" populationObjectName="populationTaskExecutionLinkEntities.flow" column="TARGET_ENTITY_ID" columnId="tblCol_a7a1ed70bd89456e851baec2a638ce3e" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="task_execution_entities" column="entity_id" columnId="tblCol_212eaafa09144124bb6ef9badf2ae750" />
+        <To tableType="TableObject" table="TASK_EXECUTION_LINK_ENTITIES" populationObjectName="populationTaskExecutionLinkEntities.flow" column="ENTITY_ID" columnId="tblCol_ca5a607128f140568e46ffdf0c0780e3" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="task_execution_entities" column="execution_status" columnId="tblCol_213830e16f1248dc9d5fa0394215813e" />
+        <To tableType="TableObject" table="TASK_EXECUTION_LINK_ENTITIES" populationObjectName="populationTaskExecutionLinkEntities.flow" column="EXECUTION_STATUS" columnId="tblCol_08294575fc264f519de32cf18bbe7577" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="TASK_EXECUTION" column="TASK_EXECUTION_ID" columnId="tblCol_e38506569e27408688f8e7f46f3c3eaf" />
+        <To tableType="TableObject" table="TDM_SEQ_MAPPING" populationObjectName="populationTdmSeqMapping.flow" column="task_execution_id" columnId="tblCol_4cddafdd4da040c49dab0615a03320d3" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="tasks" column="task_id" columnId="tblCol_0c3317c310dc40ad9b7e7ee39ecb04a1" />
+        <To tableType="TableObject" table="tdm_generate_task_field_mappings" populationObjectName="population.flow" column="task_id" columnId="task_id" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="tasks" column="task_execution_id" columnId="tblCol_fe1c717cdb8443928dfd0b701c836250" />
+        <To tableType="TableObject" table="task_ref_exe_stats" populationObjectName="populationTaskRefExeStats.flow" column="task_execution_id" columnId="task_execution_id" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="task_execution_entities" column="root_lu_name" columnId="root_lu_name" />
+        <To tableType="TableObject" table="TASK_EXECUTION_LINK_ENTITIES" populationObjectName="populationTaskExecutionLinkEntities.flow" column="ROOT_LU_NAME" columnId="tblCol_9eceaf1ab10d419e916fc914451cf8bc" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="task_execution_entities" column="root_entity_id" columnId="root_entity_id" />
+        <To tableType="TableObject" table="TASK_EXECUTION_LINK_ENTITIES" populationObjectName="populationTaskExecutionLinkEntities.flow" column="ROOT_ENTITY_ID" />
+      </Relation>
+	  <Relation>
+        <From tableType="TableObject" table="task_execution_entities" column="version_task_execution_id" columnId="tblCol_e7023d790d1e45fabd736c3412accc4c" />
+        <To tableType="TableObject" table="TASK_EXECUTION_LINK_ENTITIES" populationObjectName="populationTaskExecutionLinkEntities.flow" column="VERSION_TASK_EXECUTION_ID" columnId="tblCol_e178d8e18cdf4215a8366b3436f2d094" />
+      </Relation>
+  </DatabaseRelations>
+  <DiagramGraph>
+    <Graph name="vdb.k2vdb.xml">
+      <Node name="task_exe_error_detailed" pos="635 222" viewType="Table" />
+      <Node name="task_exe_stats_detailed" pos="313 539" viewType="Table" />
+      <Node name="task_exe_stats_summary" pos="313 739" viewType="Table" />
+      <Node name="TASK_EXECUTION" pos="11 773" viewType="Table" />
+      <Node name="task_execution_entities" pos="313 939" viewType="Table" />
+      <Node name="TASK_EXECUTION_LINK_ENTITIES" pos="917 1039" viewType="Table" />
+      <Node name="task_execution_list" pos="313 1139" viewType="Table" />
+      <Node name="task_execution_override_attrs" pos="615 14" viewType="Table" />
+      <Node name="task_ref_exe_stats" pos="635 561" viewType="Table" />
+      <Node name="tasks" pos="313 339" viewType="Table" />
+      <Node name="tdm_generate_task_field_mappings" pos="648 395" viewType="Table" />
+      <Node name="tdm_lu_type_rel_tar_eid" pos="917 589" viewType="Table" />
+      <Node name="tdm_lu_type_relation_eid" pos="917 839" viewType="Table" />
+      <Node name="TDM_SEQ_MAPPING" pos="313 1339" viewType="Table" />
+    </Graph>
+  </DiagramGraph>
+</VirtualDB>

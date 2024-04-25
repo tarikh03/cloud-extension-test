@@ -1,0 +1,9 @@
+<div class="col-lg-12" ng-if="rolesCtrl.pageDisplay == 'rolesTable'">
+    <environment-roles-table-directive content="rolesCtrl.rolesData"></environment-roles-table-directive>
+</div>
+<div class="col-lg-12" ng-if="rolesCtrl.pageDisplay == 'role'">
+    <environment-role-directive content="rolesCtrl.roleData"></environment-role-directive>
+</div>
+<div class="col-lg-12" ng-if="rolesCtrl.pageDisplay == 'newRole'">
+    <environment-new-role-directive content="rolesCtrl.newRoleData"></environment-new-role-directive>
+</div>

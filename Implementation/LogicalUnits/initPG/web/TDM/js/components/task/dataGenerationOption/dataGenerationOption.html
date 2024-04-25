@@ -1,0 +1,35 @@
+<link href="js/components/task/dataGenerationOption/dataGenerationOption.css" rel="stylesheet" /> 
+
+<div class="data-generation-option">
+    <div class="body">
+        <div class="editor-container">
+            <div style="width: 100%;">
+                <div style="width: 100%;position: relative;"
+                        ng-if="dataGenerationOptionCtrl.editorsData"
+                        data="data"
+                        editor="dataGenerationOptionCtrl.editorsData" 
+                        fabric-widget>
+                </div>
+                <div ng-repeat="(pluginName,value) in data.refData.state.values">
+                    <input ng-if="mandatoryFields[pluginName]"
+                        style="position: absolute;top: 23px;width: 0px;height: 0px;z-index: 0;" 
+                        name="data_generation_{{pluginName}}" 
+                        ng-required="true"
+                        ng-model="value.value"/>
+                        
+                    <div class="m-t-xs"
+                        ng-show="(form['data_generation_' + pluginName] || 
+                            form['data_generation_' + pluginName]).$invalid && form.submitted">
+                        <small ng-show="(form['data_generation_' + pluginName] || 
+                            form['data_generation_' + pluginName]).$error.required" class="text-danger">
+                            Generation Value [{{pluginName}}] is Required
+                        </small>
+                        <small ng-show="form['data_generation_' + pluginName].$error.step" class="text-danger">
+                            Please fill in correct type.
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul side-navigation class="nav metismenu" id="side-menu">
+            <li class="nav-header">
+                <div class="profile-element" uib-dropdown>
+                    <img style="padding-left: 0px;padding-right: 20px;" class="stnd dark-version logo" alt="K2View" src="img/cropped-k2view_logo.png">
+                </div>
+                <div class="logo-element" style="color: #51B3C3">
+                    <img alt="K2View" src="img/logo-icon.png">
+                </div>
+            </li>
+            <li ng-show="{{!main.displayDashboard}}" ng-class="{'active': main.state.indexOf('dashboard') >= 0}">
+                <a tooltip-placement="right" tooltip-enable="{{main.showTooltip}}" uib-tooltip="{{ 'HOME' | translate }}" ui-sref="index.dashboard" ui-sref-opts="{reload: true}">
+                    <i class="fa fa-tachometer"></i> <span class="nav-label">{{ 'HOME' | translate }}</span>
+                </a>
+            </li>
+            <li ng-show="{{main.displayDashboard}}" ng-class="{'active': main.state.indexOf('dashboard') >= 0}">
+                <a tooltip-placement="right" tooltip-enable="{{main.showTooltip}}" uib-tooltip="{{ 'DASHBOARD' | translate }}" ui-sref="index.dashboard" ui-sref-opts="{reload: true}">
+                    <i class="fa fa-tachometer"></i> <span class="nav-label">{{ 'DASHBOARD' | translate }}</span>
+                </a>
+            </li>
+            <li ng-class="{'active': main.state.indexOf('dataCenters') >= 0}">
+                <a tooltip-placement="right" tooltip-enable="{{main.showTooltip}}" uib-tooltip="{{ 'DATA_CENTERS' | translate }}" ui-sref="index.dataCenters" ui-sref-opts="{reload: true}">
+                    <i class="fa fa-database"></i> <span class="nav-label">{{ 'DATA_CENTERS' | translate }}</span>
+                </a>
+            </li>
+            <li ng-class="{'active': main.state.indexOf('businessEntities') >= 0}">
+                <a tooltip-placement="right" tooltip-enable="{{main.showTooltip}}" uib-tooltip="{{ 'BUSINESS_ENTITIES' | translate }}" ui-sref="index.businessEntities" ui-sref-opts="{reload: true}">
+                    <i class="fa fa-users"></i> <span class="nav-label">{{ 'BUSINESS_ENTITIES' | translate }}</span>
+                </a>
+            </li>
+            <li ng-class="{'active': main.state.indexOf('products') >= 0}">
+                <a tooltip-placement="right" tooltip-enable="{{main.showTooltip}}" uib-tooltip="{{ 'PRODUCTS' | translate }}" ui-sref="index.products" ui-sref-opts="{reload: true}">
+                    <i class="fa fa-cubes"></i> <span class="nav-label">{{ 'PRODUCTS' | translate }}</span>
+                </a>
+            </li>
+            <!-- <li ng-class="{'active': main.state.indexOf('sourceEnvironments') >= 0}">
+                <a tooltip-placement="right" tooltip-enable="{{main.showTooltip}}" uib-tooltip="{{ 'SOURCE_ENVIRONMENTS' | translate }}" ui-sref="index.sourceEnvironments" ui-sref-opts="{reload: true}">
+                    <i class="fa fa-sitemap"></i> <span class="nav-label">{{ 'SOURCE_ENVIRONMENTS' | translate }}</span>
+                </a>
+            </li> -->
+            <li ng-class="{'active': main.state.indexOf('environments') >= 0}">
+                <a tooltip-placement="right" tooltip-enable="{{main.showTooltip}}" uib-tooltip="{{ 'ENVIRONMENTS' | translate }}" ui-sref="index.environments" ui-sref-opts="{reload: true}">
+                    <i class="fa fa-sitemap"></i> <span class="nav-label">{{ 'ENVIRONMENTS' | translate }}</span>
+                </a>
+            </li>
+            <li ng-class="{'active': main.state.indexOf('tasks') >= 0}">
+                <a tooltip-placement="right" tooltip-enable="{{main.showTooltip}}" uib-tooltip="{{ 'TASKS' | translate }}" ui-sref="index.tasks" ui-sref-opts="{reload: true}">
+                    <i class="fa fa-tasks"></i> <span class="nav-label">{{ 'TASKS' | translate }}</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

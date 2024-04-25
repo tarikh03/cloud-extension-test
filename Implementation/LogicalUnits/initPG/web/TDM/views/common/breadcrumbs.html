@@ -1,0 +1,31 @@
+<div class="page-heading ng-scope">
+    <div>
+        <!-- <h2 ng-if="main.BreadCrumbs.length > 0">{{main.BreadCrumbs[main.BreadCrumbs.length - 1].name | translate:main.BreadCrumbs[main.BreadCrumbs.length - 1].translationData}}</h2> -->
+        <ul class="k2-breadcrumb" style="margin-bottom: 0px;">
+            <li ng-repeat="breadCrumb in main.BreadCrumbs">
+                <a ng-click="main.updateBreadCrumb(breadCrumb)" ng-if="$last == false">{{ breadCrumb.name | translate:breadCrumb.translationData }}</a>
+                    <span style="font-size: 15px;" ng-if="$last == true">{{ breadCrumb.name | translate:breadCrumb.translationData }}</span>
+            </li>
+        </ul>
+        <!-- <div style="margin-top: 15px;margin-bottom: 13px;" ng-if="main.BreadCrumbs.length == 4 && main.BreadCrumbs[3].name == 'TASK_EXECUTION_HISTORY'">
+            <div>
+                <a ng-click="main.refreshPage()">
+                    <img src="icons/refresh.svg"/>
+                </a>
+            </div>
+        </div> -->
+    </div>
+    <div class="col-lg-6" ng-if="main.BreadCrumbs.length == 1">
+        <div ng-if="false" class="pull-right" style="margin-top: 10px;">
+            <h4>Choose Interval</h4>
+            <select ng-init="main.interval = 'Month'" ng-model="main.interval" class="form-control1" ng-change="main.changeInterval()">
+                <option value="Day">Day</option>
+                <option value="Week">Week</option>
+                <option value="Month">Month</option>
+                <option value="3Month">Last 3 Months</option>
+                <option value="Year">Year</option>
+            </select>
+        </div>
+    </div>
+
+</div>

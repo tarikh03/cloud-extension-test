@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <lu xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" keyspace="CUSTOMER" name="CUSTOMER" xsi:noNamespaceSchemaLocation="https://cloud.k2view.com/static/xsd/iid_finder.xsd">
-  <table additionalParent="false" isCrossIID="false" key="CUSTOMER_ID" keyspace="discovery" luid="customer_id" name="customer" stored="true" targetTableName="CUSTOMER"/>
-  <table additionalParent="false" isCrossIID="false" key="ACTIVITY_ID" keyspace="discovery" luid="customer_id" name="activity" stored="true" targetTableName="ACTIVITY">
-     <table additionalParent="false" isCrossIID="false" key="CASE_ID" keyspace="discovery" name="cases" stored="true" parentKey="activity_id=activity_id" targetTableName="CASES"/>
+  <table additionalParent="false" isCrossIID="false" key="customer_id" keyspace="public" luid="customer_id" name="customer" stored="true" targetTableName="CUSTOMER"/>  
+  <table additionalParent="false" isCrossIID="false" key="address_id" keyspace="public" luid="customer_id" name="address" stored="true" targetTableName="ADDRESS"/>
+  <table additionalParent="false" isCrossIID="false" key="contract_id" keyspace="public" luid="customer_id" name="contract" stored="true" targetTableName="CONTRACT">
+    <table additionalParent="false" isCrossIID="false" key="subscriber_id" keyspace="public" name="subscriber" parentKey="subscriber_id=contract_id" stored="true" targetTableName="SUBSCRIBER">        
+            <table additionalParent="false" isCrossIID="false" key="invoice_id" keyspace="public" name="invoice" parentKey="subscriber_id=subscriber_id" stored="true" targetTableName="INVOICE">        
+                <table additionalParent="false" isCrossIID="false" key="payment_id" keyspace="public" name="payment" parentKey="invoice_id=invoice_id" stored="true" targetTableName="PAYMENT"/>
+            </table>        
+    </table>
+  </table>
+  <table additionalParent="false" isCrossIID="false" key="activity_id" keyspace="public" luid="customer_id" name="activity" stored="true" targetTableName="ACTIVITY">
+    <table additionalParent="false" isCrossIID="false" key="case_id" keyspace="public" name="cases" parentKey="activity_id=activity_id" stored="true" targetTableName="CASES">
+      <table additionalParent="false" isCrossIID="false" key="note_id" keyspace="public" name="case_note" parentKey="case_id=case_id" stored="true" targetTableName="CASE_NOTE"/>
+    </table>    
   </table>
 </lu>
