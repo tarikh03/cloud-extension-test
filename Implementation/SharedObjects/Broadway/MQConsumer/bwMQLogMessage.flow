@@ -1,0 +1,508 @@
+{
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Input",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "JobId",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "TopicName",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Op TS",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "RegexOrCode",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ReasonMessage",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Message",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "MessageType",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Report",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "PublishJMX",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwMQPublishJMX"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "objectName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "counter",
+                                        "name": "jmxType",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "metricName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "",
+                                        "name": "from_ts",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "",
+                                        "name": "to_ts",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "",
+                                        "name": "fromTZ",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "",
+                                        "name": "toTZ",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "published",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "UpdateDB",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwMQUpdateDB"
+                                    },
+                                    {
+                                        "name": "messageType",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "message",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "topicName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "ts",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "reasonMessage",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "regexOrCode",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "updated",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "PublishJMX",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "UpdateDB",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TopicName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "PublishJMX",
+                "name": "objectName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TopicName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "UpdateDB",
+                "name": "topicName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Op TS",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "UpdateDB",
+                "name": "ts"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "RegexOrCode",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "UpdateDB",
+                "name": "regexOrCode"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ReasonMessage",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "UpdateDB",
+                "name": "reasonMessage"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Message",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "UpdateDB",
+                "name": "message"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "MessageType",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "UpdateDB",
+                "name": "messageType"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "MessageType",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "PublishJMX",
+                "name": "metricName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "jobId"
+            },
+            "rightPort": {
+                "actor": "JobId",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "topicName"
+            },
+            "rightPort": {
+                "actor": "TopicName",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "op_ts"
+            },
+            "rightPort": {
+                "actor": "Op TS",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "regexOrCode"
+            },
+            "rightPort": {
+                "actor": "RegexOrCode",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "reasonMessage"
+            },
+            "rightPort": {
+                "actor": "ReasonMessage",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "message"
+            },
+            "rightPort": {
+                "actor": "Message",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "messageType"
+            },
+            "rightPort": {
+                "actor": "MessageType",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "PublishJMX",
+                "name": "published"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "publishedJMX"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "UpdateDB",
+                "name": "updated"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "updatedDB"
+            }
+        }
+    ]
+}

@@ -1,0 +1,617 @@
+{
+    "tags": [
+        "MQConsumer"
+    ],
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Input",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "MessageIn",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "table": {
+                                                    "type": "string"
+                                                },
+                                                "op_type": {
+                                                    "type": "string"
+                                                },
+                                                "op_ts": {
+                                                    "type": "string"
+                                                },
+                                                "current_ts": {
+                                                    "type": "string"
+                                                },
+                                                "pos": {
+                                                    "type": "string"
+                                                },
+                                                "primary_keys": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "tokens": {
+                                                    "type": "object",
+                                                    "properties": {}
+                                                },
+                                                "after": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "A": {
+                                                            "type": "string"
+                                                        },
+                                                        "B": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Evaluate Message",
+                    "dependsOnList": [
+                        "Input"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "MessageNotNull",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "NotNull",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Message Null",
+                    "dependsOnList": [
+                        "Input"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": [
+                        {
+                            "name": "MessageNullError",
+                            "actorType": {
+                                "parentType": "Fail",
+                                "inputs": [
+                                    {
+                                        "name": "message",
+                                        "const": "Message is Null"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Pre-Processing",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ToTimestamp",
+                            "actorType": {
+                                "parentType": "ToDate",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Processing",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Processing 2",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ResultProcessed",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "PROCESSED"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ResultError",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "ERROR"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ResultFiltered",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "FILTERED"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ResultInfo",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "Error or filtered message"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Return Result",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ReturnMessage",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "table": {
+                                                    "type": "string"
+                                                },
+                                                "op_type": {
+                                                    "type": "string"
+                                                },
+                                                "op_ts": {
+                                                    "type": "string"
+                                                },
+                                                "current_ts": {
+                                                    "type": "string"
+                                                },
+                                                "pos": {
+                                                    "type": "string"
+                                                },
+                                                "primary_keys": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "tokens": {
+                                                    "type": "object",
+                                                    "properties": {}
+                                                },
+                                                "after": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "A": {
+                                                            "type": "string"
+                                                        },
+                                                        "B": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ReturnObjectName",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ReturnDMLType",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ReturnOpTS",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ReturnResultType",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ReturnResultInfo",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ReturnLogAdditionalInfo",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "MessageIn",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "MessageNotNull",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "MessageIn",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ReturnMessage",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "MessageIn",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ReturnDMLType",
+                "name": "value"
+            },
+            "path": [
+                "op_type"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "MessageIn",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ReturnObjectName",
+                "name": "value"
+            },
+            "path": [
+                "table"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "MessageIn",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ToTimestamp",
+                "name": "value"
+            },
+            "path": [
+                "op_ts"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "ToTimestamp",
+                "name": "timestamp"
+            },
+            "rightPort": {
+                "actor": "ReturnOpTS",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ResultProcessed",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ReturnResultType",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ResultInfo",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ReturnResultInfo",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "message"
+            },
+            "rightPort": {
+                "actor": "MessageIn",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ReturnMessage",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "message"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ReturnObjectName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "objectName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ReturnDMLType",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "dmlType"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ReturnOpTS",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "op_ts"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ReturnResultType",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "resultType"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ReturnResultInfo",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "resultInfo"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ReturnLogAdditionalInfo",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "logAdditionalInfo"
+            }
+        }
+    ]
+}

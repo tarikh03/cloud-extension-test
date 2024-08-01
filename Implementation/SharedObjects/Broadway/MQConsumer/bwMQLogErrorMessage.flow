@@ -1,0 +1,1267 @@
+{
+    "tags": [
+        "MQConsumer"
+    ],
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Input",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "JobId",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "TopicName",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Message",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "table": {
+                                                    "type": "string"
+                                                },
+                                                "op_type": {
+                                                    "type": "string"
+                                                },
+                                                "op_ts": {
+                                                    "type": "string"
+                                                },
+                                                "current_ts": {
+                                                    "type": "string"
+                                                },
+                                                "pos": {
+                                                    "type": "string"
+                                                },
+                                                "primary_keys": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "tokens": {
+                                                    "type": "object",
+                                                    "properties": {}
+                                                },
+                                                "after": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "A": {
+                                                            "type": "string"
+                                                        },
+                                                        "B": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "QueueTS",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "RetryAttempt",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Error",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "actor": {
+                                                    "type": "string"
+                                                },
+                                                "exception": {},
+                                                "stage": {
+                                                    "type": "string"
+                                                },
+                                                "inputParams": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "flowName": {
+                                                            "type": "string"
+                                                        },
+                                                        "innerFlowClose": {
+                                                            "type": "boolean"
+                                                        }
+                                                    }
+                                                },
+                                                "className": {
+                                                    "type": "string"
+                                                },
+                                                "rootClassName": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                },
+                                                "flow": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "ReadConfig&Globals",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "IsKnownError",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwMQIsKnownError"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "topicName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "error",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "found",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    {
+                                        "name": "regex",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ERROR_MSGS_TRIES",
+                            "actorType": {
+                                "parentType": "MQFabricSetRead",
+                                "inputs": [
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "globalName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "ERROR_MSGS_TRIES"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Read mtMQTopics",
+                            "actorType": {
+                                "parentType": "MTableLookup",
+                                "inputs": [
+                                    {
+                                        "name": "mtable",
+                                        "const": "mtMQTopics"
+                                    },
+                                    {
+                                        "name": "JobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "TopicName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "JobId": {
+                                                        "type": "string"
+                                                    },
+                                                    "TopicName": {
+                                                        "type": "string"
+                                                    },
+                                                    "ERRORED_MSGS_THRESHOLD": {
+                                                        "type": "string"
+                                                    },
+                                                    "CONSUMERS_COUNT": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "CheckRetryAttempt",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "LastRetry",
+                            "actorType": {
+                                "parentType": "LessThanEquals",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Continue to Skip & Report",
+                    "dependsOnList": [
+                        "CheckRetryAttempt"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "LastRetryOrKnownErr",
+                            "remark": "Exit here to retry",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "Or",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "IncrementErrorCounter",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwMQIncreaseErroredCount"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "topicName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "newValue",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "JMX & DB Update",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwMQLogMessage"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "op_ts",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "message",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "value": {},
+                                                "timestamp": {
+                                                    "type": "integer"
+                                                },
+                                                "key": {},
+                                                "topic": {
+                                                    "type": "string"
+                                                },
+                                                "partition": {
+                                                    "type": "integer"
+                                                },
+                                                "offset": {
+                                                    "type": "integer"
+                                                }
+                                            }
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "ERRORED",
+                                        "name": "messageType",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "reasonMessage",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "topicName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "regexOrCode",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "publishedJMX",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    {
+                                        "name": "updatedDB",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "KeepTrying",
+                    "dependsOnList": [
+                        "CheckRetryAttempt"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": [
+                        {
+                            "name": "RetryNum",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Continue  for Unknown Error",
+                    "dependsOnList": [
+                        "Continue to Skip & Report"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "IfUnknownError",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "Not",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "ErrorThresholdValue",
+                            "actorType": {
+                                "parentType": "ToNumber",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "SkipErrFlagValue",
+                            "isDisabled": true,
+                            "actorType": {
+                                "parentType": "FabricSetRead",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "SKIP_ERRORED_MSG",
+                            "actorType": {
+                                "parentType": "MQFabricSetRead",
+                                "inputs": [
+                                    {
+                                        "name": "globalName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "SKIP_ERRORED_MSG"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Stage 1",
+                    "dependsOnList": [
+                        "KeepTrying"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Check Threshold",
+                    "dependsOnList": [
+                        "Continue  for Unknown Error"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ThresholdNot0",
+                            "remark": "If 0 - do not skip\n",
+                            "actorType": {
+                                "parentType": "NotEquals",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "0"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Threshold>Current",
+                            "actorType": {
+                                "parentType": "GreaterThan",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Stage 2",
+                    "dependsOnList": [
+                        "Stage 1"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Continue if Threshold is Ok",
+                    "dependsOnList": [
+                        "Check Threshold"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "DoNotSkipOnThreshold?",
+                            "remark": "Exit here if Threshold is exceeded - no reason to check for specific topic as we should stop consumer irrespectively \n ",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "And",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "SplitToTopics",
+                            "actorType": {
+                                "parentType": "Split",
+                                "inputs": [
+                                    {
+                                        "name": "delimiter",
+                                        "const": "|"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Stage 3",
+                    "dependsOnList": [
+                        "Stage 2"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Check Topic To Skip",
+                    "dependsOnList": [
+                        "Continue if Threshold is Ok"
+                    ],
+                    "isLast": 1,
+                    "actors": [
+                        {
+                            "name": "SkipForAllTopics",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "EqualsIgnoreCase",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "true"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Loop for Topic Name",
+                    "dependsOnList": [
+                        "Continue if Threshold is Ok"
+                    ],
+                    "isLast": 1,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": [
+                        {
+                            "name": "CheckTopicNames",
+                            "actorType": {
+                                "parentType": "Equals",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "ExitLoopWhenFound",
+                            "actorType": {
+                                "parentType": "LoopStop",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Stage 4",
+                    "dependsOnList": [
+                        "Stage 3"
+                    ],
+                    "isLast": 1,
+                    "isTransactional": false,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Return Skip Result",
+                    "dependsOnList": [
+                        "Check Topic To Skip",
+                        "Loop for Topic Name"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "SkipResult",
+                            "remark": "Return true if topic listed explicitly under mtMQSkipErrorCodes or if error code defined for all topics, otherwise return false (not to skip error)",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Stage 6",
+                    "dependsOnList": [
+                        "Stage 4"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "IncrementErrorCounter",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Read mtMQTopics",
+                "name": "JobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX & DB Update",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "IsKnownError",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ERROR_MSGS_TRIES",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "SKIP_ERRORED_MSG",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TopicName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Read mtMQTopics",
+                "name": "TopicName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TopicName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "IncrementErrorCounter",
+                "name": "topicName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TopicName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "CheckTopicNames",
+                "name": "b"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TopicName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "IsKnownError",
+                "name": "topicName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TopicName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX & DB Update",
+                "name": "topicName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Message",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX & DB Update",
+                "name": "message"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "QueueTS",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX & DB Update",
+                "name": "op_ts"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "RetryAttempt",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "LastRetry",
+                "name": "b"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "RetryAttempt",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "RetryNum",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Error",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "IsKnownError",
+                "name": "error"
+            },
+            "path": [
+                "message"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Error",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX & DB Update",
+                "name": "reasonMessage"
+            },
+            "path": [
+                "message"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "IsKnownError",
+                "name": "found"
+            },
+            "rightPort": {
+                "actor": "LastRetryOrKnownErr",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "IsKnownError",
+                "name": "found"
+            },
+            "rightPort": {
+                "actor": "IfUnknownError",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "IsKnownError",
+                "name": "regex"
+            },
+            "rightPort": {
+                "actor": "JMX & DB Update",
+                "name": "regexOrCode"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ERROR_MSGS_TRIES",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "LastRetry",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQTopics",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "ErrorThresholdValue",
+                "name": "value"
+            },
+            "iterate": "First",
+            "path": [
+                "ERRORED_MSGS_THRESHOLD"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "LastRetry",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "LastRetryOrKnownErr",
+                "name": "b"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "IncrementErrorCounter",
+                "name": "newValue"
+            },
+            "rightPort": {
+                "actor": "Threshold>Current",
+                "name": "b"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ErrorThresholdValue",
+                "name": "number"
+            },
+            "rightPort": {
+                "actor": "Threshold>Current",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ErrorThresholdValue",
+                "name": "number"
+            },
+            "rightPort": {
+                "actor": "ThresholdNot0",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SkipErrFlagValue",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "SplitToTopics",
+                "name": "string"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SkipErrFlagValue",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "SkipForAllTopics",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SKIP_ERRORED_MSG",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "SkipForAllTopics",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SKIP_ERRORED_MSG",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "SplitToTopics",
+                "name": "string"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ThresholdNot0",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "DoNotSkipOnThreshold?",
+                "name": "b"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Threshold>Current",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "DoNotSkipOnThreshold?",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SplitToTopics",
+                "name": "strings"
+            },
+            "rightPort": {
+                "actor": "CheckTopicNames",
+                "name": "a"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "SkipForAllTopics",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "SkipResult",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "CheckTopicNames",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "SkipResult",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "jobId"
+            },
+            "rightPort": {
+                "actor": "JobId",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "topicName"
+            },
+            "rightPort": {
+                "actor": "TopicName",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "message"
+            },
+            "rightPort": {
+                "actor": "Message",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "queue_ts"
+            },
+            "rightPort": {
+                "actor": "QueueTS",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "retriesCount"
+            },
+            "rightPort": {
+                "actor": "RetryAttempt",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "error"
+            },
+            "rightPort": {
+                "actor": "Error",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "LastRetryOrKnownErr",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "result"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "RetryNum",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "result"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "DoNotSkipOnThreshold?",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "result"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SkipResult",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "result"
+            }
+        }
+    ]
+}

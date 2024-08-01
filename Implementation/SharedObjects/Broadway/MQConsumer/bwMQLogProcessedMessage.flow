@@ -1,0 +1,995 @@
+{
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Input",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "JobId",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "TopicName",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ObjectName",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "DMLType",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Message",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "table": {
+                                                    "type": "string"
+                                                },
+                                                "op_type": {
+                                                    "type": "string"
+                                                },
+                                                "op_ts": {
+                                                    "type": "string"
+                                                },
+                                                "current_ts": {
+                                                    "type": "string"
+                                                },
+                                                "pos": {
+                                                    "type": "string"
+                                                },
+                                                "primary_keys": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "tokens": {
+                                                    "type": "object",
+                                                    "properties": {}
+                                                },
+                                                "after": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "A": {
+                                                            "type": "string"
+                                                        },
+                                                        "B": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "OpTS",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ReadTS",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "EndTS",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "QueueTS",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "TZ Globals",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "MQ_TIMEZONE",
+                            "actorType": {
+                                "parentType": "MQFabricSetRead",
+                                "inputs": [
+                                    {
+                                        "name": "globalName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "MQ_TIMEZONE"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "SOURCE_TIMEZONE",
+                            "actorType": {
+                                "parentType": "MQFabricSetRead",
+                                "inputs": [
+                                    {
+                                        "name": "globalName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "SOURCE_TIMEZONE"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Report JMX",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "remark": "Enhance logic to check global only once for all 5 actors - based on result from first publish one",
+                    "actors": [
+                        {
+                            "name": "JMX Processed",
+                            "condition": "published",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwMQPublishJMX"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "objectName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "processed",
+                                        "name": "metricName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "counter",
+                                        "name": "jmxType",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "",
+                                        "name": "from_ts",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "",
+                                        "name": "to_ts",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "",
+                                        "name": "fromTZ",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "",
+                                        "name": "toTZ",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "published",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "JMX DML Type",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwMQPublishJMX"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "objectName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "counter",
+                                        "name": "jmxType",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "",
+                                        "name": "from_ts",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "",
+                                        "name": "to_ts",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "metricName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "",
+                                        "name": "fromTZ",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "",
+                                        "name": "toTZ",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "published",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "JMX Source Delay",
+                            "remark": "Assuming ReadTS is always UTC in parent / main consumer flow",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwMQPublishJMX"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "objectName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "duration",
+                                        "name": "jmxType",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "from_ts",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "to_ts",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "source_delay",
+                                        "name": "metricName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "fromTZ",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "UTC",
+                                        "name": "toTZ",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "published",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "JMX Read Delay",
+                            "remark": "Assuming ReadTS is always UTC in parent / main consumer flow",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwMQPublishJMX"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "objectName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "duration",
+                                        "name": "jmxType",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "from_ts",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "to_ts",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "read_delay",
+                                        "name": "metricName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "fromTZ",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "UTC",
+                                        "name": "toTZ",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "published",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "JMX Process Duration",
+                            "remark": "Assuming both EndTS and ReadTS provided in UTC from 'parent' flow",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwMQPublishJMX"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "objectName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "duration",
+                                        "name": "jmxType",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "from_ts",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "to_ts",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "process_duration",
+                                        "name": "metricName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "UTC",
+                                        "name": "fromTZ",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "UTC",
+                                        "name": "toTZ",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "published",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX Processed",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX DML Type",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX Source Delay",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX Read Delay",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX Process Duration",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "MQ_TIMEZONE",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "SOURCE_TIMEZONE",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ObjectName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX Processed",
+                "name": "objectName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ObjectName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX DML Type",
+                "name": "objectName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ObjectName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX Source Delay",
+                "name": "objectName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ObjectName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX Read Delay",
+                "name": "objectName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ObjectName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX Process Duration",
+                "name": "objectName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "DMLType",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX DML Type",
+                "name": "metricName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "OpTS",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX Source Delay",
+                "name": "from_ts"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ReadTS",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX Source Delay",
+                "name": "to_ts"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ReadTS",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX Read Delay",
+                "name": "to_ts"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ReadTS",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX Process Duration",
+                "name": "from_ts"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "EndTS",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX Process Duration",
+                "name": "to_ts"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "QueueTS",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX Read Delay",
+                "name": "from_ts"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "MQ_TIMEZONE",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "JMX Read Delay",
+                "name": "fromTZ"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "SOURCE_TIMEZONE",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "JMX Source Delay",
+                "name": "fromTZ"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "jobId"
+            },
+            "rightPort": {
+                "actor": "JobId",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "topicName"
+            },
+            "rightPort": {
+                "actor": "TopicName",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "objectName"
+            },
+            "rightPort": {
+                "actor": "ObjectName",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "dmlType"
+            },
+            "rightPort": {
+                "actor": "DMLType",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "message"
+            },
+            "rightPort": {
+                "actor": "Message",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "op_ts"
+            },
+            "rightPort": {
+                "actor": "OpTS",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "read_ts"
+            },
+            "rightPort": {
+                "actor": "ReadTS",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "end_ts"
+            },
+            "rightPort": {
+                "actor": "EndTS",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "queue_ts"
+            },
+            "rightPort": {
+                "actor": "QueueTS",
+                "name": "value"
+            }
+        }
+    ]
+}

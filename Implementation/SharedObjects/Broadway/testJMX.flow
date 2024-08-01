@@ -1,0 +1,43 @@
+{
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Stage 1",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 2",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "JMXRead1",
+                            "actorType": {
+                                "parentType": "JMXRead",
+                                "inputs": [
+                                    {
+                                        "name": "stats",
+                                        "const": "CONSUMER_GROUP"
+                                    },
+                                    {
+                                        "name": "key",
+                                        "const": "myFirstGroup_LAG"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": []
+}

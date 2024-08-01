@@ -1,0 +1,748 @@
+{
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Input",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "JobId",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ObjectName",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "MetricName",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Type",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "FromTS",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "number"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "FromTZ",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ToTS",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "number"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "toTZ",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Globals",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "PUBLISH_JMX",
+                            "actorType": {
+                                "parentType": "MQFabricSetRead",
+                                "inputs": [
+                                    {
+                                        "name": "globalName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "PUBLISH_JMX"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Unpublished",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "boolean"
+                                        },
+                                        "const": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Check Publish Flag",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ToPublish",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "Equals",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "TRUE"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Build Counter Key",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "${jobId}_${objectName}_${metricName}"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "objectName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "metricName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Metric Type",
+                    "dependsOnList": [
+                        "Check Publish Flag"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "IsDuration?",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "Equals",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "duration"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "FormatTo",
+                            "actorType": {
+                                "parentType": "DateFormat",
+                                "inputs": [
+                                    {
+                                        "name": "tz",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "FormatFrom",
+                            "actorType": {
+                                "parentType": "DateFormat",
+                                "inputs": [
+                                    {
+                                        "name": "tz",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "FromTS Negative",
+                            "actorType": {
+                                "parentType": "MathMultiply",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "const": -1
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Report Counter",
+                    "dependsOnList": [
+                        "Check Publish Flag"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": [
+                        {
+                            "name": "JMX Counter",
+                            "actorType": {
+                                "parentType": "JMXWrite",
+                                "inputs": [
+                                    {
+                                        "name": "key",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Calc",
+                    "dependsOnList": [
+                        "Metric Type"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Duration",
+                            "actorType": {
+                                "parentType": "DateDuration",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Stage 6",
+                    "dependsOnList": [
+                        "Report Counter"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Report Duration",
+                    "dependsOnList": [
+                        "Calc"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "JMX Duration",
+                            "actorType": {
+                                "parentType": "JMXWrite",
+                                "inputs": [
+                                    {
+                                        "name": "key",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Stage 7",
+                    "dependsOnList": [
+                        "Stage 6"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Result",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Published",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "boolean"
+                                        },
+                                        "const": true
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Build Counter Key",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "PUBLISH_JMX",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ObjectName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Build Counter Key",
+                "name": "objectName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "MetricName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Build Counter Key",
+                "name": "metricName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Type",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "IsDuration?",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "FromTS",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "FormatTo",
+                "name": "date"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "FromTS",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "FromTS Negative",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "FromTZ",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "FormatFrom",
+                "name": "tz"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ToTS",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "FormatFrom",
+                "name": "date"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "toTZ",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "FormatTo",
+                "name": "tz"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "PUBLISH_JMX",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "ToPublish",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Build Counter Key",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "JMX Counter",
+                "name": "key"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Build Counter Key",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "JMX Duration",
+                "name": "key"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "FormatTo",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Duration",
+                "name": "from"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "FormatFrom",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Duration",
+                "name": "to"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Duration",
+                "name": "millis"
+            },
+            "rightPort": {
+                "actor": "JMX Duration",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "jobId"
+            },
+            "rightPort": {
+                "actor": "JobId",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "objectName"
+            },
+            "rightPort": {
+                "actor": "ObjectName",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "metricName"
+            },
+            "rightPort": {
+                "actor": "MetricName",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "jmxType"
+            },
+            "rightPort": {
+                "actor": "Type",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "from_ts"
+            },
+            "rightPort": {
+                "actor": "FromTS",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "fromTZ"
+            },
+            "rightPort": {
+                "actor": "FromTZ",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "to_ts"
+            },
+            "rightPort": {
+                "actor": "ToTS",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "toTZ"
+            },
+            "rightPort": {
+                "actor": "toTZ",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Unpublished",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "published"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Published",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "published"
+            }
+        }
+    ]
+}

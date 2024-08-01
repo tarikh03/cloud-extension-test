@@ -1,0 +1,557 @@
+{
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Input",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "JobId",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "TopicName",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "DMLType",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Message",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "table": {
+                                                    "type": "string"
+                                                },
+                                                "op_type": {
+                                                    "type": "string"
+                                                },
+                                                "op_ts": {
+                                                    "type": "string"
+                                                },
+                                                "current_ts": {
+                                                    "type": "string"
+                                                },
+                                                "pos": {
+                                                    "type": "string"
+                                                },
+                                                "primary_keys": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "tokens": {
+                                                    "type": "object",
+                                                    "properties": {}
+                                                },
+                                                "after": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "A": {
+                                                            "type": "string"
+                                                        },
+                                                        "B": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "OpTS",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "FilterCode",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ReasonMessage",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Check MTable",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Read mtMQSkipFilterCodes",
+                            "actorType": {
+                                "parentType": "MTableLookup",
+                                "inputs": [
+                                    {
+                                        "name": "mtable",
+                                        "const": "mtMQSkipFilterCodes"
+                                    },
+                                    {
+                                        "name": "JobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "FilterCode",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "JobId": {
+                                                        "type": "string"
+                                                    },
+                                                    "FilterCode": {
+                                                        "type": "string"
+                                                    },
+                                                    "FilterDescription": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "DB Message",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "CreateMessage",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "${filterDescription} \\n\\l ${additionalInfo}"
+                                    },
+                                    {
+                                        "name": "filterDescription",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "additionalInfo",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Report FILTERED",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "JMX & DB Stats FILTERED",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwMQLogMessage"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "op_ts",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "message",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "FILTERED",
+                                        "name": "messageType",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "topicName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "reasonMessage",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "regexOrCode",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "publishedJMX",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    {
+                                        "name": "updatedDB",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX & DB Stats FILTERED",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Read mtMQSkipFilterCodes",
+                "name": "JobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TopicName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX & DB Stats FILTERED",
+                "name": "topicName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Message",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX & DB Stats FILTERED",
+                "name": "message"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "OpTS",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "JMX & DB Stats FILTERED",
+                "name": "op_ts"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "FilterCode",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Read mtMQSkipFilterCodes",
+                "name": "FilterCode"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ReasonMessage",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "CreateMessage",
+                "name": "additionalInfo"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQSkipFilterCodes",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "JMX & DB Stats FILTERED",
+                "name": "regexOrCode"
+            },
+            "iterate": "First",
+            "path": [
+                "FilterCode"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQSkipFilterCodes",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "CreateMessage",
+                "name": "filterDescription"
+            },
+            "iterate": "First",
+            "path": [
+                "FilterDescription"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "CreateMessage",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "JMX & DB Stats FILTERED",
+                "name": "reasonMessage"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "jobId"
+            },
+            "rightPort": {
+                "actor": "JobId",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "topicName"
+            },
+            "rightPort": {
+                "actor": "TopicName",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "dmlType"
+            },
+            "rightPort": {
+                "actor": "DMLType",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "message"
+            },
+            "rightPort": {
+                "actor": "Message",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "op_ts"
+            },
+            "rightPort": {
+                "actor": "OpTS",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "filterCode"
+            },
+            "rightPort": {
+                "actor": "FilterCode",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "reasonMessage"
+            },
+            "rightPort": {
+                "actor": "ReasonMessage",
+                "name": "value"
+            }
+        }
+    ]
+}

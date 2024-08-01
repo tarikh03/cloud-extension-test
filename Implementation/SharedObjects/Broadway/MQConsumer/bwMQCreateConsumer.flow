@@ -1,0 +1,846 @@
+{
+    "tags": [
+        "MQConsumer"
+    ],
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Create LU BW Directory",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Create MQConsumer Dir",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwMQCreateConsumerFolder"
+                                    },
+                                    {
+                                        "name": "LU_NAME",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Prepare",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Get Project Directory",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "GetProjectFolder"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "PROJECT_FOLDER",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "TemplateInput",
+                            "actorType": {
+                                "parentType": "LuFunction",
+                                "inputs": [
+                                    {
+                                        "name": "functionName",
+                                        "const": "buildTemplateData"
+                                    },
+                                    {
+                                        "name": "luName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "consumerJobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "res",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "CONSUMER_JOB_ID": {
+                                                    "type": "string"
+                                                },
+                                                "LU_NAME": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "LU_NAME",
+                            "isDisabled": true,
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "CONSUMER_JOB_ID",
+                            "isDisabled": true,
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Prepare 2",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "BW LU Folder",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "${PROJECT_DIRECTORY}/LogicalUnits/${LU_NAME}/Broadway/MQConsumer"
+                                    },
+                                    {
+                                        "name": "PROJECT_DIRECTORY",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "LU_NAME",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Process Message Flow",
+                            "isDisabled": true,
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "bwMQPHProcessMessage_${JobID}.flow"
+                                    },
+                                    {
+                                        "name": "JobID",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Consumer Flow",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "bwMQConsumer_${JobID}.flow"
+                                    },
+                                    {
+                                        "name": "JobID",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Load Process Message Template",
+                            "minHeight": 136,
+                            "isDisabled": true,
+                            "actorType": {
+                                "parentType": "FileRead",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "path",
+                                        "const": "SharedObjects/Templates/bwMQPHProcessMessage.flow.template"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Load Consumer Template",
+                            "minHeight": 136,
+                            "actorType": {
+                                "parentType": "FileRead",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "path",
+                                        "const": "SharedObjects/Templates/bwMQConsumer.flow.template"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Apply Templates",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Processor Template",
+                            "isDisabled": true,
+                            "actorType": {
+                                "parentType": "LuFunction",
+                                "inputs": [
+                                    {
+                                        "name": "functionName",
+                                        "const": "transform"
+                                    },
+                                    {
+                                        "name": "data",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "templateFile",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "blob"
+                                            }
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Consumer Template",
+                            "actorType": {
+                                "parentType": "LuFunction",
+                                "inputs": [
+                                    {
+                                        "name": "functionName",
+                                        "const": "transform"
+                                    },
+                                    {
+                                        "name": "data",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "templateFile",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "blob"
+                                            }
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Do not override",
+                    "dependsOnList": [
+                        "Apply Templates"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "OVERRIDE_EXISTING_FLOWS",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "Equals",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "boolean"
+                                        },
+                                        "const": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Check If Process Message Exists",
+                            "isDisabled": true,
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "CheckIfFlowExists"
+                                    },
+                                    {
+                                        "name": "LU_NAME",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "MQConsumer",
+                                        "name": "FOLDER_NAME",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "FLOW_FILE_NAME",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "SKIP_FLOW",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Check If Consumer Exists",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "CheckIfFlowExists"
+                                    },
+                                    {
+                                        "name": "LU_NAME",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "MQConsumer",
+                                        "name": "FOLDER_NAME",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "FLOW_FILE_NAME",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "SKIP_FLOW",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Else override --->",
+                    "dependsOnList": [
+                        "Apply Templates"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Exit If Exists",
+                    "dependsOnList": [
+                        "Do not override"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Check If Exists",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "JavaScript",
+                                "inputs": [
+                                    {
+                                        "name": "script",
+                                        "const": "!(processMessage || consumer)"
+                                    },
+                                    {
+                                        "name": "processMessage",
+                                        "schema": {
+                                            "type": "boolean"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "consumer",
+                                        "schema": {
+                                            "type": "boolean"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "--- Else cont--->",
+                    "dependsOnList": [
+                        "Else override --->"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Write Files",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Create Processor Flow",
+                            "actorType": {
+                                "parentType": "FileWrite",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Create Consumer Flow",
+                            "actorType": {
+                                "parentType": "FileWrite",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "Get Project Directory",
+                "name": "PROJECT_FOLDER"
+            },
+            "rightPort": {
+                "actor": "Load Consumer Template",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Get Project Directory",
+                "name": "PROJECT_FOLDER"
+            },
+            "rightPort": {
+                "actor": "BW LU Folder",
+                "name": "PROJECT_DIRECTORY"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Get Project Directory",
+                "name": "PROJECT_FOLDER"
+            },
+            "rightPort": {
+                "actor": "Load Process Message Template",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TemplateInput",
+                "name": "res"
+            },
+            "rightPort": {
+                "actor": "Consumer Template",
+                "name": "data"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "BW LU Folder",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Create Consumer Flow",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "BW LU Folder",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Create Processor Flow",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Process Message Flow",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Create Processor Flow",
+                "name": "path"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Process Message Flow",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Check If Process Message Exists",
+                "name": "FLOW_FILE_NAME"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Consumer Flow",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Create Consumer Flow",
+                "name": "path"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Consumer Flow",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Check If Consumer Exists",
+                "name": "FLOW_FILE_NAME"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Load Process Message Template",
+                "name": "stream"
+            },
+            "rightPort": {
+                "actor": "Processor Template",
+                "name": "templateFile"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Load Consumer Template",
+                "name": "stream"
+            },
+            "rightPort": {
+                "actor": "Consumer Template",
+                "name": "templateFile"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Processor Template",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Create Processor Flow",
+                "name": "stream"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Consumer Template",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Create Consumer Flow",
+                "name": "stream"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Check If Process Message Exists",
+                "name": "SKIP_FLOW"
+            },
+            "rightPort": {
+                "actor": "Check If Exists",
+                "name": "processMessage"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Check If Consumer Exists",
+                "name": "SKIP_FLOW"
+            },
+            "rightPort": {
+                "actor": "Check If Exists",
+                "name": "consumer"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "LU_NAME"
+            },
+            "rightPort": {
+                "actor": "Create MQConsumer Dir",
+                "name": "LU_NAME"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "LU_NAME"
+            },
+            "rightPort": {
+                "actor": "TemplateInput",
+                "name": "luName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "CONSUMER_JOB_ID"
+            },
+            "rightPort": {
+                "actor": "TemplateInput",
+                "name": "consumerJobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "LU_NAME"
+            },
+            "rightPort": {
+                "actor": "LU_NAME",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "CONSUMER_JOB_ID"
+            },
+            "rightPort": {
+                "actor": "CONSUMER_JOB_ID",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "LU_NAME"
+            },
+            "rightPort": {
+                "actor": "BW LU Folder",
+                "name": "LU_NAME"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "CONSUMER_JOB_ID"
+            },
+            "rightPort": {
+                "actor": "Consumer Flow",
+                "name": "JobID"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "OVERRIDE_EXISTING_FLOWS"
+            },
+            "rightPort": {
+                "actor": "OVERRIDE_EXISTING_FLOWS",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "LU_NAME"
+            },
+            "rightPort": {
+                "actor": "Check If Process Message Exists",
+                "name": "LU_NAME"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "LU_NAME"
+            },
+            "rightPort": {
+                "actor": "Check If Consumer Exists",
+                "name": "LU_NAME"
+            }
+        }
+    ]
+}

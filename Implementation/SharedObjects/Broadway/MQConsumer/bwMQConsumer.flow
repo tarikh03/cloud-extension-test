@@ -1,0 +1,1890 @@
+{
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Constants",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "JobId",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "TopicName",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "PartitionNumber",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Build Keys",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "MQInterfaceKey",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "${jobId}_MQ_INTERFACE"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "ConsumerGroupKey",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "${jobId}_CONSUMERS_GROUP_ID"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "ErrorRetriesKey",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "${jobId}_ERROR_MSGS_TRIES"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "FunctionName",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "bwMQConsumer_${topic}_${partition}"
+                                    },
+                                    {
+                                        "name": "topic",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "partition",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Read Globals",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "ReadMQInterface",
+                            "actorType": {
+                                "parentType": "FabricSetRead",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "ReadGroupId",
+                            "actorType": {
+                                "parentType": "FabricSetRead",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "ReadRtriesValue",
+                            "actorType": {
+                                "parentType": "FabricSetRead",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Read mtMQTopics",
+                            "actorType": {
+                                "parentType": "MTableLookup",
+                                "inputs": [
+                                    {
+                                        "name": "mtable",
+                                        "const": "mtMQTopics"
+                                    },
+                                    {
+                                        "name": "JobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "TopicName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "JobId": {
+                                                        "type": "string"
+                                                    },
+                                                    "TopicName": {
+                                                        "type": "string"
+                                                    },
+                                                    "ERRORED_MSGS_THRESHOLD": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "GetErrorCounter",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwMQGetCounter"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "const": "error",
+                                        "name": "counterType",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "topicName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "currentValue",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Read Message",
+                    "dependsOnList": [
+                        "Read Globals"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "CheckThreshold",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "LessThanEquals",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "MQ Subscribe",
+                            "actorType": {
+                                "parentType": "SubscribeWithMetadata",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "topic",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "group_id",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "partitions",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "message",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "value": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "table": {
+                                                                    "type": "string"
+                                                                },
+                                                                "op_type": {
+                                                                    "type": "string"
+                                                                },
+                                                                "op_ts": {
+                                                                    "type": "string"
+                                                                },
+                                                                "current_ts": {
+                                                                    "type": "string"
+                                                                },
+                                                                "pos": {
+                                                                    "type": "string"
+                                                                },
+                                                                "primary_keys": {
+                                                                    "type": "array",
+                                                                    "items": {
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "tokens": {
+                                                                    "type": "object",
+                                                                    "properties": {}
+                                                                },
+                                                                "after": {
+                                                                    "type": "object",
+                                                                    "properties": {
+                                                                        "A": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "B": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                        "timestamp": {
+                                                            "type": "integer"
+                                                        },
+                                                        "key": {},
+                                                        "topic": {
+                                                            "type": "string"
+                                                        },
+                                                        "partition": {
+                                                            "type": "integer"
+                                                        },
+                                                        "offset": {
+                                                            "type": "integer"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "RetriesValue",
+                            "actorType": {
+                                "parentType": "MathAdd",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "const": 1
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Exit Consumer",
+                    "dependsOnList": [
+                        "Read Globals"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": [
+                        {
+                            "name": "LogError",
+                            "actorType": {
+                                "parentType": "MQLog",
+                                "inputs": [
+                                    {
+                                        "name": "functionName",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "message",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "Error threshold exceeded"
+                                    },
+                                    {
+                                        "name": "logLevel",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "error"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "ExitOnErrorThreshold",
+                            "actorType": {
+                                "parentType": "Fail",
+                                "inputs": [
+                                    {
+                                        "name": "message",
+                                        "const": "Error on bwMQConsumer start - Error threshold exceeded"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Pre-Processing",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "BatchMessage",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "value": {
+                                                        "type": "string"
+                                                    },
+                                                    "timestamp": {
+                                                        "type": "integer"
+                                                    },
+                                                    "partitionKey": {
+                                                        "type": "string"
+                                                    },
+                                                    "sequenceNumber": {
+                                                        "type": "string"
+                                                    },
+                                                    "stream": {}
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Read Timestamp",
+                            "actorType": {
+                                "parentType": "Now",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "LoopForBatch",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "Message",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "value": {
+                                                        "type": "integer"
+                                                    },
+                                                    "timestamp": {
+                                                        "type": "integer"
+                                                    },
+                                                    "key": {},
+                                                    "topic": {
+                                                        "type": "string"
+                                                    },
+                                                    "partition": {
+                                                        "type": "integer"
+                                                    },
+                                                    "offset": {
+                                                        "type": "integer"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "LoopForRetry",
+                            "actorType": {
+                                "parentType": "ForLoop",
+                                "inputs": [
+                                    {
+                                        "name": "from",
+                                        "const": 1
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Processing",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "MainErrorHandler",
+                            "onError": "result",
+                            "actorType": {
+                                "parentType": "ErrorHandler",
+                                "inputs": [
+                                    {
+                                        "name": "config",
+                                        "const": [
+                                            {
+                                                "exceptionKey": "java.lang.Exception",
+                                                "conditions": {
+                                                    "message": ".*"
+                                                },
+                                                "actions": {
+                                                    "suppress": false,
+                                                    "log": false,
+                                                    "flowName": "bwMQLogErrorMessage"
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "topicName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "message",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "table": {
+                                                    "type": "string"
+                                                },
+                                                "op_type": {
+                                                    "type": "string"
+                                                },
+                                                "op_ts": {
+                                                    "type": "string"
+                                                },
+                                                "current_ts": {
+                                                    "type": "string"
+                                                },
+                                                "pos": {
+                                                    "type": "string"
+                                                },
+                                                "primary_keys": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "tokens": {
+                                                    "type": "object",
+                                                    "properties": {}
+                                                },
+                                                "after": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "A": {
+                                                            "type": "string"
+                                                        },
+                                                        "B": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "queue_ts",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "retriesCount",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Process Message",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwMQPhProcessMessage"
+                                    },
+                                    {
+                                        "name": "message",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "message",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "table": {
+                                                    "type": "string"
+                                                },
+                                                "op_type": {
+                                                    "type": "string"
+                                                },
+                                                "op_ts": {
+                                                    "type": "string"
+                                                },
+                                                "current_ts": {
+                                                    "type": "string"
+                                                },
+                                                "pos": {
+                                                    "type": "string"
+                                                },
+                                                "primary_keys": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "tokens": {
+                                                    "type": "object",
+                                                    "properties": {}
+                                                },
+                                                "after": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "A": {
+                                                            "type": "string"
+                                                        },
+                                                        "B": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "name": "objectName",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "dmlType",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "op_ts",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "logAdditionalInfo",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "resultType",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    {
+                                        "name": "resultInfo",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "End Timestamp",
+                            "actorType": {
+                                "parentType": "Now",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Result ERROR",
+                    "dependsOnList": [
+                        "Processing"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "=ERROR",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "IsNull",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Not ERROR",
+                    "dependsOnList": [
+                        "Processing"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": []
+                },
+                {
+                    "name": "Not ERROR2",
+                    "dependsOnList": [
+                        "Processing"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "If Skip",
+                    "dependsOnList": [
+                        "Result ERROR"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "SkipResult",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "Equals",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "boolean"
+                                        },
+                                        "const": true
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "RetryStopOnSkip",
+                            "actorType": {
+                                "parentType": "LoopStop",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Result FILTER",
+                    "dependsOnList": [
+                        "Not ERROR"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "=FILTER",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "Equals",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "FILTERED"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "MQLogFiltered",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwMQLogFilteredMessage"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "topicName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "dmlType",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "message",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "table": {
+                                                    "type": "string"
+                                                },
+                                                "op_type": {
+                                                    "type": "string"
+                                                },
+                                                "op_ts": {
+                                                    "type": "string"
+                                                },
+                                                "current_ts": {
+                                                    "type": "string"
+                                                },
+                                                "pos": {
+                                                    "type": "string"
+                                                },
+                                                "primary_keys": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "tokens": {
+                                                    "type": "object",
+                                                    "properties": {}
+                                                },
+                                                "after": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "A": {
+                                                            "type": "string"
+                                                        },
+                                                        "B": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "op_ts",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "filterCode",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "reasonMessage",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "RetryStopOnFilter",
+                            "actorType": {
+                                "parentType": "LoopStop",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Not FILTER",
+                    "dependsOnList": [
+                        "Not ERROR2"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Processing Loop End",
+                    "dependsOnList": [
+                        "If Skip"
+                    ],
+                    "isLast": 1,
+                    "isTransactional": false,
+                    "actors": []
+                },
+                {
+                    "name": "Stage 8",
+                    "dependsOnList": [
+                        "Result FILTER"
+                    ],
+                    "isLast": 1,
+                    "isTransactional": false,
+                    "actors": []
+                },
+                {
+                    "name": "Result PROCESSED",
+                    "dependsOnList": [
+                        "Not FILTER"
+                    ],
+                    "isLast": 1,
+                    "isTransactional": false,
+                    "actors": [
+                        {
+                            "name": "=PROCESSED",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "Equals",
+                                "inputs": [
+                                    {
+                                        "name": "b",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "PROCESSED"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "ProcessedCount",
+                            "actorType": {
+                                "parentType": "Count",
+                                "inputs": [],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "MQLogProcessedMessage",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwMQLogProcessedMessage"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "topicName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "objectName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "message",
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "table": {
+                                                    "type": "string"
+                                                },
+                                                "op_type": {
+                                                    "type": "string"
+                                                },
+                                                "op_ts": {
+                                                    "type": "string"
+                                                },
+                                                "current_ts": {
+                                                    "type": "string"
+                                                },
+                                                "pos": {
+                                                    "type": "string"
+                                                },
+                                                "primary_keys": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "tokens": {
+                                                    "type": "object",
+                                                    "properties": {}
+                                                },
+                                                "after": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "A": {
+                                                            "type": "string"
+                                                        },
+                                                        "B": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "op_ts",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "read_ts",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "end_ts",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "queue_ts",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "dmlType",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "RetryStopSuccess",
+                            "actorType": {
+                                "parentType": "LoopStop",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Unknown Result",
+                    "dependsOnList": [
+                        "Not FILTER"
+                    ],
+                    "isLast": 1,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": [
+                        {
+                            "name": "LogUnknownResult",
+                            "actorType": {
+                                "parentType": "MQLog",
+                                "inputs": [
+                                    {
+                                        "name": "message",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "Unknown processing result"
+                                    },
+                                    {
+                                        "name": "logLevel",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "error"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "ExitOnUnknownResult",
+                            "actorType": {
+                                "parentType": "Fail",
+                                "inputs": [
+                                    {
+                                        "name": "message",
+                                        "const": "bwMQConsumer - Processing result is not PROCESSED or ERROR or FILTERED"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Batch Loop End",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "isTransactional": false,
+                    "actors": []
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Consumer Loop",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "actors": []
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "MQLogFiltered",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "MQLogProcessedMessage",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ConsumerGroupKey",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "MQInterfaceKey",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ErrorRetriesKey",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Read mtMQTopics",
+                "name": "JobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "GetErrorCounter",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "LogError",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "LogUnknownResult",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "MainErrorHandler",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TopicName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "MQ Subscribe",
+                "name": "topic"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TopicName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "MQLogProcessedMessage",
+                "name": "topicName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TopicName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "MQLogFiltered",
+                "name": "topicName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TopicName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Read mtMQTopics",
+                "name": "TopicName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TopicName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "GetErrorCounter",
+                "name": "topicName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TopicName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "FunctionName",
+                "name": "topic"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TopicName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "MainErrorHandler",
+                "name": "topicName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "PartitionNumber",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "MQ Subscribe",
+                "name": "partitions"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "PartitionNumber",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "FunctionName",
+                "name": "partition"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "MQInterfaceKey",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "ReadMQInterface",
+                "name": "key"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ConsumerGroupKey",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "ReadGroupId",
+                "name": "key"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ErrorRetriesKey",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "ReadRtriesValue",
+                "name": "key"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "FunctionName",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "LogError",
+                "name": "functionName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "FunctionName",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "LogUnknownResult",
+                "name": "functionName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ReadMQInterface",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "MQ Subscribe",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ReadGroupId",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "MQ Subscribe",
+                "name": "group_id"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ReadRtriesValue",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "RetriesValue",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQTopics",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "CheckThreshold",
+                "name": "b"
+            },
+            "iterate": "First",
+            "path": [
+                "ERRORED_MSGS_THRESHOLD"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "GetErrorCounter",
+                "name": "currentValue"
+            },
+            "rightPort": {
+                "actor": "CheckThreshold",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "MQ Subscribe",
+                "name": "message"
+            },
+            "rightPort": {
+                "actor": "BatchMessage",
+                "name": "value"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "RetriesValue",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "LoopForRetry",
+                "name": "to"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "BatchMessage",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Message",
+                "name": "value"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "Read Timestamp",
+                "name": "timestamp"
+            },
+            "rightPort": {
+                "actor": "MQLogProcessedMessage",
+                "name": "read_ts"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Message",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "MainErrorHandler",
+                "name": "message"
+            },
+            "iterate": "First"
+        },
+        {
+            "leftPort": {
+                "actor": "Message",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "MQLogProcessedMessage",
+                "name": "queue_ts"
+            },
+            "iterate": "First",
+            "path": [
+                "timestamp"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Message",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Process Message",
+                "name": "message"
+            },
+            "iterate": "First",
+            "path": [
+                "value"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Message",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "MQLogFiltered",
+                "name": "message"
+            },
+            "iterate": "First",
+            "path": [
+                "value"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Message",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "MainErrorHandler",
+                "name": "queue_ts"
+            },
+            "iterate": "First",
+            "path": [
+                "timestamp"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "LoopForRetry",
+                "name": "i"
+            },
+            "rightPort": {
+                "actor": "MainErrorHandler",
+                "name": "retriesCount"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "MainErrorHandler",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "SkipResult",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Process Message",
+                "name": "objectName"
+            },
+            "rightPort": {
+                "actor": "MQLogProcessedMessage",
+                "name": "objectName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Process Message",
+                "name": "message"
+            },
+            "rightPort": {
+                "actor": "MQLogProcessedMessage",
+                "name": "message"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Process Message",
+                "name": "op_ts"
+            },
+            "rightPort": {
+                "actor": "MQLogProcessedMessage",
+                "name": "op_ts"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Process Message",
+                "name": "resultType"
+            },
+            "rightPort": {
+                "actor": "=FILTER",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Process Message",
+                "name": "resultType"
+            },
+            "rightPort": {
+                "actor": "=PROCESSED",
+                "name": "a"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Process Message",
+                "name": "dmlType"
+            },
+            "rightPort": {
+                "actor": "MQLogFiltered",
+                "name": "dmlType"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Process Message",
+                "name": "op_ts"
+            },
+            "rightPort": {
+                "actor": "MQLogFiltered",
+                "name": "op_ts"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Process Message",
+                "name": "resultInfo"
+            },
+            "rightPort": {
+                "actor": "MQLogFiltered",
+                "name": "filterCode"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Process Message",
+                "name": "dmlType"
+            },
+            "rightPort": {
+                "actor": "MQLogProcessedMessage",
+                "name": "dmlType"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Process Message",
+                "name": "resultType"
+            },
+            "rightPort": {
+                "actor": "=ERROR",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Process Message",
+                "name": "logAdditionalInfo"
+            },
+            "rightPort": {
+                "actor": "MQLogFiltered",
+                "name": "reasonMessage"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "End Timestamp",
+                "name": "timestamp"
+            },
+            "rightPort": {
+                "actor": "MQLogProcessedMessage",
+                "name": "end_ts"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "jobId"
+            },
+            "rightPort": {
+                "actor": "JobId",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "topicName"
+            },
+            "rightPort": {
+                "actor": "TopicName",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "partitionNumber"
+            },
+            "rightPort": {
+                "actor": "PartitionNumber",
+                "name": "value"
+            }
+        }
+    ]
+}

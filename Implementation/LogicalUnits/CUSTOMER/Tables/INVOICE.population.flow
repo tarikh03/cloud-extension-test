@@ -85,10 +85,6 @@
                                     {
                                         "name": "sql",
                                         "const": "select * from public.invoice"
-                                    },
-                                    {
-                                        "name": "use_mbd_finder",
-                                        "const": true
                                     }
                                 ],
                                 "outputs": [

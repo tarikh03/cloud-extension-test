@@ -1,0 +1,42 @@
+{
+  "type": "MQKeyspace",
+  "parentType": "InnerFlow",
+  "actorClass": null,
+  "inputs": [
+    {
+      "name": "jobId",
+      "schema": {}
+    },
+    {
+      "name": "flowName",
+      "schema": {
+        "type": "string"
+      },
+      "const": "bwMQKeyspace",
+      "mandatory": true,
+      "hidden": true
+    },
+    {
+      "name": "innerFlowConst",
+      "schema": {
+        "type": "string"
+      },
+      "const": "bwMQKeyspace",
+      "mandatory": true,
+      "hidden": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "keyspace",
+      "schema": {
+        "type": "string"
+      },
+      "const": null
+    }
+  ],
+  "tags": [
+    "MQ"
+  ],
+  "doc": ""
+}

@@ -1,120 +1,120 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<GenericInterface xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" type="KAFKA" displayName="Kafka" enabled="true" version="2.3">
-  <Name>Kafka</Name>
-  <Properties>
-    <Property name="Topic">
-      <Value />
-    </Property>
-    <Property name="BootstrapServers">
-      <Value>localhost:9092</Value>
-    </Property>
-    <Property name="GroupID">
-      <Value>GET_PARSER_GROUP</Value>
-    </Property>
-    <Property name="DataType">
-      <Value>Long</Value>
-    </Property>
-    <Property name="MaxPollRecords">
-      <Value>1</Value>
-    </Property>
-    <Property name="Affinity">
-      <Value />
-    </Property>
-    <Property name="MsgsProcessingTimeout">
-      <Value>10000</Value>
-    </Property>
-    <Property name="Native">
-      <Value>True</Value>
-    </Property>
-    <Property name="SchemaRegistryURL">
-      <Value>http://127.0.0.1:8085</Value>
-    </Property>
-    <Property name="SchemaRegistrySslEnabled">
-      <Value>False</Value>
-    </Property>
-    <Property name="SchemaRegistryTruststoreLocation">
-      <Value>kafka.client.truststore.jks</Value>
-    </Property>
-    <Property name="SchemaRegistryTruststorePassword">
-      <Value />
-    </Property>
-    <Property name="SchemaRegistryKeystoreLocation">
-      <Value>kafka.client.keystore.jks</Value>
-    </Property>
-    <Property name="SchemaRegistryKeystorePassword">
-      <Value />
-    </Property>
-    <Property name="SchemaRegistryKeyPassword">
-      <Value />
-    </Property>
-    <Property name="SslEnabled">
-      <Value>False</Value>
-    </Property>
-    <Property name="TruststoreLocation">
-      <Value>/home/k2view/.kafka_ssl/kafka.client.truststore.jks</Value>
-    </Property>
-    <Property name="TruststorePassword">
-      <Value>~encs2~ug9ixn0K9LGxA7ra8x4jBwBsiOjK/POL2Bcry1a/S+w/5poTaIJcP50z</Value>
-    </Property>
-    <Property name="KeystoreLocation">
-      <Value>/home/k2view/.kafka_ssl/kafka.client.keystore.jks</Value>
-    </Property>
-    <Property name="KeystorePassword">
-      <Value>~encs2~1Uit52UMDlGHSDVf68tinUl+C6pRSLu9KbNO75kvt8LGi8zz60CFHSI8</Value>
-    </Property>
-    <Property name="KeyPassword">
-      <Value>~encs2~6kXpKcJW0yQ3a7ULo32I0P5eZs2NYlCBgYkWlvH9C3ggl/wBXXsgA3KW</Value>
-    </Property>
-    <Property name="SslCipherSuites">
-      <Value />
-    </Property>
-    <Property name="SslEnabledProtocols">
-      <Value />
-    </Property>
-    <Property name="SslTruststoreType">
-      <Value />
-    </Property>
-    <Property name="SASLEnabled">
-      <Value>False</Value>
-    </Property>
-    <Property name="SaslType">
-      <Value>SASL_PLAIN</Value>
-    </Property>
-    <Property name="SASLUserName">
-      <Value />
-    </Property>
-    <Property name="SASLPassword">
-      <Value />
-    </Property>
-    <Property name="SASLClientId">
-      <Value />
-    </Property>
-    <Property name="SASLClientSecret">
-      <Value />
-    </Property>
-    <Property name="SASLScope">
-      <Value />
-    </Property>
-    <Property name="SASLLogicalCluster">
-      <Value />
-    </Property>
-    <Property name="SASLIdentityPoolId">
-      <Value />
-    </Property>
-    <Property name="SASLEndpointURL">
-      <Value />
-    </Property>
-    <Property name="SASLCallbackHandler">
-      <Value />
-    </Property>
-    <Property name="SASLLoginRetryBackoff">
-      <Value>100</Value>
-    </Property>
-    <Property name="ScramHashPolicy">
-      <Value>SCRAM-SHA-256</Value>
-    </Property>
-    <Property name="EndpointIdentificationAlgorithm">
-      <Value />
-    </Property>
-  </Properties>
+<GenericInterface xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" type="KAFKA" displayName="" enabled="true" version="1.4">
+    <Name>Kafka</Name>
+    <Properties>
+        <Property name="Topic">
+            <Value></Value>
+        </Property>
+        <Property name="BootstrapServers">
+            <Value>localhost:9092</Value>
+        </Property>
+        <Property name="GroupID">
+            <Value>GET_PARSER_GROUP</Value>
+        </Property>
+        <Property name="DataType">
+            <Value>Long</Value>
+        </Property>
+        <Property name="MaxPollRecords">
+            <Value>1</Value>
+        </Property>
+        <Property name="Affinity">
+            <Value></Value>
+        </Property>
+        <Property name="MsgsProcessingTimeout">
+            <Value>10000</Value>
+        </Property>
+        <Property name="Native">
+            <Value>True</Value>
+        </Property>
+        <Property name="SchemaRegistryURL">
+            <Value>http://127.0.0.1:8085</Value>
+        </Property>
+        <Property name="SchemaRegistrySslEnabled">
+            <Value>False</Value>
+        </Property>
+        <Property name="SchemaRegistryTruststoreLocation">
+            <Value>kafka.client.truststore.jks</Value>
+        </Property>
+        <Property name="SchemaRegistryTruststorePassword">
+            <Value></Value>
+        </Property>
+        <Property name="SchemaRegistryKeystoreLocation">
+            <Value>kafka.client.keystore.jks</Value>
+        </Property>
+        <Property name="SchemaRegistryKeystorePassword">
+            <Value></Value>
+        </Property>
+        <Property name="SchemaRegistryKeyPassword">
+            <Value></Value>
+        </Property>
+        <Property name="SslEnabled">
+            <Value>False</Value>
+        </Property>
+        <Property name="TruststoreLocation">
+            <Value>/home/k2view/.kafka_ssl/kafka.client.truststore.jks</Value>
+        </Property>
+        <Property name="TruststorePassword">
+            <Value>~encs2~ug9ixn0K9LGxA7ra8x4jBwBsiOjK/POL2Bcry1a/S+w/5poTaIJcP50z</Value>
+        </Property>
+        <Property name="KeystoreLocation">
+            <Value>/home/k2view/.kafka_ssl/kafka.client.keystore.jks</Value>
+        </Property>
+        <Property name="KeystorePassword">
+            <Value>~encs2~1Uit52UMDlGHSDVf68tinUl+C6pRSLu9KbNO75kvt8LGi8zz60CFHSI8</Value>
+        </Property>
+        <Property name="KeyPassword">
+            <Value>~encs2~6kXpKcJW0yQ3a7ULo32I0P5eZs2NYlCBgYkWlvH9C3ggl/wBXXsgA3KW</Value>
+        </Property>
+        <Property name="SslCipherSuites">
+            <Value></Value>
+        </Property>
+        <Property name="SslEnabledProtocols">
+            <Value></Value>
+        </Property>
+        <Property name="SslTruststoreType">
+            <Value></Value>
+        </Property>
+        <Property name="SASLEnabled">
+            <Value>False</Value>
+        </Property>
+        <Property name="SaslType">
+            <Value>SASL_PLAIN</Value>
+        </Property>
+        <Property name="SASLUserName">
+            <Value></Value>
+        </Property>
+        <Property name="SASLPassword">
+            <Value></Value>
+        </Property>
+        <Property name="SASLClientId">
+            <Value></Value>
+        </Property>
+        <Property name="SASLClientSecret">
+            <Value></Value>
+        </Property>
+        <Property name="SASLScope">
+            <Value></Value>
+        </Property>
+        <Property name="SASLLogicalCluster">
+            <Value></Value>
+        </Property>
+        <Property name="SASLIdentityPoolId">
+            <Value></Value>
+        </Property>
+        <Property name="SASLEndpointURL">
+            <Value></Value>
+        </Property>
+        <Property name="SASLCallbackHandler">
+            <Value></Value>
+        </Property>
+        <Property name="SASLLoginRetryBackoff">
+            <Value>100</Value>
+        </Property>
+        <Property name="ScramHashPolicy">
+            <Value>SCRAM-SHA-256</Value>
+        </Property>
+        <Property name="EndpointIdentificationAlgorithm">
+            <Value></Value>
+        </Property>
+    </Properties>
 </GenericInterface>

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <VirtualDB xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" version="">
   <Name>vdb</Name>
-  <RootView>IIDF</RootView>
+  <RootView>CUSTOMER</RootView>
   <CacheLocationType>Default</CacheLocationType>
   <LuLazyDataUpdate syncMethod="None" performEvery="1.00:00:00" syncTimeout="0">
   	<DecisionFunction></DecisionFunction>
@@ -13,25 +13,12 @@
     <NumberOfJobs>50</NumberOfJobs>
   </IidFinderProp>
   <Tables>
-	 <Table>CASES</Table>
 	 <Table>CUSTOMER</Table>
 	 <Table>ACTIVITY</Table>
-	 <Table>IIDF</Table>
-	 <Table>IIDF_QUEUE</Table>
-	 <Table>IIDF_RECENT_UPDATES</Table>
-	 <Table>CASE_NOTE</Table>
 	 <Table>ADDRESS</Table>
 	 <Table>CONTRACT</Table>
-	 <Table>SUBSCRIBER</Table>
-	 <Table>INVOICE</Table>
-	 <Table>PAYMENT</Table>
   </Tables>
   <TablesProperties>
-	 <TableProperties name="CASES">
-      <Populations>
-        <Population name="pop.flow" order="7" disabled="false" populationType="FLOW" />
-      </Populations>
-    </TableProperties>
 	 <TableProperties name="CUSTOMER">
       <Populations>
         <Population name="pop.flow" order="5" disabled="false" populationType="Flow" />
@@ -40,26 +27,6 @@
 	 <TableProperties name="ACTIVITY">
       <Populations>
         <Population name="pop.flow" order="6" disabled="false" populationType="FLOW" />
-      </Populations>
-    </TableProperties>
-	 <TableProperties name="IIDF">
-      <Populations>
-        <Population name="query_IIDF" order="4" disabled="false" populationType="REGULAR" />
-      </Populations>
-    </TableProperties>
-	 <TableProperties name="IIDF_QUEUE">
-      <Populations>
-        <Population name="query_iidf_queue" order="5" disabled="false" populationType="REGULAR" />
-      </Populations>
-    </TableProperties>
-	 <TableProperties name="IIDF_RECENT_UPDATES">
-      <Populations>
-        <Population name="query_iidf_recent_updates" order="5" disabled="false" populationType="REGULAR" />
-      </Populations>
-    </TableProperties>
-	 <TableProperties name="CASE_NOTE">
-      <Populations>
-        <Population name="population.flow" order="8" disabled="false" populationType="FLOW" />
       </Populations>
     </TableProperties>
 	 <TableProperties name="ADDRESS">
@@ -72,21 +39,6 @@
         <Population name="population.flow" order="6" disabled="false" populationType="FLOW" />
       </Populations>
     </TableProperties>
-	 <TableProperties name="SUBSCRIBER">
-      <Populations>
-        <Population name="population.flow" order="7" disabled="false" populationType="FLOW" />
-      </Populations>
-    </TableProperties>
-	 <TableProperties name="INVOICE">
-      <Populations>
-        <Population name="population.flow" order="8" disabled="false" populationType="FLOW" />
-      </Populations>
-    </TableProperties>
-	 <TableProperties name="PAYMENT">
-      <Populations>
-        <Population name="population.flow" order="9" disabled="false" populationType="FLOW" />
-      </Populations>
-    </TableProperties>
   </TablesProperties>
   <EnrichmentsOrderList>
 	  <Item order="1" active="true" name="IIDF" columnName="fnIIDFCheckIfInstanceFound" type="Table" />
@@ -96,18 +48,6 @@
   </ReferencesList>
   <Relations />
   <DatabaseRelations>
-	  <Relation>
-        <From tableType="TableObject" table="IIDF" column="IID" columnId="tblCol_55bbb1eee3034c8d891320b17f47d7f1" />
-        <To tableType="TableObject" table="IIDF_QUEUE" populationObjectName="query_iidf_queue" column="IID" columnId="tblCol_8b9da9b5d9854890841140ed4ffea5cf" />
-      </Relation>
-	  <Relation>
-        <From tableType="TableObject" table="IIDF" column="IID" columnId="tblCol_55bbb1eee3034c8d891320b17f47d7f1" />
-        <To tableType="TableObject" table="IIDF_RECENT_UPDATES" populationObjectName="query_iidf_recent_updates" column="IID" columnId="tblCol_7abd5e73f28a4aed9bdcfa98a6292e4f" />
-      </Relation>
-	  <Relation>
-        <From tableType="TableObject" table="IIDF" column="IID" columnId="tblCol_55bbb1eee3034c8d891320b17f47d7f1" />
-        <To tableType="TableObject" table="CUSTOMER" populationObjectName="pop.flow" column="customer_id" columnId="customer_id" />
-      </Relation>
 	  <Relation>
         <From tableType="TableObject" table="CUSTOMER" column="customer_id" columnId="customer_id" />
         <To tableType="TableObject" table="ADDRESS" populationObjectName="population.flow" column="customer_id" columnId="customer_id" />
@@ -120,41 +60,13 @@
         <From tableType="TableObject" table="CUSTOMER" column="customer_id" columnId="customer_id" />
         <To tableType="TableObject" table="ACTIVITY" populationObjectName="pop.flow" column="customer_id" columnId="customer_id" />
       </Relation>
-	  <Relation>
-        <From tableType="TableObject" table="ACTIVITY" column="activity_id" columnId="activity_id" />
-        <To tableType="TableObject" table="CASES" populationObjectName="pop.flow" column="activity_id" columnId="activity_id" />
-      </Relation>
-	  <Relation>
-        <From tableType="TableObject" table="CASES" column="case_id" columnId="case_id" />
-        <To tableType="TableObject" table="CASE_NOTE" populationObjectName="population.flow" column="case_id" columnId="case_id" />
-      </Relation>
-	  <Relation>
-        <From tableType="TableObject" table="CONTRACT" column="contract_id" columnId="contract_id" />
-        <To tableType="TableObject" table="SUBSCRIBER" populationObjectName="population.flow" column="subscriber_id" columnId="subscriber_id" />
-      </Relation>
-	  <Relation>
-        <From tableType="TableObject" table="SUBSCRIBER" column="subscriber_id" columnId="subscriber_id" />
-        <To tableType="TableObject" table="INVOICE" populationObjectName="population.flow" column="subscriber_id" columnId="subscriber_id" />
-      </Relation>
-	  <Relation>
-        <From tableType="TableObject" table="INVOICE" column="invoice_id" columnId="invoice_id" />
-        <To tableType="TableObject" table="PAYMENT" populationObjectName="population.flow" column="invoice_id" columnId="invoice_id" />
-      </Relation>
   </DatabaseRelations>
   <DiagramGraph>
     <Graph name="vdb.k2vdb.xml">
-      <Node name="CASES" pos="1274 356" viewType="Table" />
       <Node name="CUSTOMER" pos="506 493" viewType="Table" />
       <Node name="ACTIVITY" pos="890 306" viewType="Table" />
-      <Node name="IIDF" pos="120 306" viewType="Table" />
-      <Node name="IIDF_QUEUE" pos="505 81" viewType="Table" />
-      <Node name="IIDF_RECENT_UPDATES" pos="505 306" viewType="Table" />
-      <Node name="CASE_NOTE" pos="1660 406" viewType="Table" />
       <Node name="ADDRESS" pos="890 531" viewType="Table" />
       <Node name="CONTRACT" pos="889 756" viewType="Table" />
-      <Node name="SUBSCRIBER" pos="1212 774" viewType="Table" />
-      <Node name="INVOICE" pos="1426 564" viewType="Table" />
-      <Node name="PAYMENT" pos="1745 693" viewType="Table" />
     </Graph>
   </DiagramGraph>
 </VirtualDB>

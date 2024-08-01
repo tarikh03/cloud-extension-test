@@ -73,10 +73,6 @@
                                     {
                                         "name": "sql",
                                         "const": "select * from public.case_note"
-                                    },
-                                    {
-                                        "name": "use_mbd_finder",
-                                        "const": true
                                     }
                                 ],
                                 "outputs": [

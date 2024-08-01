@@ -89,14 +89,6 @@
                                     {
                                         "name": "sql",
                                         "const": "select * from public.contract"
-                                    },
-                                    {
-                                        "name": "use_mbd_finder",
-                                        "const": true
-                                    },
-                                    {
-                                        "name": "luid_column_name",
-                                        "const": "customer_id"
                                     }
                                 ],
                                 "outputs": [

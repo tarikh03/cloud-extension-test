@@ -8,4 +8,12 @@
       <InputParams />
     </Job>
   </Jobs>
+  <Jobs>
+    <Job methodName="printLags" jobName="printLags" active="true">
+      <ExecutionMode>Manually</ExecutionMode>
+      <ScheduleType>TimeInterval</ScheduleType>
+      <ExecuteEvery>00:00:10</ExecuteEvery>
+      <InputParams />
+    </Job>
+  </Jobs>
 </JobsGroup>

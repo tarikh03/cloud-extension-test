@@ -2,6 +2,7 @@
 <TableObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Name>CUSTOMER</Name>
   <ID>tbl_CUSTOMER</ID>
+  <EntityId>customer_id</EntityId>
   <ColumnsCollation>BINARY</ColumnsCollation>
   <FullTextSearch>false</FullTextSearch>
   <Columns>
@@ -15,7 +16,7 @@
   </IndexesList>
   <EnrichmentList>
   </EnrichmentList>
-  <LazyDataUpdate syncMethod="Inherited" performEvery="1.00:00:00" deleteMode="">
+  <LazyDataUpdate syncMethod="Inherited" performEvery="1.00:00:00">
     <DecisionFunction></DecisionFunction>
   </LazyDataUpdate>
   <TriggersList>

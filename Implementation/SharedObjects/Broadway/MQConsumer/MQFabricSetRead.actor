@@ -1,0 +1,46 @@
+{
+  "type": "MQFabricSetRead",
+  "parentType": "InnerFlow",
+  "actorClass": null,
+  "inputs": [
+    {
+      "name": "jobId",
+      "schema": {}
+    },
+    {
+      "name": "globalName",
+      "schema": {}
+    },
+    {
+      "name": "flowName",
+      "schema": {
+        "type": "string"
+      },
+      "const": "bwMQFabricSetRead",
+      "mandatory": true,
+      "hidden": true
+    },
+    {
+      "name": "innerFlowConst",
+      "schema": {
+        "type": "string"
+      },
+      "const": "bwMQFabricSetRead",
+      "mandatory": true,
+      "hidden": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "result",
+      "schema": {
+        "type": "string"
+      },
+      "const": null
+    }
+  ],
+  "tags": [
+    "MQ"
+  ],
+  "doc": ""
+}

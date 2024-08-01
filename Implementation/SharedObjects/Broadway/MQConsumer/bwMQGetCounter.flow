@@ -1,0 +1,500 @@
+{
+    "tags": [
+        "MQConsumer"
+    ],
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Input",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "JobId",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "TopicName",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "CounterType",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Globals Keys",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "DB_LOG_INTERFACE",
+                            "actorType": {
+                                "parentType": "MQFabricSetRead",
+                                "inputs": [
+                                    {
+                                        "name": "globalName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "DB_LOG_INTERFACE"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Get MQKeyspace",
+                            "actorType": {
+                                "parentType": "MQKeyspace",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "GetValue",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "GetCurrentValue",
+                            "actorType": {
+                                "parentType": "DbFetchField",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": "select counter_value from ${@keyspace}.mq_counters where job_id=${jobId} and topic_name=${topicName} and counter_type=${counterType}"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "counterType",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "keyspace",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "topicName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Check Result",
+                    "dependsOnList": [
+                        "GetValue"
+                    ],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "CounterExist",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "NotNull",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "ReturnCurrentValue",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Init Counter",
+                    "dependsOnList": [
+                        "GetValue"
+                    ],
+                    "isLast": 0,
+                    "isTransactional": false,
+                    "hasElse": true,
+                    "actors": [
+                        {
+                            "name": "InsertCounter",
+                            "remark": "Counter init will happen on consumer start",
+                            "actorType": {
+                                "parentType": "DbCommand",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": "insert into ${@keyspace}.mq_counters (job_id,topic_name,counter_type,counter_value) values (${jobId},${topicName},${counterType},0)"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "counterType",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "keyspace",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "topicName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Return 0",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "integer"
+                                        },
+                                        "const": 0
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "integer"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "GetCurrentValue",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "InsertCounter",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "DB_LOG_INTERFACE",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Get MQKeyspace",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TopicName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "GetCurrentValue",
+                "name": "topicName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TopicName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "InsertCounter",
+                "name": "topicName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "CounterType",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "GetCurrentValue",
+                "name": "counterType"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "CounterType",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "InsertCounter",
+                "name": "counterType"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "DB_LOG_INTERFACE",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "GetCurrentValue",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "DB_LOG_INTERFACE",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "InsertCounter",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Get MQKeyspace",
+                "name": "keyspace"
+            },
+            "rightPort": {
+                "actor": "GetCurrentValue",
+                "name": "keyspace"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Get MQKeyspace",
+                "name": "keyspace"
+            },
+            "rightPort": {
+                "actor": "InsertCounter",
+                "name": "keyspace"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "GetCurrentValue",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "CounterExist",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "GetCurrentValue",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "ReturnCurrentValue",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "jobId"
+            },
+            "rightPort": {
+                "actor": "JobId",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "topicName"
+            },
+            "rightPort": {
+                "actor": "TopicName",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "counterType"
+            },
+            "rightPort": {
+                "actor": "CounterType",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "GetCurrentValue",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "currentValue"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ReturnCurrentValue",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "currentValue"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Return 0",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "currentValue"
+            }
+        }
+    ]
+}

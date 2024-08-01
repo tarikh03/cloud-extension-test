@@ -1,0 +1,948 @@
+{
+    "tags": [
+        "MQConsumer"
+    ],
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Stage 1",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "JobID",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Read MTable",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Read mtMQConfig",
+                            "actorType": {
+                                "parentType": "MTableLookup",
+                                "inputs": [
+                                    {
+                                        "name": "mtable",
+                                        "const": "mtMQConfig"
+                                    },
+                                    {
+                                        "name": "JobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "JobId": {
+                                                        "type": "string"
+                                                    },
+                                                    "MQ_INTERFACE": {
+                                                        "type": "string"
+                                                    },
+                                                    "CONSUMERS_GROUP_ID": {
+                                                        "type": "string"
+                                                    },
+                                                    "ERROR_MSGS_TRIES": {
+                                                        "type": "string"
+                                                    },
+                                                    "PUBLISH_JMX": {
+                                                        "type": "string"
+                                                    },
+                                                    "DB_LOG_INTERFACE": {
+                                                        "type": "string"
+                                                    },
+                                                    "DB_LOG_SCHEMA_NAME": {
+                                                        "type": "string"
+                                                    },
+                                                    "DB_LOG_FILTERED_MESSAGES": {
+                                                        "type": "string"
+                                                    },
+                                                    "DB_LOG_ERRORED_MESSAGES": {
+                                                        "type": "string"
+                                                    },
+                                                    "MQ_TIMEZONE": {
+                                                        "type": "string"
+                                                    },
+                                                    "SOURCE_TIMEZONE": {
+                                                        "type": "string"
+                                                    },
+                                                    "SKIP_ERRORED_MSG": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Construct Keys",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "MQInterface",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "${jobId}_MQ_INTERFACE"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "ConsumerGroupId",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "${jobId}_CONSUMERS_GROUP_ID"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "ErrorMsgTries",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "${jobId}_ERROR_MSGS_TRIES"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "PublishJMX",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "${jobId}_PUBLISH_JMX"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "DBLogInterface",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "${jobId}_DB_LOG_INTERFACE"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "DBLogSchemaName",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "${jobId}_DB_LOG_SCHEMA_NAME"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "DBLogFilteredMsq",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "${jobId}_DB_LOG_FILTERED_MESSAGES"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "DBLogErroredMsg",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "${jobId}_DB_LOG_ERRORED_MESSAGES"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "MQTimezone",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "${jobId}_MQ_TIMEZONE"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "SourceTimezone",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "${jobId}_SOURCE_TIMEZONE"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "SkipErrorMsg",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "${jobId}_SKIP_ERRORED_MSG"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Create Keys & Values Arrays",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Keys",
+                            "actorType": {
+                                "parentType": "ArrayBuilder",
+                                "inputs": [],
+                                "outputs": [
+                                    {
+                                        "name": "array",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "Values",
+                            "actorType": {
+                                "parentType": "ArrayBuilder",
+                                "inputs": [],
+                                "outputs": [
+                                    {
+                                        "name": "array",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Set Globals",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "actors": [
+                        {
+                            "name": "SET Session Global",
+                            "actorType": {
+                                "parentType": "DbCommand",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": "fabric"
+                                    },
+                                    {
+                                        "name": "sql",
+                                        "const": "set ${@key}='${@value}';"
+                                    },
+                                    {
+                                        "name": "key",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Reset",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "actors": [
+                        {
+                            "name": "ResetArrays",
+                            "actorType": {
+                                "parentType": "ResetActors",
+                                "inputs": [
+                                    {
+                                        "name": "actorId",
+                                        "const": [
+                                            "Keys",
+                                            "Values"
+                                        ]
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "JobID",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Read mtMQConfig",
+                "name": "JobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "MQInterface",
+                "name": "jobId"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "JobId"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "ConsumerGroupId",
+                "name": "jobId"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "JobId"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "ErrorMsgTries",
+                "name": "jobId"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "JobId"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "PublishJMX",
+                "name": "jobId"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "JobId"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "DBLogInterface",
+                "name": "jobId"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "JobId"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "DBLogSchemaName",
+                "name": "jobId"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "JobId"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "DBLogFilteredMsq",
+                "name": "jobId"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "JobId"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "DBLogErroredMsg",
+                "name": "jobId"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "JobId"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "MQTimezone",
+                "name": "jobId"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "JobId"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "SourceTimezone",
+                "name": "jobId"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "JobId"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "SkipErrorMsg",
+                "name": "jobId"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "JobId"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Values",
+                "name": "input"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "MQ_INTERFACE"
+            ],
+            "arrayPosition": 0
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Values",
+                "name": "input"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "CONSUMERS_GROUP_ID"
+            ],
+            "arrayPosition": 1
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Values",
+                "name": "input"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "ERROR_MSGS_TRIES"
+            ],
+            "arrayPosition": 2
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Values",
+                "name": "input"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "PUBLISH_JMX"
+            ],
+            "arrayPosition": 3
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Values",
+                "name": "input"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "DB_LOG_INTERFACE"
+            ],
+            "arrayPosition": 4
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Values",
+                "name": "input"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "DB_LOG_SCHEMA_NAME"
+            ],
+            "arrayPosition": 5
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Values",
+                "name": "input"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "DB_LOG_FILTERED_MESSAGES"
+            ],
+            "arrayPosition": 6
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Values",
+                "name": "input"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "MQ_TIMEZONE"
+            ],
+            "arrayPosition": 8
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Values",
+                "name": "input"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "SOURCE_TIMEZONE"
+            ],
+            "arrayPosition": 9
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Values",
+                "name": "input"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "SKIP_ERRORED_MSG"
+            ],
+            "arrayPosition": 10
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Values",
+                "name": "input"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "DB_LOG_ERRORED_MESSAGES"
+            ],
+            "arrayPosition": 7
+        },
+        {
+            "leftPort": {
+                "actor": "MQInterface",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Keys",
+                "name": "input"
+            },
+            "arrayPosition": 0
+        },
+        {
+            "leftPort": {
+                "actor": "ConsumerGroupId",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Keys",
+                "name": "input"
+            },
+            "arrayPosition": 1
+        },
+        {
+            "leftPort": {
+                "actor": "ErrorMsgTries",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Keys",
+                "name": "input"
+            },
+            "arrayPosition": 2
+        },
+        {
+            "leftPort": {
+                "actor": "PublishJMX",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Keys",
+                "name": "input"
+            },
+            "arrayPosition": 3
+        },
+        {
+            "leftPort": {
+                "actor": "DBLogInterface",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Keys",
+                "name": "input"
+            },
+            "arrayPosition": 4
+        },
+        {
+            "leftPort": {
+                "actor": "DBLogSchemaName",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Keys",
+                "name": "input"
+            },
+            "arrayPosition": 5
+        },
+        {
+            "leftPort": {
+                "actor": "DBLogFilteredMsq",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Keys",
+                "name": "input"
+            },
+            "arrayPosition": 6
+        },
+        {
+            "leftPort": {
+                "actor": "DBLogErroredMsg",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Keys",
+                "name": "input"
+            },
+            "arrayPosition": 7
+        },
+        {
+            "leftPort": {
+                "actor": "MQTimezone",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Keys",
+                "name": "input"
+            },
+            "arrayPosition": 8
+        },
+        {
+            "leftPort": {
+                "actor": "SourceTimezone",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Keys",
+                "name": "input"
+            },
+            "arrayPosition": 9
+        },
+        {
+            "leftPort": {
+                "actor": "SkipErrorMsg",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "Keys",
+                "name": "input"
+            },
+            "arrayPosition": 10
+        },
+        {
+            "leftPort": {
+                "actor": "Keys",
+                "name": "array"
+            },
+            "rightPort": {
+                "actor": "SET Session Global",
+                "name": "key"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "Values",
+                "name": "array"
+            },
+            "rightPort": {
+                "actor": "SET Session Global",
+                "name": "value"
+            },
+            "iterate": "Iterate"
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "jobId"
+            },
+            "rightPort": {
+                "actor": "JobID",
+                "name": "value"
+            }
+        }
+    ]
+}

@@ -89,10 +89,6 @@
                                     {
                                         "name": "sql",
                                         "const": "select * from public.subscriber"
-                                    },
-                                    {
-                                        "name": "use_mbd_finder",
-                                        "const": true
                                     }
                                 ],
                                 "outputs": [

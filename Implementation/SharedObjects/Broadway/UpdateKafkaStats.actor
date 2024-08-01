@@ -1,0 +1,23 @@
+{
+    "type": "UpdateKafkaStats",
+    "badge": "Up",
+    "inputs": [
+        {
+            "name": "bootstrap",
+            "schema": {},
+            "mandatory": false
+        },
+        {
+            "name": "groupId",
+            "schema": {},
+            "mandatory": false
+        },
+        {
+            "name": "topics",
+            "schema": {},
+            "mandatory": false
+        }
+    ],
+    "outputs": [],
+    "actorClass": "com.k2view.cdbms.usercode.common.UpdateKafkaStatsActor"
+}

@@ -1,0 +1,46 @@
+{
+  "type": "MQLog",
+  "parentType": "InnerFlow",
+  "actorClass": null,
+  "inputs": [
+    {
+      "name": "jobId",
+      "schema": {}
+    },
+    {
+      "name": "functionName",
+      "schema": {}
+    },
+    {
+      "name": "message",
+      "schema": {}
+    },
+    {
+      "name": "logLevel",
+      "schema": {}
+    },
+    {
+      "name": "flowName",
+      "schema": {
+        "type": "string"
+      },
+      "const": "bwMQLog",
+      "mandatory": true,
+      "hidden": true
+    },
+    {
+      "name": "innerFlowConst",
+      "schema": {
+        "type": "string"
+      },
+      "const": "bwMQLog",
+      "mandatory": true,
+      "hidden": true
+    }
+  ],
+  "outputs": [],
+  "tags": [
+    "MQ"
+  ],
+  "doc": ""
+}

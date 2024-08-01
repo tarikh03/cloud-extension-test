@@ -1,0 +1,709 @@
+{
+    "tags": [
+        "MQConsumer"
+    ],
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Stage 1",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "JobId",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 2",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Load Config mTable",
+                            "actorType": {
+                                "parentType": "InnerFlow",
+                                "inputs": [
+                                    {
+                                        "name": "flowName",
+                                        "const": "bwMQLoadConfigGlobals"
+                                    },
+                                    {
+                                        "name": "jobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "ReadConsumerConfig",
+                            "isDisabled": true,
+                            "actorType": {
+                                "parentType": "MTableLookup",
+                                "inputs": [
+                                    {
+                                        "name": "mtable",
+                                        "const": "mtMQConfig"
+                                    },
+                                    {
+                                        "name": "JobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "JobId": {
+                                                        "type": "string"
+                                                    },
+                                                    "MQ_INTERFACE": {
+                                                        "type": "string"
+                                                    },
+                                                    "CONSUMERS_GROUP_ID": {
+                                                        "type": "string"
+                                                    },
+                                                    "ERROR_MSGS_TRIES": {
+                                                        "type": "string"
+                                                    },
+                                                    "PUBLISH_JMX": {
+                                                        "type": "string"
+                                                    },
+                                                    "DB_LOG_INTERFACE": {
+                                                        "type": "string"
+                                                    },
+                                                    "DB_LOG_SCHEMA_NAME": {
+                                                        "type": "string"
+                                                    },
+                                                    "DB_LOG_FILTERED_MESSAGES": {
+                                                        "type": "string"
+                                                    },
+                                                    "DB_LOG_ERROR_MESSAGES": {
+                                                        "type": "string"
+                                                    },
+                                                    "MQ_TIMEZONE": {
+                                                        "type": "string"
+                                                    },
+                                                    "SOURCE_TIMEZONE": {
+                                                        "type": "string"
+                                                    },
+                                                    "SKIP_ERRORED_MSG": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 3",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Get Keyspace",
+                            "actorType": {
+                                "parentType": "MQKeyspace",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "DB_LOG_INTERFACE",
+                            "actorType": {
+                                "parentType": "MQFabricSetRead",
+                                "inputs": [
+                                    {
+                                        "name": "globalName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "DB_LOG_INTERFACE"
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Stage 4",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Create mq_message_filtered",
+                            "actorType": {
+                                "parentType": "DbCassandraCreateTable",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "table",
+                                        "const": "mq_message_filtered"
+                                    },
+                                    {
+                                        "name": "fields",
+                                        "const": [
+                                            {
+                                                "name": "job_id",
+                                                "type": "text",
+                                                "partition_key": true,
+                                                "clustering_key": false,
+                                                "mandatory": false
+                                            },
+                                            {
+                                                "name": "object_name",
+                                                "type": "text",
+                                                "partition_key": true,
+                                                "clustering_key": false,
+                                                "mandatory": false
+                                            },
+                                            {
+                                                "name": "ts_date",
+                                                "type": "date",
+                                                "partition_key": true,
+                                                "clustering_key": false,
+                                                "mandatory": false
+                                            },
+                                            {
+                                                "name": "ts_time",
+                                                "type": "time",
+                                                "partition_key": false,
+                                                "clustering_key": true,
+                                                "mandatory": false
+                                            },
+                                            {
+                                                "name": "uuid",
+                                                "type": "uuid",
+                                                "partition_key": false,
+                                                "clustering_key": true,
+                                                "mandatory": false
+                                            },
+                                            {
+                                                "name": "filter_description",
+                                                "type": "text",
+                                                "partition_key": false,
+                                                "clustering_key": false,
+                                                "mandatory": false
+                                            },
+                                            {
+                                                "name": "message_content",
+                                                "type": "text",
+                                                "partition_key": false,
+                                                "clustering_key": false,
+                                                "mandatory": false
+                                            },
+                                            {
+                                                "name": "filter_code",
+                                                "type": "text",
+                                                "partition_key": false,
+                                                "clustering_key": false,
+                                                "mandatory": false
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Create mq_message_errored",
+                            "actorType": {
+                                "parentType": "DbCassandraCreateTable",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "table",
+                                        "const": "mq_message_errored"
+                                    },
+                                    {
+                                        "name": "fields",
+                                        "const": [
+                                            {
+                                                "name": "job_id",
+                                                "type": "text",
+                                                "partition_key": true,
+                                                "clustering_key": false,
+                                                "mandatory": false
+                                            },
+                                            {
+                                                "name": "topic_name",
+                                                "type": "text",
+                                                "partition_key": true,
+                                                "clustering_key": false,
+                                                "mandatory": false
+                                            },
+                                            {
+                                                "name": "ts_date",
+                                                "type": "date",
+                                                "partition_key": true,
+                                                "clustering_key": false,
+                                                "mandatory": false
+                                            },
+                                            {
+                                                "name": "ts_time",
+                                                "type": "time",
+                                                "partition_key": false,
+                                                "clustering_key": true,
+                                                "mandatory": false
+                                            },
+                                            {
+                                                "name": "uuid",
+                                                "type": "uuid",
+                                                "partition_key": false,
+                                                "clustering_key": true,
+                                                "mandatory": false
+                                            },
+                                            {
+                                                "name": "known_regex",
+                                                "type": "text",
+                                                "partition_key": false,
+                                                "clustering_key": false,
+                                                "mandatory": false
+                                            },
+                                            {
+                                                "name": "message_content",
+                                                "type": "text",
+                                                "partition_key": false,
+                                                "clustering_key": false,
+                                                "mandatory": false
+                                            },
+                                            {
+                                                "name": "error_message",
+                                                "type": "text",
+                                                "partition_key": false,
+                                                "clustering_key": false,
+                                                "mandatory": false
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Create mq_counters",
+                            "actorType": {
+                                "parentType": "DbCassandraCreateTable",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "table",
+                                        "const": "mq_counters"
+                                    },
+                                    {
+                                        "name": "fields",
+                                        "const": [
+                                            {
+                                                "name": "job_id",
+                                                "type": "text",
+                                                "partition_key": true,
+                                                "clustering_key": false,
+                                                "mandatory": false
+                                            },
+                                            {
+                                                "name": "topic_name",
+                                                "type": "text",
+                                                "partition_key": true,
+                                                "clustering_key": false,
+                                                "mandatory": false
+                                            },
+                                            {
+                                                "name": "counter_type",
+                                                "type": "text",
+                                                "partition_key": true,
+                                                "clustering_key": false,
+                                                "mandatory": false
+                                            },
+                                            {
+                                                "name": "counter_value",
+                                                "type": "int",
+                                                "partition_key": false,
+                                                "clustering_key": false,
+                                                "mandatory": false
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Create mq_topics_lag",
+                            "isDisabled": true,
+                            "actorType": {
+                                "parentType": "DbCassandraCreateTable",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "table",
+                                        "const": "mq_topics_lag"
+                                    },
+                                    {
+                                        "name": "fields",
+                                        "const": [
+                                            {
+                                                "name": "job_id",
+                                                "type": "text",
+                                                "partition_key": true,
+                                                "clustering_key": false,
+                                                "mandatory": true
+                                            },
+                                            {
+                                                "name": "topic_name",
+                                                "type": "text",
+                                                "partition_key": false,
+                                                "clustering_key": true,
+                                                "mandatory": true
+                                            },
+                                            {
+                                                "name": "lag",
+                                                "type": "int",
+                                                "partition_key": false,
+                                                "clustering_key": false,
+                                                "mandatory": false
+                                            },
+                                            {
+                                                "name": "log_ts",
+                                                "type": "date",
+                                                "partition_key": false,
+                                                "clustering_key": false,
+                                                "mandatory": false
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "Create mq_topics_lag_history",
+                            "isDisabled": true,
+                            "actorType": {
+                                "parentType": "DbCassandraCreateTable",
+                                "inputs": [
+                                    {
+                                        "name": "interface",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "schema",
+                                        "const": null
+                                    },
+                                    {
+                                        "name": "table",
+                                        "const": "mq_topics_lag_history"
+                                    },
+                                    {
+                                        "name": "fields",
+                                        "const": [
+                                            {
+                                                "name": "job_id",
+                                                "type": "text",
+                                                "partition_key": true,
+                                                "clustering_key": false,
+                                                "mandatory": true
+                                            },
+                                            {
+                                                "name": "log_date",
+                                                "type": "",
+                                                "partition_key": false,
+                                                "clustering_key": false,
+                                                "mandatory": false
+                                            },
+                                            {
+                                                "name": "log_time",
+                                                "type": "",
+                                                "partition_key": false,
+                                                "clustering_key": false,
+                                                "mandatory": false
+                                            },
+                                            {
+                                                "name": "lag",
+                                                "type": "",
+                                                "partition_key": false,
+                                                "clustering_key": false,
+                                                "mandatory": false
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "ReadConsumerConfig",
+                "name": "JobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Get Keyspace",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Load Config mTable",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "DB_LOG_INTERFACE",
+                "name": "jobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ReadConsumerConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Create mq_message_filtered",
+                "name": "interface"
+            },
+            "iterate": "First",
+            "path": [
+                "DB_LOG_INTERFACE"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "ReadConsumerConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Create mq_counters",
+                "name": "interface"
+            },
+            "iterate": "First",
+            "path": [
+                "DB_LOG_INTERFACE"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "ReadConsumerConfig",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Create mq_message_errored",
+                "name": "interface"
+            },
+            "iterate": "First",
+            "path": [
+                "DB_LOG_INTERFACE"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Get Keyspace",
+                "name": "keyspace"
+            },
+            "rightPort": {
+                "actor": "Create mq_counters",
+                "name": "schema"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Get Keyspace",
+                "name": "keyspace"
+            },
+            "rightPort": {
+                "actor": "Create mq_message_filtered",
+                "name": "schema"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Get Keyspace",
+                "name": "keyspace"
+            },
+            "rightPort": {
+                "actor": "Create mq_message_errored",
+                "name": "schema"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Get Keyspace",
+                "name": "keyspace"
+            },
+            "rightPort": {
+                "actor": "Create mq_topics_lag_history",
+                "name": "schema"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Get Keyspace",
+                "name": "keyspace"
+            },
+            "rightPort": {
+                "actor": "Create mq_topics_lag",
+                "name": "schema"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "DB_LOG_INTERFACE",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Create mq_message_filtered",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "DB_LOG_INTERFACE",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Create mq_message_errored",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "DB_LOG_INTERFACE",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Create mq_counters",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "DB_LOG_INTERFACE",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Create mq_topics_lag",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "DB_LOG_INTERFACE",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "Create mq_topics_lag_history",
+                "name": "interface"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "jobId"
+            },
+            "rightPort": {
+                "actor": "JobId",
+                "name": "value"
+            }
+        }
+    ]
+}

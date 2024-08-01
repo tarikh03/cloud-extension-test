@@ -1,0 +1,522 @@
+{
+    "tags": [
+        "MQConsumer"
+    ],
+    "levels": [
+        {
+            "stages": [
+                {
+                    "name": "Input",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "JobId",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "TopicName",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ALL",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "ALL"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "TRUE",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "const": "TRUE"
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ErrorMessage",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "FoundError",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "boolean"
+                                        },
+                                        "const": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "boolean"
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "ContinueForSpecificTopic",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Read mtMQSkipErrorCodes11",
+                            "actorType": {
+                                "parentType": "MTableLookup",
+                                "inputs": [
+                                    {
+                                        "name": "mtable",
+                                        "const": "mtMQSkipErrorCodes"
+                                    },
+                                    {
+                                        "name": "JobId",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "result",
+                                        "schema": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "JobId": {
+                                                        "type": "string"
+                                                    },
+                                                    "ErrorRegex": {
+                                                        "type": "string"
+                                                    },
+                                                    "TopicName": {}
+                                                }
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "PrepareRegExByTopicName",
+                            "actorType": {
+                                "parentType": "StringFormat",
+                                "inputs": [
+                                    {
+                                        "name": "format",
+                                        "const": "\\b\\|?${topicName}\\b\\|?|\\b${all}\\b\\|?|\\b${all_true}\\b"
+                                    },
+                                    {
+                                        "name": "topicName",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "all",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    },
+                                    {
+                                        "name": "all_true",
+                                        "schema": {
+                                            "type": "string"
+                                        },
+                                        "mandatory": false
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "CheckForErrorInConfig",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "LookForCurrentError",
+                            "actorType": {
+                                "parentType": "Regex",
+                                "inputs": [
+                                    {
+                                        "name": "pattern",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "CheckForTopicUnderError",
+                    "dependsOnList": [],
+                    "isLast": 1,
+                    "actors": [
+                        {
+                            "name": "FoundErrorForTopics",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "NotNull",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "LookForCurrentTopic",
+                            "actorType": {
+                                "parentType": "Regex",
+                                "inputs": [
+                                    {
+                                        "name": "pattern",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": []
+                            }
+                        },
+                        {
+                            "name": "FoundRegex2",
+                            "actorType": {
+                                "parentType": "Const",
+                                "inputs": [
+                                    {
+                                        "name": "value",
+                                        "const": null
+                                    }
+                                ],
+                                "outputs": [
+                                    {
+                                        "name": "value",
+                                        "schema": {
+                                            "type": "string"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "ExitLoopOnMatch",
+                            "actorType": {
+                                "parentType": "LoopStop",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "stages": [
+                {
+                    "name": "Exit",
+                    "dependsOnList": [],
+                    "isLast": 0,
+                    "actors": [
+                        {
+                            "name": "Return",
+                            "condition": "result",
+                            "actorType": {
+                                "parentType": "NotNull",
+                                "inputs": [],
+                                "outputs": []
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "connections": [
+        {
+            "leftPort": {
+                "actor": "JobId",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "Read mtMQSkipErrorCodes11",
+                "name": "JobId"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TopicName",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "PrepareRegExByTopicName",
+                "name": "topicName"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ALL",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "PrepareRegExByTopicName",
+                "name": "all"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "TRUE",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "PrepareRegExByTopicName",
+                "name": "all_true"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "ErrorMessage",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "LookForCurrentError",
+                "name": "input"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQSkipErrorCodes11",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "LookForCurrentTopic",
+                "name": "input"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "TopicName"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQSkipErrorCodes11",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "LookForCurrentError",
+                "name": "pattern"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "ErrorRegex"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "Read mtMQSkipErrorCodes11",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "FoundRegex2",
+                "name": "value"
+            },
+            "iterate": "Iterate",
+            "path": [
+                "ErrorRegex"
+            ]
+        },
+        {
+            "leftPort": {
+                "actor": "PrepareRegExByTopicName",
+                "name": "string"
+            },
+            "rightPort": {
+                "actor": "LookForCurrentTopic",
+                "name": "pattern"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "LookForCurrentError",
+                "name": "strings"
+            },
+            "rightPort": {
+                "actor": "FoundErrorForTopics",
+                "name": "value"
+            },
+            "iterate": "First"
+        },
+        {
+            "leftPort": {
+                "actor": "LookForCurrentTopic",
+                "name": "strings"
+            },
+            "rightPort": {
+                "actor": "Return",
+                "name": "value"
+            },
+            "iterate": "First"
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "jobId"
+            },
+            "rightPort": {
+                "actor": "JobId",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "topicName"
+            },
+            "rightPort": {
+                "actor": "TopicName",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "flowArgs",
+                "name": "error"
+            },
+            "rightPort": {
+                "actor": "ErrorMessage",
+                "name": "value"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "FoundError",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "found"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "FoundRegex2",
+                "name": "value"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "regex"
+            }
+        },
+        {
+            "leftPort": {
+                "actor": "Return",
+                "name": "result"
+            },
+            "rightPort": {
+                "actor": "flowArgs",
+                "name": "found"
+            }
+        }
+    ]
+}

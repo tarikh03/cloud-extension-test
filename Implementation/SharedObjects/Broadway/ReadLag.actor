@@ -1,0 +1,28 @@
+{
+    "type": "ReadLag",
+    "badge": "Re",
+    "inputs": [
+        {
+            "name": "bootstrap",
+            "schema": {},
+            "mandatory": false
+        },
+        {
+            "name": "groupId",
+            "schema": {},
+            "mandatory": false
+        },
+        {
+            "name": "topics",
+            "schema": {},
+            "mandatory": false
+        }
+    ],
+    "outputs": [
+        {
+            "name": "lagsArr",
+            "schema": {}
+        }
+    ],
+    "actorClass": "com.k2view.cdbms.usercode.common.ReadKafkaStatsActor"
+}

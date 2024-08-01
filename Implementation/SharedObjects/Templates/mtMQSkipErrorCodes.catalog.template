@@ -1,0 +1,2 @@
+JobId,ErrorRegex,TopicName
+{{CONSUMER_JOB_ID}},Message is Null,TestTopic2|TestTopic
